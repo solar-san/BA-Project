@@ -1,0 +1,34 @@
+---
+title: "Business Analytics"
+subtitle: "Notes"
+author: "solar-san"
+date-modified: "`r Sys.Date()`"
+format:
+  html:
+    theme: github
+    toc: true
+    toc-location: left
+    fig-align: center
+    fig-width: 10
+    fig-height: 10
+    html-math-method: katex
+    code-overflow: scroll
+    code-copy: hover
+    code-fold: show
+    highlight-style: breeze
+    citations-hover: true
+    footnotes-hover: true
+    header-includes: |
+      <meta name="author" content="solar-san">
+      <meta name="image" property="">
+      <meta 
+      name="description"
+      content="">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Fira+Code&display=swap" rel="stylesheet">
+mainfont: "Atkinson Hyperlegible"
+monofont: 'Fira Code'
+---
+
+# Introduction
