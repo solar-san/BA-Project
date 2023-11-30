@@ -10,12 +10,16 @@ format:
     toc-location: left
     fig-align: center
     fig-width: 10
-    fig-height: 10
+    fig-height: 8
     html-math-method: katex
     code-overflow: scroll
     code-copy: hover
     code-fold: show
     highlight-style: breeze
+    reference-location: margin
+    citation-location: margin
+    tbl-cap-location: margin
+    fig-cap-location: margin
     citations-hover: true
     footnotes-hover: true
     header-includes: |
@@ -31,4 +35,151 @@ mainfont: "Atkinson Hyperlegible"
 monofont: 'Fira Code'
 ---
 
+```{r setup}
+#| echo: false
+#| results: hide
+#| warning: false
+knitr::opts_chunk$set(
+  echo = T
+)
+
+lib_list <- list(
+  "tidyverse",
+  "fpp3",
+  "ggthemes"
+)
+
+lapply(
+  lib_list,
+  require,
+  quietly = TRUE, 
+  warn.conflicts = FALSE, 
+  character.only = TRUE
+)
+
+theme_set(
+  theme_tufte(
+    base_size = 20,
+    base_family = "Atkinson Hyperlegible"
+  )
+)
+```
+
 # Introduction
+
+> What is _Business Analytics_? It is an applied discipline, tasked with gaining insight about business operations and make better, fact-based decisions: a basic pillar of being _data-driven_. It combines Statistics, Computer Sciences, Management Science, Operational Research, and much more.
+
+It has three main components:
+
+1. __Descriptive analytics__: providing insight into business questions by summarizing and visualizing observed data. Typically based on simple summaries and charts^[Any predictive or prescriptive model is based on some steps of _descriptive analytics_.].
+2. __Predictive analytics__: providing insight into the possible future by extrapolating patterns found in the historical data. Typically making use of statistical or machine learning predictive models (remember the Statistical Learning and Data Analytic courses).
+3. __Prescriptive analytics__: providing ways to make the best possible decisions based on the available information.
+
+> __Syllabus__:
+
+- Time series data.
+- Quantile regression.
+- Simulation and Monte Carlo analysis.
+
+# Forecasting and Time Series
+
+Predictions have been a human interest throghout history. The ability to forecast depends on:
+
+- How much we understand the factors at play, whether our model of the phenomenon is good or not.
+- How much data is available.
+- How similar the future will be to the past.
+- The volatility of the process of interest.
+- Whether the forecasts can affect the thing we are trying to forecast.
+
+:::{.callout-caution}
+_Data-based forecasts_ should be based on _relevant_ data of the _highest possible quality_.
+:::
+
+However, data are not always available.
+
+- Qualitative forecasting is used when no data is available.
+- Quantitative forecasting is used when relevant numerical data is available and is representative of some aspect of the past.
+
+> _Quantitative_ methods _must be appropriate for the problem and for the data used to solve it_. Specific methods are used for _time series_ data.
+
+In time series, _time is a defining property of the data_. While it is a continuous variable, sampling usually occurs at regularly spaced intervals, giving regular time-steps that represent the _period_ of the data.
+
+```{r TS example}
+gafa_stock %>% 
+  filter(
+    Symbol == "GOOG",
+    year(Date) == 2018
+  ) %>% 
+  autoplot(
+    Close
+  ) +
+  labs(
+    title = "Google Stock Price at Close",
+    x = "Month",
+    y = "Value at Close"
+  )
+```
+
+## Forecasting: the Statistical Perspective
+
+The phenomenon that we want to forecast can be conceptualized as a _stochastic process_, which is a _succession of stochastic variables_ $\{ y_t \}$. If we consider its value at time $T$, given $\mathcal{I}$ the set of all available observations for $t = 1, 2, …, T -1$, we can express the _forecast distribution_ as a _joint distribution_, conditional on the available information: $y_t \vert \mathcal{I}$. This notation means: "_the random variable $y_t$, given all that we know in $\mathcal{I}$".
+
+- The _point forecast_ will be the _mean_ or the _median_ of $y_t \vert \mathcal{I}$.
+- The _forecast variance_ is $V(y_t \vert \mathcal{I})$. 
+- A prediction interval or _interval forecast_ is a range of $y_t$ values with high probability.
+
+When we are dealing with _time series_, we have:
+
+- $y_{t \vert t-1} = y_{t} \vert \{ y_1, y_2, …, y_{t-1} \}$.
+
+A $h-step$ forecast that takes into account all observations up to time $T$ is espressed as:
+
+$$
+\hat y_{T + h \vert T} = \mathbb{E} (y_{T + h}\vert y_1, …, y_T)
+$$ {#eq-hfor}
+
+
+Models are useful to forecast, because they account for _uncertainty_.
+
+## Patterns
+
+We can filter three different components of time series. These are _patterns_ that can be used to forecast more effectively, if identified correctly.
+
+1. __Trend__: long-term increase or decrease in the data.
+2. __Seasonal__: a series is influenced by a _seasonal factor_ at a _fixed period_ (quarterly, monthly, weekly, daily, hourly).
+3. __Cyclic__: data exibit rises and falls that _are not of fixed period_.
+
+:::{.callout-important}
+Cyclic patterns have a duration of at least 2 years. 
+Seasonal patterns cannot have a periodicity longer that exceed the year and are of _constant length_.
+The magnitude of a cycle is often more variable than the magnitude of a seasonal pattern.
+:::
+
+The main implications of the differences between seasonal and cyclic patterns is that the timing of peaks and troughs is predictable with seasonal data, but unpredictable in the long term with cyclic data.
+
+```{r TS example seasonality}
+#| fig-cap: "We can clearly observe a quarterly season pattern in the Australian beer production."
+#| fig-height: 6
+
+aus_production %>% 
+  filter(
+    year(Quarter) >= 2000
+  ) %>% 
+  autoplot(Beer) +
+  labs(
+    title = "Australian beer production"
+  )
+```
+
+```{r TS example ciclyc + seasonal}
+us_employment %>% 
+  filter(
+    year(Month) >= 1980,
+    Series_ID == "CEU0500000001"
+  ) %>% 
+  autoplot(
+    Employed
+  )
+```
+
+## Autocorrelation
