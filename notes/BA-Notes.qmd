@@ -63,6 +63,10 @@ theme_set(
     base_family = "Atkinson Hyperlegible"
   )
 )
+
+theme_update(
+    legend.position = "top"
+)
 ```
 
 # Introduction
@@ -179,7 +183,28 @@ us_employment %>%
   ) %>% 
   autoplot(
     Employed
+  ) +
+  labs(
+    title = "US employment from 1980"
   )
 ```
 
 ## Autocorrelation
+
+While in standard _regression models_ we assume _independence_ among the observations, this is not true with time series models. We can visualize this by comparing $y_t$ atainst $y_{t-k}$ for different values of $k$. $k$ is the _lag_ vaue, while $y_{t-k}$ the _lagged value_: we define _autocorrelation_ the linear dependence of a variable with its lagged values^[In other words: we are concerned with the dependency of a phenomenon with its own past.].
+
+```{r TS example lag plot}
+aus_production %>% 
+  gg_lag(
+    Beer,
+    geom = "point"
+  ) +
+  labs(
+    title = "Lag plot for Australian beer production"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 270),
+  )
+```
+
+From the following plot we can clearly see that at each 4th lag^[$k = 4$, or $t-4$] there is a clear evidence of correlation between $y_t$ and $y_{t-k}$. This is a tell-tale sign of _seasonality_.
