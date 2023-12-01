@@ -196,6 +196,8 @@ us_employment %>%
 While in standard _regression models_ we assume _independence_ among the observations, this is not true with time series models. We can visualize this by comparing $y_t$ atainst $y_{t-k}$ for different values of $k$. $k$ is the _lag_ vaue, while $y_{t-k}$ the _lagged value_: we define _autocorrelation_ the linear dependence of a variable with its lagged values^[In other words: we are concerned with the dependency of a phenomenon with its own past.].
 
 ```{r TS example lag plot}
+#| fig-width: 12
+#| fig-height: 12
 aus_production %>% 
   gg_lag(
     Beer,
@@ -209,4 +211,33 @@ aus_production %>%
   )
 ```
 
-From the following plot we can clearly see that at each 4th lag^[$k = 4$, or $t-4$] there is a clear evidence of correlation between $y_t$ and $y_{t-k}$. This is a tell-tale sign of _seasonality_.
+From the following plot we can clearly see that at each 4th lag^[$k = 4$, or $t-4$] there is a clear evidence of correlation between $y_t$ and $y_{t-k}$. This is a tell-tale sign of _seasonality_. 
+
+However, not always we can spot it using visualization techniques:
+
+```{r TS example lag and ciclycality}
+#| fig-width: 12
+#| fig-height: 12
+us_employment %>% 
+  filter(
+    year(Month) >= 2010,
+    Series_ID == "CEU0500000001"
+  ) %>%
+  gg_lag(
+    Employed,
+    geom = "point"
+  ) +
+  labs(
+    title = "Lag plot for Australian beer production"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 270),
+  )
+```
+
+:::{.callout-caution}
+When _multiple patterns_ overlap, we cannot use this lag-charts to spot _seasonality_.
+:::
+
+## Autovariance and Autocorrelation
+
