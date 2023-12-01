@@ -423,7 +423,7 @@ $${#eq-additive}
 
 The additive model is appropriate if the magnitude of seasonal fluctuations does not vary with level.
 
-> Multiplicative decomposition:s
+> Multiplicative decompositions
 
 $$
 y_t = S_t \times T_t \times R_t
@@ -439,7 +439,7 @@ There are several approaches to decomposition:
 
 The focus is on _classical decomposition_; it can be performed for additive and multiplicative seasonality. To estimate the _trend_ at time $t$, _Moving Averages_ (MA) of order $m$ are computed on the time series values.
 
-```{r classical decomposition example}
+```{r classical decomposition example 1}
  us_employment |>
      filter(
        Title == "Retail Trade", 
@@ -459,8 +459,7 @@ The focus is on _classical decomposition_; it can be performed for additive and 
     ) 
 ```
 
-
-```{r}
+```{r classical decomposition example 2}
 aus_production %>% 
   filter(
     year(Quarter) >= 2000
@@ -479,3 +478,187 @@ aus_production %>%
     ) 
 ```
 
+The trend component of classical decomposition is estimated with a _moving average_.
+
+## Moving Averages
+
+A _moving average_ of order $m$ can be written as:
+
+$$
+\hat T_t = \frac{1}{M} \sum_{j = -k}^k y_{t + j} \qquad m = 2k + 1
+$${#eq-MA}
+
+$m$ is _odd_, therefore the MA is _symmetric_ and centered at time $t$; it is a paramenter that controls _how smooth the estimate is_^[For $m=1$ we do not have smoothing; for $m=n/2$ we are smoothing every information out but the mean.].
+
+```{r MA example 1}
+global_economy %>% 
+  filter(Country == "Italy") %>% 
+  mutate(
+    `5-MA` = slider::slide_dbl(
+      Exports,
+      mean,
+      .before = 2,
+      .after = 2,
+      .complete = TRUE
+      ),
+    `9-MA` = slider::slide_dbl(
+      Exports,
+      mean,
+      .before = 4,
+      .after = 4,
+      .complete = TRUE
+      )
+  ) %>% 
+  autoplot(Exports) +
+  geom_line(
+    aes(
+      y = `5-MA`,
+      colour = "#D55E00"
+      ), 
+    ) +
+  geom_line(
+    aes(
+      y = `9-MA`,
+      colour = "dodgerblue"
+      ), 
+    ) +
+  labs(
+    y = "% of GDP",
+    title = "Total Australian exports",
+    colour = "MA smoothings"
+    ) +
+  scale_color_discrete(
+    labels = c(
+      "5-MA", 
+      "9-MA"
+      )
+    )
+```
+
+:::{.callout-important}
+The beginning and end of MA trends are missing: this is caused by the fact that we cannot compute the average near the boundaries of our dataset.
+:::
+
+For seasonal data the choise of $m$ is fundamental:
+
+```{r MA example 2}
+vic_elec |>
+  filter(year(Time) == 2014) |>
+  index_by(Date = date(Time)) %>% 
+summarise(
+    Demand = sum(Demand) / 1e3
+  ) %>%  mutate(
+    `5-MA` = slider::slide_dbl(
+      Demand,
+      mean,
+      .before = 2,
+      .after = 2,
+      .complete = TRUE
+      ),
+    `11-MA` = slider::slide_dbl(
+      Demand,
+      mean,
+      .before = 5,
+      .after = 5,
+      .complete = TRUE
+      )
+  ) %>% 
+  ggplot(
+    aes(
+      x = Date
+    )
+  ) +
+  geom_line(
+    aes(
+      y = Demand
+    )
+  ) +
+  geom_line(
+    aes(
+      y = `5-MA`,
+      colour = "#D55E00"
+    )
+  ) +
+  geom_line(
+    aes(
+      y = `11-MA`,
+      colour = "dodgerblue"
+    )
+  ) +
+  labs(
+    title = "Monthly electricity demand for 2014",
+    colour = "MA smoothings"
+  )  +
+  scale_color_discrete(
+    labels = c(
+      "5-MA", 
+      "9-MA"
+      )
+    )
+
+```
+
+To _smooth out the seasonal component_ we use moving averages of the order of the periodicity of the seasonality.
+
+For example, in the case of _weekly data_, we can use a 7-MA. If we have _even_ numbers, we can take a _moving average of a moving average_: this allows centering of the data and keeping symmetry^[This works effectively as a _weighted_ moving average.].
+
+:::{.callout-tip}
+For seasonal data with even period $m$ take 2 × MA of period $m$.
+:::
+
+```{r}
+us_employment %>% 
+     filter(
+       year(Month) >= 1990, 
+       Title == "Retail Trade"
+       ) %>% 
+     select(
+       -Series_ID
+       ) %>% 
+     mutate(
+       `12-MA` = slider::slide_dbl(
+         Employed, 
+         mean, 
+         .before = 5, 
+         .after = 6, 
+         .complete = TRUE
+         ),
+       `2x12-MA` = slider::slide_dbl(
+         `12-MA`, 
+         mean, 
+         .before = 1, 
+         .after = 0, 
+         .complete = TRUE
+         )
+       ) %>% 
+     na.omit() %>%
+     ggplot(
+       aes(
+         x = Month
+       )
+     ) +
+  geom_line(
+    aes(
+      y = Employed, 
+      ),
+       color = "grey60"
+    ) +
+  geom_line(
+    aes(
+      y = `2x12-MA`, 
+       color = "#D55E00"
+      )
+    )+
+  labs(
+       y = "Persons (thousands)",
+       title = "Total employment in US retail",
+       color = ""
+     ) +
+  scale_color_discrete(
+    labels = c(
+      "2x12-MA"
+      )
+    )
+```
+
+## Classical Decomposition
