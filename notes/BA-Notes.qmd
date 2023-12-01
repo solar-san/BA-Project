@@ -48,7 +48,8 @@ knitr::opts_chunk$set(
 lib_list <- list(
   "tidyverse",
   "fpp3",
-  "ggthemes"
+  "ggthemes",
+  "patchwork"
 )
 
 lapply(
@@ -316,4 +317,88 @@ tsibble(
 We can see that even if there is a slight evidence of correlation, the confidence intervals help in choosing to label the series as white noise: it is not statistically significant.
 
 ## Transformations
+
+> _Transformations_ have many uses: adjusting the series helps with decomposition and comparisons; also, stabilizing the variance simplifies subsequent analysis.
+
+We have four main classes of transformations, dealing with economic data:
+
+1. Calendar adjustments.
+2. Population adjustments.
+3. Inflation adjustments.
+4. Mathematical transformations.
+
+```{r transformation example}
+#| fig-heigth: 12
+p1 <- global_economy %>% 
+  filter(
+    Country == "Australia" |
+    Country == "Italy"
+    ) %>% 
+  autoplot(GDP) +
+  labs(
+    title= "GDP",
+    y = "$US"
+    ) +
+  theme(
+    legend.position = "none"
+  )
+p2 <- global_economy %>% 
+ filter(
+    Country == "Australia" |
+    Country == "Italy"
+    ) %>% 
+  autoplot(Population) +
+  labs(
+    title= "Population",
+    y = "$US"
+    ) +
+  theme(
+    legend.position = "none"
+  )
+p3 <- global_economy %>% 
+  filter(
+    Country == "Australia" |
+    Country == "Italy"
+    ) %>% 
+  autoplot(GDP/Population) +
+  labs(
+    title= "GDP per capita", 
+    y = "$US"
+    )
+
+(p1 + p2) / p3 + plot_annotation(
+  title = "Transformation example: from GDP to GDP per capita"
+)
+```
+
+Mathematical transformations are useful to stabilize the variability of the time series, which should be constant: when it varies with the level of the series, a `log` transformation can eliminate the issue^[For the transformed data.], Changes in a log value are relative changes on the original scale.
+
+$$
+Y_t = b_t X_t \to log(Y_t) = log(b_t) * log(X_t)
+$${#eq-logtransform}
+
+```{r}
+#| fig-heigth: 12
+p1 <- aus_production %>% 
+  autoplot(Gas)
+p2 <- aus_production %>% 
+  autoplot(
+    log(
+      Gas
+      )
+    ) +
+  labs(
+    y = expression(log(Gas))
+  )
+
+p1 / p2 + plot_annotation(
+  title = "Log transformations"
+)
+```
+
+:::{.callout-tip}
+Choosing an interpretable transformation is a great advantage. Simple transformations go a long way.
+:::
+
+## Decomposition
 
