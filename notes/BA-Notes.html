@@ -137,6 +137,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#forecasting-the-statistical-perspective" id="toc-forecasting-the-statistical-perspective" class="nav-link" data-scroll-target="#forecasting-the-statistical-perspective">Forecasting: the Statistical Perspective</a></li>
   <li><a href="#patterns" id="toc-patterns" class="nav-link" data-scroll-target="#patterns">Patterns</a></li>
   <li><a href="#autocorrelation" id="toc-autocorrelation" class="nav-link" data-scroll-target="#autocorrelation">Autocorrelation</a></li>
+  <li><a href="#autovariance-and-autocorrelation" id="toc-autovariance-and-autocorrelation" class="nav-link" data-scroll-target="#autovariance-and-autocorrelation">Autovariance and Autocorrelation</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -316,15 +317,15 @@ Important
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>us_employment <span class="sc">%&gt;%</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">year</span>(Month) <span class="sc">&gt;=</span> <span class="dv">1980</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    Series_ID <span class="sc">==</span> <span class="st">"CEU0500000001"</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    Employed</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>us_employment <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">filter</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        Title <span class="sc">==</span> <span class="st">"Retail Trade"</span>, </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">year</span>(Month) <span class="sc">&gt;=</span> <span class="dv">1980</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">autoplot</span>(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    Employed</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_rangeframe</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"US employment from 1980"</span></span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -352,7 +353,7 @@ Important
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/TS%20example%20lag%20plot-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-Notes_files/figure-html/TS%20example%20lag%20plot-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 <div class="page-columns page-full"><p>From the following plot we can clearly see that at each 4th lag<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> there is a clear evidence of correlation between <span class="math inline">y_t</span> and <span class="math inline">y_{t-k}</span>. This is a tell-tale sign of <em>seasonality</em>.</p><div class="no-row-height column-margin column-container"><li id="fn3"><p><sup>3</sup>&nbsp;<span class="math inline">k = 4</span>, or <span class="math inline">t-4</span></p></li></div></div>
@@ -380,6 +381,117 @@ Important
 <p><img src="BA-Notes_files/figure-html/TS%20example%20lag%20and%20ciclycality-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
+<div class="callout-caution callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Danger
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When <em>multiple patterns</em> overlap, we cannot use this lag-charts to spot <em>seasonality</em>.</p>
+</div>
+</div>
+</section>
+<section id="autovariance-and-autocorrelation" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="autovariance-and-autocorrelation">Autovariance and Autocorrelation</h2>
+<blockquote class="blockquote">
+<p><em>Autocovariance</em> and <em>autocorrelation</em> measure linear relations between lagged values of a time series <span class="math inline">y</span>.</p>
+</blockquote>
+<ul>
+<li><span class="math inline">c_k</span>: sample autocovariane at lag <span class="math inline">k</span>.</li>
+<li><span class="math inline">r_k</span>: sample autocorrelation at lag <span class="math inline">k</span><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</li>
+</ul>
+<div class="no-row-height column-margin column-container"><li id="fn4"><p><sup>4</sup>&nbsp;<span class="math inline">r_k</span> is almost the same as the <em>sample correlation</em> between <span class="math inline">y_t</span> and <span class="math inline">y_{t−k}</span>.</p></li></div><p><span id="eq-ck"><span class="math display">
+c_k = \frac{1}{T} \sum_{t = k + 1}^T (y_t - \bar y)(y_{t - k} - \bar y)
+\tag{2}</span></span></p>
+<p><span id="eq-rk"><span class="math display">
+r_k = \frac{c_k}{c_0}
+\tag{3}</span></span></p>
+<div class="page-columns page-full"><p>We can visualize the autocorrelations with a <em>correlogram</em> plot<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>:</p><div class="no-row-height column-margin column-container"><li id="fn5"><p><sup>5</sup>&nbsp;The correlation for <span class="math inline">k=0</span> is 0, therefore it is often omitted.</p></li></div></div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>aus_production <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">year</span>(Quarter) <span class="sc">&gt;=</span> <span class="dv">2000</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ACF</span>(</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        Beer,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">lag_max =</span> <span class="dv">8</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">autoplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="BA-Notes_files/figure-html/ACF%20TS%20example%201-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>us_employment <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        Title <span class="sc">==</span> <span class="st">"Retail Trade"</span>, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">year</span>(Month) <span class="sc">&gt;=</span> <span class="dv">1980</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ACF</span>(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>            Employed,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">lag_max =</span> <span class="dv">32</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">autoplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="BA-Notes_files/figure-html/ACF%20TS%20example%202-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<ul>
+<li>When data have a trend, the autocorrelations for small lags tend to be large and positive.</li>
+<li>When data are seasonal, the autocorrelation will be larger at the seasonal lags<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</li>
+<li>When data are trended and seasonal, you see a combination of these effects.</li>
+</ul>
+<div class="no-row-height column-margin column-container"><li id="fn6"><p><sup>6</sup>&nbsp;This is visible at multiples of the seasonal frequency.</p></li></div><blockquote class="blockquote">
+<p>Time series that show no autocorrelation are called <em>white noise</em>.</p>
+</blockquote>
+<p>This is a benchmark: if a series have small <span class="math inline">r_k</span>, we can assume that behaves like white noise. The sampling distribution for white noise data is (asymptotically) <span class="math inline">N(0, 1/T)</span>, therefore we can build <em>confidence intervals</em>, usually at <span class="math inline">\alpha=5%</span>.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tsibble</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">sample =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">150</span>, </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">wn =</span> <span class="fu">rnorm</span>(<span class="dv">150</span>), </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">index =</span> sample</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">autoplot</span>(wn) <span class="sc">+</span> </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"White noise"</span>, </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">""</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="BA-Notes_files/figure-html/WN%20plot-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tsibble</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">sample =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">150</span>, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">wn =</span> <span class="fu">rnorm</span>(<span class="dv">150</span>), </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">index =</span> sample</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ACF</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">autoplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Response variable not specified, automatically selected `var = wn`</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="BA-Notes_files/figure-html/WN%20ACF%20plot-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<p>We can see that even if there is a slight evidence of correlation, the confidence intervals help in choosing to label the series as white noise: it is not statistically significant.</p>
 </section>
 </section>
 

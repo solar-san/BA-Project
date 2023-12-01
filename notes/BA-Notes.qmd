@@ -178,15 +178,15 @@ aus_production %>%
 ```
 
 ```{r TS example ciclyc + seasonal}
-us_employment %>% 
-  filter(
-    year(Month) >= 1980,
-    Series_ID == "CEU0500000001"
-  ) %>% 
-  autoplot(
+us_employment %>%
+     filter(
+        Title == "Retail Trade", 
+        year(Month) >= 1980) %>%
+    autoplot(
     Employed
-  ) +
-  labs(
+    ) +
+    geom_rangeframe() %>%
+    labs(
     title = "US employment from 1980"
   )
 ```
@@ -240,4 +240,80 @@ When _multiple patterns_ overlap, we cannot use this lag-charts to spot _seasona
 :::
 
 ## Autovariance and Autocorrelation
+
+> _Autocovariance_ and _autocorrelation_ measure linear relations between lagged values of a time series $y$.
+
+- $c_k$: sample autocovariane at lag $k$.
+- $r_k$: sample autocorrelation at lag $k$^[$r_k$ is almost the same as the _sample correlation_ between $y_t$ and $y_{t−k}$.].
+
+$$
+c_k = \frac{1}{T} \sum_{t = k + 1}^T (y_t - \bar y)(y_{t - k} - \bar y)
+$${#eq-ck}
+
+$$
+r_k = \frac{c_k}{c_0}
+$${#eq-rk}
+
+We can visualize the autocorrelations with a _correlogram_ plot^[The correlation for $k=0$ is 0, therefore it is often omitted.]:
+
+```{r ACF TS example 1}
+aus_production %>% 
+filter(
+    year(Quarter) >= 2000
+  ) %>%
+    ACF(
+        Beer,
+        lag_max = 8
+    ) %>%
+    autoplot()
+```
+
+```{r ACF TS example 2}
+us_employment %>%
+    filter(
+        Title == "Retail Trade", 
+        year(Month) >= 1980
+        ) %>%
+        ACF(
+            Employed,
+            lag_max = 32
+        ) %>%
+        autoplot()
+```
+
+- When data have a trend, the autocorrelations for small lags tend to be large and positive.
+- When data are seasonal, the autocorrelation will be larger at the seasonal lags^[This is visible at multiples of the seasonal frequency.].
+- When data are trended and seasonal, you see a combination of these effects.
+
+> Time series that show no autocorrelation are called _white noise_.
+
+This is a benchmark: if a series have small $r_k$, we can assume that behaves like white noise. The sampling distribution for white noise data is (asymptotically) $N(0, 1/T)$, therefore we can build _confidence intervals_, usually at $\alpha=5%$.
+
+```{r WN plot}
+tsibble(
+    sample = 1:150, 
+    wn = rnorm(150), 
+    index = sample
+    ) %>%
+    autoplot(wn) + 
+    labs(
+        title = "White noise", 
+        y = ""
+    )
+```
+
+
+```{r WN ACF plot}
+tsibble(
+    sample = 1:150, 
+    wn = rnorm(150), 
+    index = sample
+    ) %>%
+    ACF() %>%
+    autoplot()
+```
+
+We can see that even if there is a slight evidence of correlation, the confidence intervals help in choosing to label the series as white noise: it is not statistically significant.
+
+## Transformations
 
