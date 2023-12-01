@@ -402,3 +402,80 @@ Choosing an interpretable transformation is a great advantage. Simple transforma
 
 ## Decomposition
 
+Time series values can be decomposed as a function of their patterns:
+
+$$
+y_t = f(S_t, T_t, R_t)
+$${#eq-decompose}
+
+We can identify a _seasonal_ and a _trend_ component; there is also a _remainder_ that accounts for the unexplained variability.
+
+- $y_t$ = data at period $t$.
+- $T_t$ = trend-cyvle component at period $t$.
+- $S_t$ = seasonal component at period $t$.
+- $R_t$ = remainder at period $t$.
+
+> Additive decomposition:
+
+$$
+y_t = S_t + T_t + R_t
+$${#eq-additive}
+
+The additive model is appropriate if the magnitude of seasonal fluctuations does not vary with level.
+
+> Multiplicative decomposition:s
+
+$$
+y_t = S_t \times T_t \times R_t
+$${#eq-additive}
+
+If seasonal changes are proportional to the level of the series, then a multiplicative model is appropriate^[Anytime, a $log$ transformation can turn a multiplicative relationship into an additive relationship.].
+
+There are several approaches to decomposition:
+
+1. Classical Decomposition
+2. Seasonal Decomposition of Time Series by Loess (STL)
+3. X11/SEATS^[Used mostly by government agencies.].
+
+The focus is on _classical decomposition_; it can be performed for additive and multiplicative seasonality. To estimate the _trend_ at time $t$, _Moving Averages_ (MA) of order $m$ are computed on the time series values.
+
+```{r classical decomposition example}
+ us_employment |>
+     filter(
+       Title == "Retail Trade", 
+       year(Month) >= 1980
+       ) %>% 
+     model(
+       classical_decomposition(
+         Employed,
+         type = "additive"
+         )
+       ) %>% 
+     components() %>% 
+     autoplot() +
+  labs(
+    x = "Year",
+    title = "Classical additive decomposition \n of total US retail employment"
+    ) 
+```
+
+
+```{r}
+aus_production %>% 
+  filter(
+    year(Quarter) >= 2000
+  ) %>% 
+  model(
+       classical_decomposition(
+         Beer,
+         type = "additive"
+         )
+       ) %>% 
+     components() %>% 
+     autoplot() +
+  labs(
+    x = "Year",
+    title = "Classical additive decomposition \n AUS beer production"
+    ) 
+```
+
