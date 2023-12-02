@@ -74,7 +74,7 @@ theme_update(
 
 # Introduction
 
-> What is _Business Analytics_? It is an applied discipline, tasked with gaining insight about business operations and make better, fact-based decisions: a basic pillar of being _data-driven_. It combines Statistics, Computer Sciences, Management Science, Operational Research, and much more.
+> What is _Business Analytics_? It is an applied discipline, tasked with gaining insight into business operations and helping to make better, fact-based decisions: a basic pillar of being _data-driven_. It combines Statistics, Computer Sciences, Management Science, Operational Research, and much more.
 
 It has three main components:
 
@@ -90,7 +90,7 @@ It has three main components:
 
 # Forecasting and Time Series
 
-Predictions have been a human interest throghout history. The ability to forecast depends on:
+Predictions have been a human interest throughout history. The ability to forecast depends on:
 
 - How much we understand the factors at play, whether our model of the phenomenon is good or not.
 - How much data is available.
@@ -109,7 +109,7 @@ However, data are not always available.
 
 > _Quantitative_ methods _must be appropriate for the problem and for the data used to solve it_. Specific methods are used for _time series_ data.
 
-In time series, _time is a defining property of the data_. While it is a continuous variable, sampling usually occurs at regularly spaced intervals, giving regular time-steps that represent the _period_ of the data.
+In time series, _time is a defining property of the data_. While it is a continuous variable, sampling usually occurs at regularly spaced intervals, giving regular time steps that represent the _period_ of the data.
 
 ```{r TS example}
 gafa_stock %>% 
@@ -139,18 +139,18 @@ When we are dealing with _time series_, we have:
 
 - $y_{t \vert t-1} = y_{t} \vert \{ y_1, y_2, …, y_{t-1} \}$.
 
-A $h-step$ forecast that takes into account all observations up to time $T$ is espressed as:
+A $h-step$ forecast that takes into account all observations up to time $T$ is expressed as:
 
 $$
 \hat y_{T + h \vert T} = \mathbb{E} (y_{T + h}\vert y_1, …, y_T)
 $$ {#eq-hfor}
 
 
-Models are useful to forecast, because they account for _uncertainty_.
+Models are useful to forecast because they account for _uncertainty_.
 
 ## Patterns
 
-We can filter three different components of time series. These are _patterns_ that can be used to forecast more effectively, if identified correctly.
+We can filter three different components of the time series. These are _patterns_ that can be used to forecast more effectively if identified correctly.
 
 1. __Trend__: long-term increase or decrease in the data.
 2. __Seasonal__: a series is influenced by a _seasonal factor_ at a _fixed period_ (quarterly, monthly, weekly, daily, hourly).
@@ -158,14 +158,14 @@ We can filter three different components of time series. These are _patterns_ th
 
 :::{.callout-important}
 Cyclic patterns have a duration of at least 2 years. 
-Seasonal patterns cannot have a periodicity longer that exceed the year and are of _constant length_.
+Seasonal patterns cannot have a periodicity longer than the year and are of _constant length_.
 The magnitude of a cycle is often more variable than the magnitude of a seasonal pattern.
 :::
 
-The main implications of the differences between seasonal and cyclic patterns is that the timing of peaks and troughs is predictable with seasonal data, but unpredictable in the long term with cyclic data.
+The main implication of the differences between seasonal and cyclic patterns is that the timing of peaks and troughs is predictable with seasonal data, but unpredictable in the long term with cyclic data.
 
 ```{r TS example seasonality}
-#| fig-cap: "We can clearly observe a quarterly season pattern in the Australian beer production."
+#| fig-cap: "We can observe a quarterly season pattern in the Australian beer production."
 #| fig-height: 6
 
 aus_production %>% 
@@ -178,7 +178,7 @@ aus_production %>%
   )
 ```
 
-```{r TS example ciclyc + seasonal}
+```{r TS example cyclic + seasonal}
 us_employment %>%
      filter(
         Title == "Retail Trade", 
@@ -194,7 +194,7 @@ us_employment %>%
 
 ## Autocorrelation
 
-While in standard _regression models_ we assume _independence_ among the observations, this is not true with time series models. We can visualize this by comparing $y_t$ atainst $y_{t-k}$ for different values of $k$. $k$ is the _lag_ vaue, while $y_{t-k}$ the _lagged value_: we define _autocorrelation_ the linear dependence of a variable with its lagged values^[In other words: we are concerned with the dependency of a phenomenon with its own past.].
+While in standard _regression models_ we assume _independence_ among the observations, this is not true with time series models. We can visualize this by comparing $y_t$ against $y_{t-k}$ for different values of $k$. $k$ is the _lag_ vaue, while $y_{t-k}$ the _lagged value_: we define _autocorrelation_ the linear dependence of a variable with its lagged values^[In other words: we are concerned with the dependency of a phenomenon with its own past.].
 
 ```{r TS example lag plot}
 #| fig-width: 12
@@ -212,7 +212,7 @@ aus_production %>%
   )
 ```
 
-From the following plot we can clearly see that at each 4th lag^[$k = 4$, or $t-4$] there is a clear evidence of correlation between $y_t$ and $y_{t-k}$. This is a tell-tale sign of _seasonality_. 
+From the following plot, we can see that at each 4th lag^[$k = 4$, or $t-4$] there is clear evidence of a correlation between $y_t$ and $y_{t-k}$. This is a tell-tale sign of _seasonality_. 
 
 However, not always we can spot it using visualization techniques:
 
@@ -237,7 +237,7 @@ us_employment %>%
 ```
 
 :::{.callout-caution}
-When _multiple patterns_ overlap, we cannot use this lag-charts to spot _seasonality_.
+When _multiple patterns_ overlap, we cannot use these lag charts to spot _seasonality_.
 :::
 
 ## Autovariance and Autocorrelation
@@ -288,7 +288,7 @@ us_employment %>%
 
 > Time series that show no autocorrelation are called _white noise_.
 
-This is a benchmark: if a series have small $r_k$, we can assume that behaves like white noise. The sampling distribution for white noise data is (asymptotically) $N(0, 1/T)$, therefore we can build _confidence intervals_, usually at $\alpha=5%$.
+This is a benchmark: if a series has a small $r_k$, we can assume that behaves like white noise. The sampling distribution for white noise data is (asymptotically) $N(0, 1/T)$, therefore we can build _confidence intervals_, usually at $\alpha=5%$.
 
 ```{r WN plot}
 tsibble(
@@ -314,7 +314,7 @@ tsibble(
     autoplot()
 ```
 
-We can see that even if there is a slight evidence of correlation, the confidence intervals help in choosing to label the series as white noise: it is not statistically significant.
+We can see that even if there is slight evidence of correlation, the confidence intervals help in choosing to label the series as white noise: it is not statistically significant.
 
 ## Transformations
 
@@ -328,7 +328,7 @@ We have four main classes of transformations, dealing with economic data:
 4. Mathematical transformations.
 
 ```{r transformation example}
-#| fig-heigth: 12
+#| fig-height: 12
 p1 <- global_economy %>% 
   filter(
     Country == "Australia" |
@@ -513,7 +513,7 @@ global_economy %>%
   geom_line(
     aes(
       y = `5-MA`,
-      colour = "#D55E00"
+      colour = "darkorange"
       ), 
     ) +
   geom_line(
@@ -539,7 +539,7 @@ global_economy %>%
 The beginning and end of MA trends are missing: this is caused by the fact that we cannot compute the average near the boundaries of our dataset.
 :::
 
-For seasonal data the choise of $m$ is fundamental:
+For seasonal data the choice of $m$ is fundamental:
 
 ```{r MA example 2}
 vic_elec |>
@@ -576,7 +576,7 @@ summarise(
   geom_line(
     aes(
       y = `5-MA`,
-      colour = "#D55E00"
+      colour = "darkorange"
     )
   ) +
   geom_line(
@@ -646,7 +646,7 @@ us_employment %>%
   geom_line(
     aes(
       y = `2x12-MA`, 
-       color = "#D55E00"
+       color = "darkorange"
       )
     )+
   labs(

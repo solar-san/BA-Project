@@ -141,6 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#transformations" id="toc-transformations" class="nav-link" data-scroll-target="#transformations">Transformations</a></li>
   <li><a href="#decomposition" id="toc-decomposition" class="nav-link" data-scroll-target="#decomposition">Decomposition</a></li>
   <li><a href="#moving-averages" id="toc-moving-averages" class="nav-link" data-scroll-target="#moving-averages">Moving Averages</a></li>
+  <li><a href="#classical-decomposition" id="toc-classical-decomposition" class="nav-link" data-scroll-target="#classical-decomposition">Classical Decomposition</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -170,7 +171,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">December 1, 2023</p>
+      <p class="date-modified">December 2, 2023</p>
     </div>
   </div>
     
@@ -186,7 +187,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="introduction" class="level1 page-columns page-full">
 <h1>Introduction</h1>
 <blockquote class="blockquote">
-<p>What is <em>Business Analytics</em>? It is an applied discipline, tasked with gaining insight about business operations and make better, fact-based decisions: a basic pillar of being <em>data-driven</em>. It combines Statistics, Computer Sciences, Management Science, Operational Research, and much more.</p>
+<p>What is <em>Business Analytics</em>? It is an applied discipline, tasked with gaining insight into business operations and helping to make better, fact-based decisions: a basic pillar of being <em>data-driven</em>. It combines Statistics, Computer Sciences, Management Science, Operational Research, and much more.</p>
 </blockquote>
 <p>It has three main components:</p>
 <ol type="1">
@@ -205,7 +206,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="forecasting-and-time-series" class="level1 page-columns page-full">
 <h1>Forecasting and Time Series</h1>
-<p>Predictions have been a human interest throghout history. The ability to forecast depends on:</p>
+<p>Predictions have been a human interest throughout history. The ability to forecast depends on:</p>
 <ul>
 <li>How much we understand the factors at play, whether our model of the phenomenon is good or not.</li>
 <li>How much data is available.</li>
@@ -234,7 +235,7 @@ Danger
 <blockquote class="blockquote">
 <p><em>Quantitative</em> methods <em>must be appropriate for the problem and for the data used to solve it</em>. Specific methods are used for <em>time series</em> data.</p>
 </blockquote>
-<p>In time series, <em>time is a defining property of the data</em>. While it is a continuous variable, sampling usually occurs at regularly spaced intervals, giving regular time-steps that represent the <em>period</em> of the data.</p>
+<p>In time series, <em>time is a defining property of the data</em>. While it is a continuous variable, sampling usually occurs at regularly spaced intervals, giving regular time steps that represent the <em>period</em> of the data.</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -268,15 +269,15 @@ Danger
 <ul>
 <li><span class="math inline">y_{t \vert t-1} = y_{t} \vert \{ y_1, y_2, …, y_{t-1} \}</span>.</li>
 </ul>
-<p>A <span class="math inline">h-step</span> forecast that takes into account all observations up to time <span class="math inline">T</span> is espressed as:</p>
+<p>A <span class="math inline">h-step</span> forecast that takes into account all observations up to time <span class="math inline">T</span> is expressed as:</p>
 <p><span id="eq-hfor"><span class="math display">
 \hat y_{T + h \vert T} = \mathbb{E} (y_{T + h}\vert y_1, …, y_T)
 \tag{1}</span></span></p>
-<p>Models are useful to forecast, because they account for <em>uncertainty</em>.</p>
+<p>Models are useful to forecast because they account for <em>uncertainty</em>.</p>
 </section>
 <section id="patterns" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="patterns">Patterns</h2>
-<p>We can filter three different components of time series. These are <em>patterns</em> that can be used to forecast more effectively, if identified correctly.</p>
+<p>We can filter three different components of the time series. These are <em>patterns</em> that can be used to forecast more effectively if identified correctly.</p>
 <ol type="1">
 <li><strong>Trend</strong>: long-term increase or decrease in the data.</li>
 <li><strong>Seasonal</strong>: a series is influenced by a <em>seasonal factor</em> at a <em>fixed period</em> (quarterly, monthly, weekly, daily, hourly).</li>
@@ -292,10 +293,10 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Cyclic patterns have a duration of at least 2 years. Seasonal patterns cannot have a periodicity longer that exceed the year and are of <em>constant length</em>. The magnitude of a cycle is often more variable than the magnitude of a seasonal pattern.</p>
+<p>Cyclic patterns have a duration of at least 2 years. Seasonal patterns cannot have a periodicity longer than the year and are of <em>constant length</em>. The magnitude of a cycle is often more variable than the magnitude of a seasonal pattern.</p>
 </div>
 </div>
-<p>The main implications of the differences between seasonal and cyclic patterns is that the timing of peaks and troughs is predictable with seasonal data, but unpredictable in the long term with cyclic data.</p>
+<p>The main implication of the differences between seasonal and cyclic patterns is that the timing of peaks and troughs is predictable with seasonal data, but unpredictable in the long term with cyclic data.</p>
 <div class="cell page-columns page-full">
 <details open="">
 <summary>Code</summary>
@@ -312,7 +313,7 @@ Important
 <div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full">
 <p><img src="BA-Notes_files/figure-html/TS%20example%20seasonality-1.png" class="img-fluid figure-img" width="960"></p>
-<p></p><figcaption class="figure-caption margin-caption">We can clearly observe a quarterly season pattern in the Australian beer production.</figcaption><p></p>
+<p></p><figcaption class="figure-caption margin-caption">We can observe a quarterly season pattern in the Australian beer production.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -333,13 +334,13 @@ Important
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/TS%20example%20ciclyc%20+%20seasonal-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-Notes_files/figure-html/TS%20example%20cyclic%20+%20seasonal-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
 <section id="autocorrelation" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="autocorrelation">Autocorrelation</h2>
-<div class="page-columns page-full"><p>While in standard <em>regression models</em> we assume <em>independence</em> among the observations, this is not true with time series models. We can visualize this by comparing <span class="math inline">y_t</span> atainst <span class="math inline">y_{t-k}</span> for different values of <span class="math inline">k</span>. <span class="math inline">k</span> is the <em>lag</em> vaue, while <span class="math inline">y_{t-k}</span> the <em>lagged value</em>: we define <em>autocorrelation</em> the linear dependence of a variable with its lagged values<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn2"><p><sup>2</sup>&nbsp;In other words: we are concerned with the dependency of a phenomenon with its own past.</p></li></div></div>
+<div class="page-columns page-full"><p>While in standard <em>regression models</em> we assume <em>independence</em> among the observations, this is not true with time series models. We can visualize this by comparing <span class="math inline">y_t</span> against <span class="math inline">y_{t-k}</span> for different values of <span class="math inline">k</span>. <span class="math inline">k</span> is the <em>lag</em> vaue, while <span class="math inline">y_{t-k}</span> the <em>lagged value</em>: we define <em>autocorrelation</em> the linear dependence of a variable with its lagged values<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn2"><p><sup>2</sup>&nbsp;In other words: we are concerned with the dependency of a phenomenon with its own past.</p></li></div></div>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -359,7 +360,7 @@ Important
 <p><img src="BA-Notes_files/figure-html/TS%20example%20lag%20plot-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
-<div class="page-columns page-full"><p>From the following plot we can clearly see that at each 4th lag<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> there is a clear evidence of correlation between <span class="math inline">y_t</span> and <span class="math inline">y_{t-k}</span>. This is a tell-tale sign of <em>seasonality</em>.</p><div class="no-row-height column-margin column-container"><li id="fn3"><p><sup>3</sup>&nbsp;<span class="math inline">k = 4</span>, or <span class="math inline">t-4</span></p></li></div></div>
+<div class="page-columns page-full"><p>From the following plot, we can see that at each 4th lag<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> there is clear evidence of a correlation between <span class="math inline">y_t</span> and <span class="math inline">y_{t-k}</span>. This is a tell-tale sign of <em>seasonality</em>.</p><div class="no-row-height column-margin column-container"><li id="fn3"><p><sup>3</sup>&nbsp;<span class="math inline">k = 4</span>, or <span class="math inline">t-4</span></p></li></div></div>
 <p>However, not always we can spot it using visualization techniques:</p>
 <div class="cell">
 <details open="">
@@ -394,7 +395,7 @@ Danger
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>When <em>multiple patterns</em> overlap, we cannot use this lag-charts to spot <em>seasonality</em>.</p>
+<p>When <em>multiple patterns</em> overlap, we cannot use these lag charts to spot <em>seasonality</em>.</p>
 </div>
 </div>
 </section>
@@ -457,7 +458,7 @@ r_k = \frac{c_k}{c_0}
 <div class="no-row-height column-margin column-container"><li id="fn6"><p><sup>6</sup>&nbsp;This is visible at multiples of the seasonal frequency.</p></li></div><blockquote class="blockquote">
 <p>Time series that show no autocorrelation are called <em>white noise</em>.</p>
 </blockquote>
-<p>This is a benchmark: if a series have small <span class="math inline">r_k</span>, we can assume that behaves like white noise. The sampling distribution for white noise data is (asymptotically) <span class="math inline">N(0, 1/T)</span>, therefore we can build <em>confidence intervals</em>, usually at <span class="math inline">\alpha=5%</span>.</p>
+<p>This is a benchmark: if a series has a small <span class="math inline">r_k</span>, we can assume that behaves like white noise. The sampling distribution for white noise data is (asymptotically) <span class="math inline">N(0, 1/T)</span>, therefore we can build <em>confidence intervals</em>, usually at <span class="math inline">\alpha=5%</span>.</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -494,7 +495,7 @@ r_k = \frac{c_k}{c_0}
 <p><img src="BA-Notes_files/figure-html/WN%20ACF%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
-<p>We can see that even if there is a slight evidence of correlation, the confidence intervals help in choosing to label the series as white noise: it is not statistically significant.</p>
+<p>We can see that even if there is slight evidence of correlation, the confidence intervals help in choosing to label the series as white noise: it is not statistically significant.</p>
 </section>
 <section id="transformations" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="transformations">Transformations</h2>
@@ -508,7 +509,7 @@ r_k = \frac{c_k}{c_0}
 <li>Inflation adjustments.</li>
 <li>Mathematical transformations.</li>
 </ol>
-<div class="cell" data-fig-heigth="12">
+<div class="cell">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> global_economy <span class="sc">%&gt;%</span> </span>
@@ -618,7 +619,7 @@ y_t = S_t + T_t + R_t
 \tag{6}</span></span></p>
 <p>The additive model is appropriate if the magnitude of seasonal fluctuations does not vary with level.</p>
 <blockquote class="blockquote">
-<p>Multiplicative decomposition:s</p>
+<p>Multiplicative decompositions</p>
 </blockquote>
 <p><span id="eq-additive"><span class="math display">
 y_t = S_t \times T_t \times R_t
@@ -686,6 +687,7 @@ y_t = S_t \times T_t \times R_t
 <p><img src="BA-Notes_files/figure-html/classical%20decomposition%20example%202-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
+<p>The trend component of classical decomposition is estimated with a <em>moving average</em>.</p>
 </section>
 <section id="moving-averages" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="moving-averages">Moving Averages</h2>
@@ -719,7 +721,7 @@ y_t = S_t \times T_t \times R_t
 <span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
 <span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
 <span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">`</span><span class="at">5-MA</span><span class="st">`</span>,</span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">colour =</span> <span class="st">"#D55E00"</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">colour =</span> <span class="st">"darkorange"</span></span>
 <span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>      ), </span>
 <span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
 <span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
@@ -763,7 +765,7 @@ Important
 <p>The beginning and end of MA trends are missing: this is caused by the fact that we cannot compute the average near the boundaries of our dataset.</p>
 </div>
 </div>
-<p>For seasonal data the choise of <span class="math inline">m</span> is fundamental:</p>
+<p>For seasonal data the choice of <span class="math inline">m</span> is fundamental:</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -801,7 +803,7 @@ Important
 <span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
 <span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
 <span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">`</span><span class="at">5-MA</span><span class="st">`</span>,</span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">colour =</span> <span class="st">"#D55E00"</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">colour =</span> <span class="st">"darkorange"</span></span>
 <span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
@@ -883,12 +885,12 @@ Tip
 <span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
 <span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> Employed, </span>
 <span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"grey80"</span></span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"grey60"</span></span>
 <span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
 <span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
 <span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
 <span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">`</span><span class="at">2x12-MA</span><span class="st">`</span>, </span>
-<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"#D55E00"</span></span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"darkorange"</span></span>
 <span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>      )</span>
 <span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">+</span></span>
 <span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
@@ -906,6 +908,9 @@ Tip
 <p><img src="BA-Notes_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
+</section>
+<section id="classical-decomposition" class="level2">
+<h2 class="anchored" data-anchor-id="classical-decomposition">Classical Decomposition</h2>
 </section>
 </section>
 
