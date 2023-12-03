@@ -1,6 +1,6 @@
 # BA-Project
 
-# Business Analytics
+![](https://raw.githubusercontent.com/solar-san/BA-Project/main/docs/figures/BA-Project_header.png)
 
 ## Course Summary
 
