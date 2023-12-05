@@ -662,3 +662,97 @@ us_employment %>%
 ```
 
 ## Classical Decomposition
+
+To obtain this decomposition, the following steps are needed:
+
+1. The trend-cycle component is estimated using the appropriate MA smoothing.
+
+:::{.callout-tip}
+If $m$ is even, use 2x $m$-NA; if $m$ is odd, use $m$-MA.
+:::
+
+:::{.callout-caution}
+The main assumption is that the season pattern _is the same across time_.
+:::
+
+### Additive (classical) Decomposition
+
+2. Derive the de-trended series:
+
+$$
+y_t - \hat{T}_t
+$${#eq-detrendadd}
+
+3a. Estimate the _seasonal components_ by taking the average of all detrended value for each for that season^[E.g.: take the average of all de-trended January values.].
+
+3b. Correct the individual seasonal terms to ensure they sum to 0.
+4. The remainder component is calculated by subtracting the estimated seasonal and trend-cycle components:
+
+$$
+\hat{R}_t = y_t - \hat{T}_t - \hat{S}_t
+$${#eq-remainadd}
+
+5. Derive a de-seasonalized series as $y_t - S_t$.
+
+### Multiplicative (classical) Decomposition
+
+2. Derive the de-trended series:
+
+$$
+\frac {y_t} {\hat{T}_t}
+$${#eq-detrendmul}
+
+3a. Estimate the seasonal components by taking the average of all the detrended value for each for that season^[E.g.: take the average of all de-trended January values.].
+
+3b. Correct the individual seasonal terms to ensure they sum to $m$.
+4. The remainder component is calculated by dividing out the estimated seasonal and trend-cycle components:
+
+$$
+\hat{R}_t = \frac{y_t}{\hat{T}_t \hat{S}_t}
+$${#eq-remainmul}
+
+```{r mult class decomposition example}
+#|fig-height: 12
+p1 <- aus_production %>% 
+  filter(
+    year(Quarter) >= 1970
+  ) %>% 
+  autoplot(Gas)
+p2 <- aus_production %>% 
+  filter(
+    year(Quarter) >= 1970
+  ) %>% 
+ model(
+       classical_decomposition(
+         Gas,
+         type = "multiplicative"
+         )
+       ) %>% 
+     components() %>% 
+     autoplot() +
+  labs(
+    x = "Year",
+    title = "Classical additive decomposition \n AUS Gas production"
+    ) 
+
+p1 / p2
+```
+
+### Comments on Classical Decomposition
+
+> While still used, classical decomposition is not recommended.
+
+Its main drawbacks are:
+
+- The estimate of the trend-cycle (and therefore the remainder) is unavailable for the first few and last few observations; moreover, it tends to oversmooth rapid raises and falls in the data.
+- The assumption of _constant seasonal terms_ might be too restrictive.
+- The estimate is _not robust_: being a _mean_, it can be overly sensitive to large variations in a small number of points.
+
+:::{.callout-note}
+To overcome these drawbacks, common methods used by statistical institutes are STL decomposition and X-11/SEATS.
+:::
+
+We will focus on _exponential smoothing_ instead because it provides more general tools.
+
+## Exponential smoothing
+

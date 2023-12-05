@@ -141,7 +141,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#transformations" id="toc-transformations" class="nav-link" data-scroll-target="#transformations">Transformations</a></li>
   <li><a href="#decomposition" id="toc-decomposition" class="nav-link" data-scroll-target="#decomposition">Decomposition</a></li>
   <li><a href="#moving-averages" id="toc-moving-averages" class="nav-link" data-scroll-target="#moving-averages">Moving Averages</a></li>
-  <li><a href="#classical-decomposition" id="toc-classical-decomposition" class="nav-link" data-scroll-target="#classical-decomposition">Classical Decomposition</a></li>
+  <li><a href="#classical-decomposition" id="toc-classical-decomposition" class="nav-link" data-scroll-target="#classical-decomposition">Classical Decomposition</a>
+  <ul class="collapse">
+  <li><a href="#additive-classical-decomposition" id="toc-additive-classical-decomposition" class="nav-link" data-scroll-target="#additive-classical-decomposition">Additive (classical) Decomposition</a></li>
+  <li><a href="#multiplicative-classical-decomposition" id="toc-multiplicative-classical-decomposition" class="nav-link" data-scroll-target="#multiplicative-classical-decomposition">Multiplicative (classical) Decomposition</a></li>
+  <li><a href="#comments-on-classical-decomposition" id="toc-comments-on-classical-decomposition" class="nav-link" data-scroll-target="#comments-on-classical-decomposition">Comments on Classical Decomposition</a></li>
+  </ul></li>
+  <li><a href="#exponential-smoothing" id="toc-exponential-smoothing" class="nav-link" data-scroll-target="#exponential-smoothing">Exponential smoothing</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -171,7 +177,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">December 2, 2023</p>
+      <p class="date-modified">December 5, 2023</p>
     </div>
   </div>
     
@@ -909,8 +915,133 @@ Tip
 </div>
 </div>
 </section>
-<section id="classical-decomposition" class="level2">
+<section id="classical-decomposition" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="classical-decomposition">Classical Decomposition</h2>
+<p>To obtain this decomposition, the following steps are needed:</p>
+<ol type="1">
+<li>The trend-cycle component is estimated using the appropriate MA smoothing.</li>
+</ol>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">m</span> is even, use 2x <span class="math inline">m</span>-NA; if <span class="math inline">m</span> is odd, use <span class="math inline">m</span>-MA.</p>
+</div>
+</div>
+<div class="callout-caution callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Danger
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The main assumption is that the season pattern <em>is the same across time</em>.</p>
+</div>
+</div>
+<section id="additive-classical-decomposition" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="additive-classical-decomposition">Additive (classical) Decomposition</h3>
+<ol start="2" type="1">
+<li>Derive the de-trended series:</li>
+</ol>
+<p><span id="eq-detrendadd"><span class="math display">
+y_t - \hat{T}_t
+\tag{9}</span></span></p>
+<div class="page-columns page-full"><p>3a. Estimate the <em>seasonal components</em> by taking the average of all detrended value for each for that season<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn12"><p><sup>12</sup>&nbsp;E.g.: take the average of all de-trended January values.</p></li></div></div>
+<p>3b. Correct the individual seasonal terms to ensure they sum to 0. 4. The remainder component is calculated by subtracting the estimated seasonal and trend-cycle components:</p>
+<p><span id="eq-remainadd"><span class="math display">
+\hat{R}_t = y_t - \hat{T}_t - \hat{S}_t
+\tag{10}</span></span></p>
+<ol start="5" type="1">
+<li>Derive a de-seasonalized series as <span class="math inline">y_t - S_t</span>.</li>
+</ol>
+</section>
+<section id="multiplicative-classical-decomposition" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="multiplicative-classical-decomposition">Multiplicative (classical) Decomposition</h3>
+<ol start="2" type="1">
+<li>Derive the de-trended series:</li>
+</ol>
+<p><span id="eq-detrendmul"><span class="math display">
+\frac {y_t} {\hat{T}_t}
+\tag{11}</span></span></p>
+<div class="page-columns page-full"><p>3a. Estimate the seasonal components by taking the average of all the detrended value for each for that season<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn13"><p><sup>13</sup>&nbsp;E.g.: take the average of all de-trended January values.</p></li></div></div>
+<p>3b. Correct the individual seasonal terms to ensure they sum to <span class="math inline">m</span>. 4. The remainder component is calculated by dividing out the estimated seasonal and trend-cycle components:</p>
+<p><span id="eq-remainmul"><span class="math display">
+\hat{R}_t = \frac{y_t}{\hat{T}_t \hat{S}_t}
+\tag{12}</span></span></p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#|fig-height: 12</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> aus_production <span class="sc">%&gt;%</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">year</span>(Quarter) <span class="sc">&gt;=</span> <span class="dv">1970</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(Gas)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> aus_production <span class="sc">%&gt;%</span> </span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">year</span>(Quarter) <span class="sc">&gt;=</span> <span class="dv">1970</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a> <span class="fu">model</span>(</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>       <span class="fu">classical_decomposition</span>(</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>         Gas,</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="st">"multiplicative"</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>         )</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>       ) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>     <span class="fu">components</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>     <span class="fu">autoplot</span>() <span class="sc">+</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Classical additive decomposition </span><span class="sc">\n</span><span class="st"> AUS Gas production"</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    ) </span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">/</span> p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values (`geom_line()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="BA-Notes_files/figure-html/mult%20class%20decomposition%20example-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+</section>
+<section id="comments-on-classical-decomposition" class="level3">
+<h3 class="anchored" data-anchor-id="comments-on-classical-decomposition">Comments on Classical Decomposition</h3>
+<blockquote class="blockquote">
+<p>While still used, classical decomposition is not recommended.</p>
+</blockquote>
+<p>Its main drawbacks are:</p>
+<ul>
+<li>The estimate of the trend-cycle (and therefore the remainder) is unavailable for the first few and last few observations; moreover, it tends to oversmooth rapid raises and falls in the data.</li>
+<li>The assumption of <em>constant seasonal terms</em> might be too restrictive.</li>
+<li>The estimate is <em>not robust</em>: being a <em>mean</em>, it can be overly sensitive to large variations in a small number of points.</li>
+</ul>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To overcome these drawbacks, common methods used by statistical institutes are STL decomposition and X-11/SEATS.</p>
+</div>
+</div>
+<p>We will focus on <em>exponential smoothing</em> instead because it provides more general tools.</p>
+</section>
+</section>
+<section id="exponential-smoothing" class="level2">
+<h2 class="anchored" data-anchor-id="exponential-smoothing">Exponential smoothing</h2>
 </section>
 </section>
 
