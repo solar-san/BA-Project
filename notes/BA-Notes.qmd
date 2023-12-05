@@ -756,3 +756,330 @@ We will focus on _exponential smoothing_ instead because it provides more genera
 
 ## Exponential smoothing
 
+> Exponential smoothing is based on a simple concept: a weight is given to each observation; this weight decays _exponentially_, thus modifying the relative importance of the past values of a time series. 
+
+The decay rate can be adjusted and this method can be adapted for data with and without a trend and/or seasonal pattern.
+
+Forecasting _benchmark methods_ are represented by simple extremes:
+
+1. The forecast is equal to the mean of the past observations: 
+
+$$
+y_{T + h \vert T} = \frac{1}{T} \sum y_i
+$${#eq-meanbench}
+
+2. The forecast is equal to the last observation:
+
+$$
+y_{T + h \vert T} = y_T
+$${#eq-naivebench}
+
+```{r}
+#| echo: false
+goog_stock <- gafa_stock %>% 
+  mutate(
+    trading_day = row_number()
+    ) %>% 
+  filter(
+    Symbol == "GOOG",
+    year(Date) >= 2018
+    ) %>% 
+  update_tsibble(
+    index = trading_day, 
+    regular = TRUE
+    ) 
+```
+
+```{r}
+goog_stock %>%
+  model(
+    Mean = MEAN(Close),
+    Naive = NAIVE(Close)
+  )  %>% 
+  forecast(
+    h = 50
+    )  %>% 
+  autoplot(
+    goog_stock, 
+    level = NULL
+    ) +
+  labs(
+    title = "Google closing stock price", 
+    y = "$US"
+    ) +
+  guides(
+    colour = guide_legend(
+      title = "Forecast"
+      )
+    )
+```
+
+Exponential smoothing allows to achieve forecasts that are _in between_ these extremes, giving heavier weights to later observations.
+
+Naming conventions are attributed to the most important variation of exponential smoothing:
+
+1. Single, Double, Triple Exponential Smoothing.
+2. Holt, Holt-Winter's Method.
+
+### Simple Exponential Smoothing
+
+> This method is appropriate for data with no trend and no seasonality.
+
+The forecast equation is:
+
+$$
+\hat{y}_{T +1 \vert T} = \alpha y_T + \alpha (1 - \alpha) y_{T -1} + \alpha (1 - \alpha)^2 y_{T -2} + …
+$$
+
+Where $0 \leq \alpha \leq 1$, the _smoothing parameter_^[For $\alpha = 0$, we revert to the _mean method_. For $\alpha = 1$, instead, to the _naïve method_.].
+
+```{r}
+fit <- goog_stock %>% 
+  model(
+    "alpha = 0.1" = ETS(Close ~ error("A") + trend("N", alpha = .1) + season("N")),
+    "alpha = 0.2" = ETS(Close ~ error("A") + trend("N", alpha = .5) + season("N")),
+    "alpha = 0.7" = ETS(Close ~ error("A") + trend("N", alpha = .8) + season("N"))
+    ) 
+fc <- fit %>%
+  augment()
+```
+
+```{r}
+#| fig-height: 12
+fc  %>% 
+  autoplot(Close) +
+  geom_line(
+    aes(
+      x = trading_day, 
+      y = .fitted
+      )
+    ) +
+  labs(
+    y="$US", 
+    title="Google closing stock price SES"
+    ) +
+  scale_color_brewer(
+    type = "qual", 
+    palette = "Dark2"
+    )
+```
+
+
+#### General Framework
+
+> Forecast equation:
+
+$$
+\hat{y}_{t + h \vert t} = l_t
+$${#eq-sesgenforecast}
+
+> Smoothing equation:
+
+$$
+l_t = \alpha y_t + (1 - \alpha) l_{t-1}
+$${#eq-sesgensmoothing}
+
+- $l_t$ is the level (or smoothed value) of the series at time $t$.
+- $\hat{y}_{t + 1 \vert t} = \alpha y_t + (1 - \alpha) \hat{y}_{t \vert t -1}$.
+
+These two components can be iterated to get the exponentially weighted moving average form.
+
+#### Weighted Average Form
+
+> Note that at time $t = 1$ we have to decide a value for $l_0$, because $\hat{y}_{1 \vert 0} = l_0$^[Data ends at that point.].
+
+Iterating on @eq-sesgenforecast and @eq-sesgensmoothing we get the following form, for time $T + 1$:
+
+$$
+\hat{y}_{T + 1 \vert T} = \sum_{j = 0}^{T - 1} \alpha(1 - \alpha)^j y_{T - j} + (1 - \alpha)^T l_0
+$${#eq-sesweightavgform}
+
+The last term becomes very small for large $T$; the forecast consist in the _weighted average_ of all observations.
+
+#### Smoothing Parameters Choice
+
+The parameters to be estimated are $\alpha$ and $l_0$. Similarly to regression, we can choose optimal parameters by minimising the SSE^[Sum of Squared Errors.].
+
+$$
+SSE = \sum_{t  = 1}^T (y_t - \hat{y}_{t \vert t -1})^2
+$${#eq-SSE}
+
+There is not a closed-form solution: _numerical optimization_ is needed.
+
+```{r}
+fit <- goog_stock %>%  
+  model(
+    ETS(
+      Close ~ error("A") + trend("N") + season("N"))
+    ) 
+fc <- fit %>%
+  augment()
+```
+
+```{r}
+tidy(fit)
+```
+
+```{r}
+fc  %>% 
+  autoplot(Close) +
+  geom_line(
+    aes(
+      x = trading_day, 
+      y = .fitted
+      ),
+    color = "limegreen"
+    ) +
+  labs(
+    y="$US", 
+    title="Google closing stock price SES"
+    ) +
+  scale_color_brewer(
+    type = "qual", 
+    palette = "Dark2"
+    )
+```
+
+### Models with Trend
+
+The principle is the same of SES: we can estimate a trend by giving more weight to more recent changes. There are two extreme situations:
+
+- $y_T - y_{T - 1}$
+- $y_T - y_1$
+
+The average change is $ \frac{y_T - y_1}{T}$. This method is called _Double Exponential Smoothing_ or _Holt's Method_.
+
+The component form is:
+
+> Forecast equation:
+
+$$
+\hat{y}_{t + h \vert t} = l_t + hb_t
+$${#eq-desforecast}
+
+> Level equation:
+
+$$
+l_t = \alpha y_t + (1 - \alpha)(l_{t - 1} + b_{t - 1})
+$${#eq-deslevel}
+
+> Trend equation:
+
+$$
+b_t = \beta^* (l_t - l_{t - 1}) + (1 - \beta^*) b_{t - 1}
+$${#eq-destrend}
+
+- We have two smoothing parameters, $0 \leq \alpha, \beta^* \leq 1$. 
+- The $l_t$ level is a weighted average between $y_t$ and a one-step ahead forecast for time $t$.
+- The $b_t$ slope is the weighted average of $(l_t - l_{t -1})$ and $b_{t - 1}$, which are the _current_ and _previous_ estimate of the slope.
+
+> $\alpha, \beta^*, l_0, b_0$ are chosen to minimize the SSE.
+
+
+```{r}
+fit <- goog_stock %>% 
+  model(
+    "beta = 0.1" = ETS(
+      Close ~ error("A") + trend("A", beta = 0.1) + season("N")
+      ),
+    "beta = 0.5" = ETS(
+      Close ~ error("A") + trend("A", beta = 0.5) + season("N")
+      ),
+    "beta = 0.9" = ETS(
+      Close ~ error("A") + trend("A", beta = 0.9) + season("N")
+      )
+  )
+fc <- fit %>%
+  augment()
+```
+
+```{r}
+fc  %>% 
+  autoplot(Close) +
+  geom_line(
+    aes(
+      x = trading_day, 
+      y = .fitted
+      )
+    ) +
+  labs(
+    y="$US", 
+    title="Google closing stock price SES"
+    ) +
+  scale_color_brewer(
+    type = "qual", 
+    palette = "Dark2"
+    )
+```
+
+### Damped Trend Method
+
+:::{.callout-warning}
+In Holt's method the linear trend is _constant into the future_: this can lead to over-forecast.
+:::
+
+This method is based on _dampening_ the trend to a _flat line_ sometime in the future. This is a popular and successful method; another parameter is introduced to control the damping, $\phi$.
+
+> Forecast equation:
+
+$$
+\hat{y}_{t + h \vert t} = l_t + (\phi + \phi^2 + … + phi^h) b_t
+$${#eq-dampforecast}
+
+> Level equation:
+
+$$
+l_t = \alpha y_t + (1 - \alpha)(l_{t - 1} + \phi b_{t - 1})
+$${#eq-damplevel}
+
+> Trend equation:
+
+$$
+b_t = \beta^* (l_t - l_{t - 1}) + (1 - \beta^*) \phi b_{t - 1}
+$${#eq-damptrend}
+
+- The damping parameter is $0 \leq \phi \leq 1$.
+- If $\phi = 1$, this method becomes identical to Holt's linear trend.
+- As $h \to \infty$, $\hat{y}_{T + h \vert T} \to l_T + \phi b_T / (1 - \phi)$
+
+This method yields _trended_ short-run forecasts and _constant_ long-run forecasts.
+
+```{r}
+fit <- goog_stock %>% 
+  filter(
+    trading_day >= 4900
+  ) %>% 
+  model(
+    "linear" = ETS(
+      Close ~ error("A") + trend("A") + season("N")
+      ),
+    "damped" = ETS(
+      Close ~ error("A") + trend("Ad") + season("N")
+      )
+  )
+fc <- fit %>%
+  forecast(
+    h = 30
+  )
+```
+
+```{r}
+fc %>% 
+autoplot(
+    goog_stock, 
+    level = NULL
+    ) +
+  labs(
+    title = "Google closing stock price", 
+    y = "$US"
+    ) +
+  guides(
+    colour = guide_legend(
+      title = "Forecast"
+      )
+  )
+```
+
+ ### Models with Seasonality
+ 
+ 
