@@ -591,7 +591,7 @@ r_k = \frac{c_k}{c_0}
 <p><span id="eq-logtransform"><span class="math display">
 Y_t = b_t X_t \to log(Y_t) = log(b_t) * log(X_t)
 \tag{4}</span></span></p>
-<div class="cell" data-fig-heigth="12">
+<div class="cell">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> aus_production <span class="sc">%&gt;%</span> </span>
@@ -611,7 +611,7 @@ Y_t = b_t X_t \to log(Y_t) = log(b_t) * log(X_t)
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-Notes_files/figure-html/TS%20log%20transformation%20example-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <div class="callout-tip callout callout-style-default callout-captioned">
@@ -935,7 +935,7 @@ Tip
 <span id="cb23-52"><a href="#cb23-52" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-Notes_files/figure-html/nxm%20MA-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -979,7 +979,7 @@ Danger
 <p><span id="eq-detrendadd"><span class="math display">
 y_t - \hat{T}_t
 \tag{9}</span></span></p>
-<div class="page-columns page-full"><p>3a. Estimate the <em>seasonal components</em> by taking the average of all detrended value for each for that season<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn12"><p><sup>12</sup>&nbsp;E.g.: take the average of all de-trended January values.</p></li></div></div>
+<div class="page-columns page-full"><p>3a. Estimate the <em>seasonal components</em> by taking the average of all detrended values for each for that season<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn12"><p><sup>12</sup>&nbsp;E.g.: take the average of all de-trended January values.</p></li></div></div>
 <p>3b. Correct the individual seasonal terms to ensure they sum to 0. 4. The remainder component is calculated by subtracting the estimated seasonal and trend-cycle components:</p>
 <p><span id="eq-remainadd"><span class="math display">
 \hat{R}_t = y_t - \hat{T}_t - \hat{S}_t
@@ -996,7 +996,7 @@ y_t - \hat{T}_t
 <p><span id="eq-detrendmul"><span class="math display">
 \frac {y_t} {\hat{T}_t}
 \tag{11}</span></span></p>
-<div class="page-columns page-full"><p>3a. Estimate the seasonal components by taking the average of all the detrended value for each for that season<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn13"><p><sup>13</sup>&nbsp;E.g.: take the average of all de-trended January values.</p></li></div></div>
+<div class="page-columns page-full"><p>3a. Estimate the seasonal components by taking the average of all the detrended values for each for that season<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn13"><p><sup>13</sup>&nbsp;E.g.: take the average of all de-trended January values.</p></li></div></div>
 <p>3b. Correct the individual seasonal terms to ensure they sum to <span class="math inline">m</span>. 4. The remainder component is calculated by dividing out the estimated seasonal and trend-cycle components:</p>
 <p><span id="eq-remainmul"><span class="math display">
 \hat{R}_t = \frac{y_t}{\hat{T}_t \hat{S}_t}
@@ -1044,7 +1044,7 @@ y_t - \hat{T}_t
 </blockquote>
 <p>Its main drawbacks are:</p>
 <ul>
-<li>The estimate of the trend-cycle (and therefore the remainder) is unavailable for the first few and last few observations; moreover, it tends to oversmooth rapid raises and falls in the data.</li>
+<li>The estimate of the trend cycle (and therefore the remainder) is unavailable for the first few and last few observations; moreover, it tends to oversmooth rapid rises and falls in the data.</li>
 <li>The assumption of <em>constant seasonal terms</em> might be too restrictive.</li>
 <li>The estimate is <em>not robust</em>: being a <em>mean</em>, it can be overly sensitive to large variations in a small number of points.</li>
 </ul>
@@ -1112,7 +1112,7 @@ y_{T + h \vert T} = y_T
 <span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-Notes_files/figure-html/benchmark%20forecasting%20google%20stock-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <p>Exponential smoothing allows to achieve forecasts that are <em>in between</em> these extremes, giving heavier weights to later observations.</p>
@@ -1165,7 +1165,7 @@ y_{T + h \vert T} = y_T
 <span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-Notes_files/figure-html/ses%20smoothing%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <section id="general-framework" class="level3">
@@ -1197,11 +1197,11 @@ l_t = \alpha y_t + (1 - \alpha) l_{t-1}
 <p><span id="eq-sesweightavgform"><span class="math display">
 \hat{y}_{T + 1 \vert T} = \sum_{j = 0}^{T - 1} \alpha(1 - \alpha)^j y_{T - j} + (1 - \alpha)^T l_0
 \tag{17}</span></span></p>
-<p>The last term becomes very small for large <span class="math inline">T</span>; the forecast consist in the <em>weighted average</em> of all observations.</p>
+<p>The last term becomes very small for large <span class="math inline">T</span>; the forecast consists of the <em>weighted average</em> of all observations.</p>
 </section>
 <section id="smoothing-parameters-choice" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="smoothing-parameters-choice">Smoothing Parameters Choice</h3>
-<div class="page-columns page-full"><p>The parameters to be estimated are <span class="math inline">\alpha</span> and <span class="math inline">l_0</span>. Similarly to regression, we can choose optimal parameters by minimising the SSE<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn16"><p><sup>16</sup>&nbsp;Sum of Squared Errors.</p></li></div></div>
+<div class="page-columns page-full"><p>The parameters to be estimated are <span class="math inline">\alpha</span> and <span class="math inline">l_0</span>. Similarly to regression, we can choose optimal parameters by minimizing the SSE<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn16"><p><sup>16</sup>&nbsp;Sum of Squared Errors.</p></li></div></div>
 <p><span id="eq-SSE"><span class="math display">
 SSE = \sum_{t  = 1}^T (y_t - \hat{y}_{t \vert t -1})^2
 \tag{18}</span></span></p>
@@ -1253,14 +1253,14 @@ SSE = \sum_{t  = 1}^T (y_t - \hat{y}_{t \vert t -1})^2
 <span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-Notes_files/figure-html/weighted%20average%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
 </section>
 <section id="models-with-trend" class="level2">
 <h2 class="anchored" data-anchor-id="models-with-trend">Models with Trend</h2>
-<p>The principle is the same of SES: we can estimate a trend by giving more weight to more recent changes. There are two extreme situations:</p>
+<p>The principle is the same as SES: we can estimate a trend by giving more weight to more recent changes. There are two extreme situations:</p>
 <ul>
 <li><span class="math inline">y_T - y_{T - 1}</span></li>
 <li><span class="math inline">y_T - y_1</span></li>
@@ -1333,7 +1333,7 @@ b_t = \beta^* (l_t - l_{t - 1}) + (1 - \beta^*) b_{t - 1}
 <span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-Notes_files/figure-html/des%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -1349,7 +1349,7 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In Holt’s method the linear trend is <em>constant into the future</em>: this can lead to over-forecast.</p>
+<p>In Holt’s method, the linear trend is <em>constant into the future</em>: this can lead to over-forecast.</p>
 </div>
 </div>
 <p>This method is based on <em>dampening</em> the trend to a <em>flat line</em> sometime in the future. This is a popular and successful method; another parameter is introduced to control the damping, <span class="math inline">\phi</span>.</p>
@@ -1417,7 +1417,7 @@ b_t = \beta^* (l_t - l_{t - 1}) + (1 - \beta^*) \phi b_{t - 1}
 <span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-Notes_files/figure-html/damp%20forecast-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -1427,7 +1427,7 @@ b_t = \beta^* (l_t - l_{t - 1}) + (1 - \beta^*) \phi b_{t - 1}
 <blockquote class="blockquote">
 <p>The <em>seasonal component</em> has to be estimated giving <em>more weight</em> to <em>more recent values of the seasonal components</em>.</p>
 </blockquote>
-<p>This approach is typically combined with model with trend; seasonality can enter the model either in an <em>additive</em> (<a href="#eq-additive">Equation&nbsp;6</a>) or <em>multiplicative</em> (<a href="#eq-multiplicative">Equation&nbsp;7</a>) way. It is called Triple Exponential Smoothing_ or <em>Holt-Winters method</em>.</p>
+<p>This approach is typically combined with a trended model; seasonality can enter the model either in an <em>additive</em> (<a href="#eq-additive">Equation&nbsp;6</a>) or <em>multiplicative</em> (<a href="#eq-multiplicative">Equation&nbsp;7</a>) way. It is called Triple Exponential Smoothing_ or the <em>Holt-Winters method</em>.</p>
 <section id="holt-winters-additive-method" class="level3">
 <h3 class="anchored" data-anchor-id="holt-winters-additive-method">Holt-Winters Additive Method</h3>
 <div class="callout-tip callout callout-style-default callout-captioned">
@@ -1440,7 +1440,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This model is appropriate when seasonal variations are independent to the level of the series.</p>
+<p>This model is appropriate when seasonal variations are independent of the level of the series.</p>
 </div>
 </div>
 <p>The component form is:</p>
@@ -1525,7 +1525,7 @@ Danger
 <span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-Notes_files/figure-html/seasonal%20add%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -1633,7 +1633,7 @@ Danger
 <span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-Notes_files/figure-html/seasonal%20mult%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -1713,7 +1713,7 @@ s_t = \gamma \frac{y_t}{ l_{t - 1} - \phi b_{t - 1}} + (1 - \gamma) s_{t - m}
 <span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-Notes_files/figure-html/seasonal%20damp%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>

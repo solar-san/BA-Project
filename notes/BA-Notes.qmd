@@ -389,7 +389,7 @@ Y_t = b_t X_t \to log(Y_t) = log(b_t) * log(X_t)
 $${#eq-logtransform}
 
 ```{r TS log transformation example}
-#| fig-heigth: 12
+#| fig-height: 12
 p1 <- aus_production %>% 
   autoplot(Gas)
 p2 <- aus_production %>% 
@@ -694,7 +694,7 @@ $$
 y_t - \hat{T}_t
 $${#eq-detrendadd}
 
-3a. Estimate the _seasonal components_ by taking the average of all detrended value for each for that season^[E.g.: take the average of all de-trended January values.].
+3a. Estimate the _seasonal components_ by taking the average of all detrended values for each for that season^[E.g.: take the average of all de-trended January values.].
 
 3b. Correct the individual seasonal terms to ensure they sum to 0.
 4. The remainder component is calculated by subtracting the estimated seasonal and trend-cycle components:
@@ -713,7 +713,7 @@ $$
 \frac {y_t} {\hat{T}_t}
 $${#eq-detrendmul}
 
-3a. Estimate the seasonal components by taking the average of all the detrended value for each for that season^[E.g.: take the average of all de-trended January values.].
+3a. Estimate the seasonal components by taking the average of all the detrended values for each for that season^[E.g.: take the average of all de-trended January values.].
 
 3b. Correct the individual seasonal terms to ensure they sum to $m$.
 4. The remainder component is calculated by dividing out the estimated seasonal and trend-cycle components:
@@ -755,7 +755,7 @@ p1 / p2
 
 Its main drawbacks are:
 
-- The estimate of the trend-cycle (and therefore the remainder) is unavailable for the first few and last few observations; moreover, it tends to oversmooth rapid raises and falls in the data.
+- The estimate of the trend cycle (and therefore the remainder) is unavailable for the first few and last few observations; moreover, it tends to oversmooth rapid rises and falls in the data.
 - The assumption of _constant seasonal terms_ might be too restrictive.
 - The estimate is _not robust_: being a _mean_, it can be overly sensitive to large variations in a small number of points.
 
@@ -801,7 +801,7 @@ goog_stock <- gafa_stock %>%
     ) 
 ```
 
-```{r benchmark forecating google stock}
+```{r benchmark forecasting google stock}
 goog_stock %>%
   model(
     Mean = MEAN(Close),
@@ -905,11 +905,11 @@ $$
 \hat{y}_{T + 1 \vert T} = \sum_{j = 0}^{T - 1} \alpha(1 - \alpha)^j y_{T - j} + (1 - \alpha)^T l_0
 $${#eq-sesweightavgform}
 
-The last term becomes very small for large $T$; the forecast consist in the _weighted average_ of all observations.
+The last term becomes very small for large $T$; the forecast consists of the _weighted average_ of all observations.
 
 ### Smoothing Parameters Choice
 
-The parameters to be estimated are $\alpha$ and $l_0$. Similarly to regression, we can choose optimal parameters by minimising the SSE^[Sum of Squared Errors.].
+The parameters to be estimated are $\alpha$ and $l_0$. Similarly to regression, we can choose optimal parameters by minimizing the SSE^[Sum of Squared Errors.].
 
 $$
 SSE = \sum_{t  = 1}^T (y_t - \hat{y}_{t \vert t -1})^2
@@ -953,7 +953,7 @@ fc  %>%
 
 ## Models with Trend
 
-The principle is the same of SES: we can estimate a trend by giving more weight to more recent changes. There are two extreme situations:
+The principle is the same as SES: we can estimate a trend by giving more weight to more recent changes. There are two extreme situations:
 
 - $y_T - y_{T - 1}$
 - $y_T - y_1$
@@ -1026,7 +1026,7 @@ fc  %>%
 ## Damped Trend Method
 
 :::{.callout-warning}
-In Holt's method the linear trend is _constant into the future_: this can lead to over-forecast.
+In Holt's method, the linear trend is _constant into the future_: this can lead to over-forecast.
 :::
 
 This method is based on _dampening_ the trend to a _flat line_ sometime in the future. This is a popular and successful method; another parameter is introduced to control the damping, $\phi$.
@@ -1097,12 +1097,12 @@ autoplot(
 
  > The _seasonal component_ has to be estimated giving _more weight_ to _more recent values of the seasonal components_.
 
- This approach is typically combined with model with trend; seasonality can enter the model either in an _additive_ (@eq-additive) or _multiplicative_ (@eq-multiplicative) way. It is called Triple Exponential Smoothing_ or _Holt-Winters method_.
+ This approach is typically combined with a trended model; seasonality can enter the model either in an _additive_ (@eq-additive) or _multiplicative_ (@eq-multiplicative) way. It is called Triple Exponential Smoothing_ or the _Holt-Winters method_.
 
 ### Holt-Winters Additive Method
 
 :::{.callout-tip}
-This model is appropriate when seasonal variations are independent to the level of the series.
+This model is appropriate when seasonal variations are independent of the level of the series.
 :::
 
  The component form is:
