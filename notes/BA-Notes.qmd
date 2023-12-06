@@ -1,6 +1,6 @@
 ---
 title: "Business Analytics"
-subtitle: "Notes"
+subtitle: "Time Series Forecasting"
 author: "solar-san"
 date-modified: "`r Sys.Date()`"
 format:
@@ -82,11 +82,22 @@ It has three main components:
 2. __Predictive analytics__: providing insight into the possible future by extrapolating patterns found in the historical data. Typically making use of statistical or machine learning predictive models (remember the Statistical Learning and Data Analytic courses).
 3. __Prescriptive analytics__: providing ways to make the best possible decisions based on the available information.
 
+> What is the role of Time Series Analytics and Forecasting in Business Analytics?
+
+Time series analysis is crucial in Business Intelligence (BI) and Business Analytics for predicting future trends, understanding past patterns, and making informed decisions. It enables organizations to extract valuable insights from temporal data, aiding in strategic planning, resource allocation, and risk management. 
+
+Accurate time series forecasting empowers businesses to optimize inventory, enhance production planning, and anticipate market fluctuations. 
+
+Incorporating machine learning, econometrics, and statistical methods in time series analysis enhances the precision of predictions, providing a competitive edge. In BI, timely and reliable forecasts contribute to effective decision-making, improving overall business performance and adaptability to dynamic market conditions.
+
 > __Syllabus__:
 
 - Time series data.
-- Quantile regression.
-- Simulation and Monte Carlo analysis.
+- Patterns: seasonality and trends.
+- Autocorrelation.
+- Transformations.
+- Decomposition.
+- Exponential Smoothing methods.
 
 # Forecasting and Time Series
 
@@ -127,7 +138,7 @@ gafa_stock %>%
   )
 ```
 
-## Forecasting: the Statistical Perspective
+# Forecasting: the Statistical Perspective
 
 The phenomenon that we want to forecast can be conceptualized as a _stochastic process_, which is a _succession of stochastic variables_ $\{ y_t \}$. If we consider its value at time $T$, given $\mathcal{I}$ the set of all available observations for $t = 1, 2, …, T -1$, we can express the _forecast distribution_ as a _joint distribution_, conditional on the available information: $y_t \vert \mathcal{I}$. This notation means: "_the random variable $y_t$, given all that we know in $\mathcal{I}$".
 
@@ -148,7 +159,7 @@ $$ {#eq-hfor}
 
 Models are useful to forecast because they account for _uncertainty_.
 
-## Patterns
+# Patterns
 
 We can filter three different components of the time series. These are _patterns_ that can be used to forecast more effectively if identified correctly.
 
@@ -192,7 +203,7 @@ us_employment %>%
   )
 ```
 
-## Autocorrelation
+# Autocorrelation
 
 While in standard _regression models_ we assume _independence_ among the observations, this is not true with time series models. We can visualize this by comparing $y_t$ against $y_{t-k}$ for different values of $k$. $k$ is the _lag_ vaue, while $y_{t-k}$ the _lagged value_: we define _autocorrelation_ the linear dependence of a variable with its lagged values^[In other words: we are concerned with the dependency of a phenomenon with its own past.].
 
@@ -240,7 +251,7 @@ us_employment %>%
 When _multiple patterns_ overlap, we cannot use these lag charts to spot _seasonality_.
 :::
 
-## Autovariance and Autocorrelation
+# Autovariance and Autocorrelation
 
 > _Autocovariance_ and _autocorrelation_ measure linear relations between lagged values of a time series $y$.
 
@@ -316,7 +327,7 @@ tsibble(
 
 We can see that even if there is slight evidence of correlation, the confidence intervals help in choosing to label the series as white noise: it is not statistically significant.
 
-## Transformations
+# Transformations
 
 > _Transformations_ have many uses: adjusting the series helps with decomposition and comparisons; also, stabilizing the variance simplifies subsequent analysis.
 
@@ -400,7 +411,7 @@ p1 / p2 + plot_annotation(
 Choosing an interpretable transformation is a great advantage. Simple transformations go a long way.
 :::
 
-## Decomposition
+# Decomposition
 
 Time series values can be decomposed as a function of their patterns:
 
@@ -427,7 +438,7 @@ The additive model is appropriate if the magnitude of seasonal fluctuations does
 
 $$
 y_t = S_t \times T_t \times R_t
-$${#eq-additive}
+$${#eq-multiplicative}
 
 If seasonal changes are proportional to the level of the series, then a multiplicative model is appropriate^[Anytime, a $log$ transformation can turn a multiplicative relationship into an additive relationship.].
 
@@ -480,7 +491,7 @@ aus_production %>%
 
 The trend component of classical decomposition is estimated with a _moving average_.
 
-## Moving Averages
+# Moving Averages
 
 A _moving average_ of order $m$ can be written as:
 
@@ -661,7 +672,7 @@ us_employment %>%
     )
 ```
 
-## Classical Decomposition
+# Classical Decomposition
 
 To obtain this decomposition, the following steps are needed:
 
@@ -675,7 +686,7 @@ If $m$ is even, use 2x $m$-NA; if $m$ is odd, use $m$-MA.
 The main assumption is that the season pattern _is the same across time_.
 :::
 
-### Additive (classical) Decomposition
+## Additive (classical) Decomposition
 
 2. Derive the de-trended series:
 
@@ -694,7 +705,7 @@ $${#eq-remainadd}
 
 5. Derive a de-seasonalized series as $y_t - S_t$.
 
-### Multiplicative (classical) Decomposition
+## Multiplicative (classical) Decomposition
 
 2. Derive the de-trended series:
 
@@ -738,7 +749,7 @@ p2 <- aus_production %>%
 p1 / p2
 ```
 
-### Comments on Classical Decomposition
+## Comments on Classical Decomposition
 
 > While still used, classical decomposition is not recommended.
 
@@ -754,7 +765,7 @@ To overcome these drawbacks, common methods used by statistical institutes are S
 
 We will focus on _exponential smoothing_ instead because it provides more general tools.
 
-## Exponential smoothing
+# Exponential smoothing
 
 > Exponential smoothing is based on a simple concept: a weight is given to each observation; this weight decays _exponentially_, thus modifying the relative importance of the past values of a time series. 
 
@@ -821,7 +832,7 @@ Naming conventions are attributed to the most important variation of exponential
 1. Single, Double, Triple Exponential Smoothing.
 2. Holt, Holt-Winter's Method.
 
-### Simple Exponential Smoothing
+## Simple Exponential Smoothing
 
 > This method is appropriate for data with no trend and no seasonality.
 
@@ -865,7 +876,7 @@ fc  %>%
 ```
 
 
-#### General Framework
+### General Framework
 
 > Forecast equation:
 
@@ -884,7 +895,7 @@ $${#eq-sesgensmoothing}
 
 These two components can be iterated to get the exponentially weighted moving average form.
 
-#### Weighted Average Form
+### Weighted Average Form
 
 > Note that at time $t = 1$ we have to decide a value for $l_0$, because $\hat{y}_{1 \vert 0} = l_0$^[Data ends at that point.].
 
@@ -896,7 +907,7 @@ $${#eq-sesweightavgform}
 
 The last term becomes very small for large $T$; the forecast consist in the _weighted average_ of all observations.
 
-#### Smoothing Parameters Choice
+### Smoothing Parameters Choice
 
 The parameters to be estimated are $\alpha$ and $l_0$. Similarly to regression, we can choose optimal parameters by minimising the SSE^[Sum of Squared Errors.].
 
@@ -940,7 +951,7 @@ fc  %>%
     )
 ```
 
-### Models with Trend
+## Models with Trend
 
 The principle is the same of SES: we can estimate a trend by giving more weight to more recent changes. There are two extreme situations:
 
@@ -963,7 +974,7 @@ $$
 l_t = \alpha y_t + (1 - \alpha)(l_{t - 1} + b_{t - 1})
 $${#eq-deslevel}
 
-> Trend equation:
+> Trend component:
 
 $$
 b_t = \beta^* (l_t - l_{t - 1}) + (1 - \beta^*) b_{t - 1}
@@ -1012,7 +1023,7 @@ fc  %>%
     )
 ```
 
-### Damped Trend Method
+## Damped Trend Method
 
 :::{.callout-warning}
 In Holt's method the linear trend is _constant into the future_: this can lead to over-forecast.
@@ -1032,7 +1043,7 @@ $$
 l_t = \alpha y_t + (1 - \alpha)(l_{t - 1} + \phi b_{t - 1})
 $${#eq-damplevel}
 
-> Trend equation:
+> Trend component:
 
 $$
 b_t = \beta^* (l_t - l_{t - 1}) + (1 - \beta^*) \phi b_{t - 1}
@@ -1080,6 +1091,251 @@ autoplot(
   )
 ```
 
- ### Models with Seasonality
+## Models with Seasonality
  
- 
+ To deal with _seasonality_ we need to adapt the smoothing principle:
+
+ > The _seasonal component_ has to be estimated giving _more weight_ to _more recent values of the seasonal components_.
+
+ This approach is typically combined with model with trend; seasonality can enter the model either in an _additive_ (@eq-additive) or _multiplicative_ (@eq-multiplicative) way. It is called Triple Exponential Smoothing_ or _Holt-Winters method_.
+
+### Holt-Winters Additive Method
+
+:::{.callout-tip}
+This model is appropriate when seasonal variations are independent to the level of the series.
+:::
+
+ The component form is:
+
+> Forecast equation:
+
+$$
+\hat{y}_{t + h \vert t} = l_t + hb_t + s_{t + h - m(k + 1)}
+$${#eq-tesaddforecast}
+
+> Level equation:
+
+$$
+l_t = \alpha(y_t - s_{t - m}) + (1 - \alpha)(l_{t - 1} + b_{t - 1})
+$${#eq-tesaddlevel}
+
+> Trend component:
+
+$$
+b_t = \beta^* (l_t - l_{t - 1} - b_{t - 1}) + (1 - \beta^*) b_{t - 1}
+$${#eq-tesaddtrend}
+
+> Seasonal component:
+
+$$
+s_t = \gamma(y_t - l_{t - 1} - b_{t - 1}) + (1 - \gamma) s_{t - m}
+$${#eq-tesaddseason}
+
+- $k$ is the integer part of $(h - 1)/m$. Ensures estimates from the final years are used for forecasting.
+- $0 \leq \alpha, \beta^* \leq 1$.
+- $0 \leq \gamma \leq 1 - \alpha$.
+- $m$ is the period of seasonality.
+
+:::{.callout-caution}
+With additive methods, seasonality is expressed in _absolute terms_; within each year $\sum_i s_i \approx 0$.
+:::
+
+
+```{r}
+#| echo: false
+aus_beer <- aus_production %>% 
+  select(Beer) %>% 
+  filter(
+    year(Quarter) >= 2000
+  )
+```
+
+```{r}
+fit <- aus_beer %>% 
+  model(
+    ETS(
+      Beer ~ error("A") + trend("A") + season("A")
+    )
+  )
+
+fc <- fit %>% 
+  forecast(
+    h = 10
+  )
+```
+
+```{r}
+fc %>% 
+autoplot(
+    aus_beer, 
+    level = NULL
+    ) +
+  labs(
+    title = "AUS Beer production", 
+    y = "Beer"
+    ) +
+  guides(
+    colour = guide_legend(
+      title = "Forecast"
+      )
+  )
+```
+
+
+### Holt-Winters Multiplicative Method
+
+:::{.callout-tip}
+This model is appropriate when seasonal variations are changing proportionally to the level of the series.
+:::
+
+The component form is:
+
+> Forecast equation:
+
+$$
+\hat{y}_{t + h \vert t} = (l_t + hb_t) s_{t + h - m(k + 1)}
+$${#eq-tesmulforecast}
+
+> Level equation:
+
+$$
+l_t = \alpha \frac{y_t}{s_{t - m}}  + (1 - \alpha)(l_{t - 1} + b_{t - 1})
+$${#eq-tesmullevel}
+
+> Trend component:
+
+$$
+b_t = \beta^* (l_t - l_{t - 1} - b_{t - 1}) + (1 - \beta^*) b_{t - 1}
+$${#eq-tesmultrend}
+
+> Seasonal component:
+
+$$
+s_t = \gamma \frac{y_t}{ l_{t - 1} - b_{t - 1}} + (1 - \gamma) s_{t - m}
+$${#eq-tesmulseason}
+
+- $k$ is the integer part of $(h - 1)/m$. Ensures estimates from the final years are used for forecasting.
+- $0 \leq \alpha, \beta^* \leq 1$.
+- $0 \leq \gamma \leq 1 - \alpha$.
+- $m$ is the period of seasonality.
+
+:::{.callout-caution}
+With multiplicative methods, seasonality is expressed in _relative terms_; within each year $\sum_i s_i \approx m$.
+:::
+
+```{r}
+#| echo: false
+aus_gas <- aus_production %>% 
+  select(Gas)
+```
+
+```{r}
+fit <- aus_gas %>% 
+  model(
+    additive = ETS(
+      Gas ~ error("A") + trend("A") + season("A")
+    ),
+    multiplicative = ETS(
+      Gas ~ error("A") + trend("A") + season("M")
+    )
+  )
+
+fc <- fit %>% 
+  forecast(
+    h = 30
+  )
+```
+
+```{r}
+fc %>% 
+autoplot(
+    aus_gas, 
+    level = NULL
+    ) +
+  labs(
+    title = "AUS Gas production", 
+    y = "Gas"
+    ) +
+  guides(
+    colour = guide_legend(
+      title = "Forecast"
+      )
+  ) +
+  scale_color_brewer(
+    type = "qual", 
+    palette = "Dark2"
+    )
+```
+
+### Holt-Winters Damped Method
+
+This approach combines Holt's damped method with the seasonality of the Holt-Winters method.
+
+The component form is:
+
+> Forecast equation:
+
+$$
+\hat{y}_{t + h \vert t} = [l_t + (\phi * \phi^2 + ... + \phi^h) b_t ]s_{t + h - m(k + 1)}
+$${#eq-tesmuldampforecast}
+
+> Level equation:
+
+$$
+l_t = \alpha \frac{y_t}{s_{t - m}}  + (1 - \alpha)(l_{t - 1} + \phi b_{t - 1})
+$${#eq-tesmuldamplevel}
+
+> Trend component:
+
+$$
+b_t = \beta^* (l_t - l_{t - 1}) + (1 - \beta^*) \phi b_{t - 1}
+$${#eq-tesmuldamptrend}
+
+> Seasonal component:
+
+$$
+s_t = \gamma \frac{y_t}{ l_{t - 1} - \phi b_{t - 1}} + (1 - \gamma) s_{t - m}
+$${#eq-tesmuldampseason}
+
+- $k$ is the integer part of $(h - 1)/m$. Ensures estimates from the final years are used for forecasting.
+- $0 \leq \alpha, \beta^* \leq 1$.
+- $0 \leq \gamma \leq 1 - \alpha$.
+- $m$ is the period of seasonality.
+
+```{r}
+fit <- aus_gas %>% 
+  model(
+    "multiplicative+damped" = ETS(
+      Gas ~ error("A") + trend("Ad") + season("M")
+    ),
+    multiplicative = ETS(
+      Gas ~ error("A") + trend("A") + season("M")
+    )
+  )
+
+fc <- fit %>% 
+  forecast(
+    h = 50
+  )
+```
+
+```{r}
+fc %>% 
+autoplot(
+    aus_gas, 
+    level = NULL
+    ) +
+  labs(
+    title = "AUS Gas production", 
+    y = "Gas"
+    ) +
+  guides(
+    colour = guide_legend(
+      title = "Forecast"
+      )
+  ) +
+  scale_color_brewer(
+    type = "qual", 
+    palette = "Dark2"
+    )
+```
