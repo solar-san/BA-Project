@@ -132,8 +132,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#forecasting-and-time-series" id="toc-forecasting-and-time-series" class="nav-link" data-scroll-target="#forecasting-and-time-series">Forecasting and Time Series</a>
-  <ul class="collapse">
+  <li><a href="#forecasting-and-time-series" id="toc-forecasting-and-time-series" class="nav-link" data-scroll-target="#forecasting-and-time-series">Forecasting and Time Series</a></li>
   <li><a href="#forecasting-the-statistical-perspective" id="toc-forecasting-the-statistical-perspective" class="nav-link" data-scroll-target="#forecasting-the-statistical-perspective">Forecasting: the Statistical Perspective</a></li>
   <li><a href="#patterns" id="toc-patterns" class="nav-link" data-scroll-target="#patterns">Patterns</a></li>
   <li><a href="#autocorrelation" id="toc-autocorrelation" class="nav-link" data-scroll-target="#autocorrelation">Autocorrelation</a></li>
@@ -149,11 +148,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#exponential-smoothing" id="toc-exponential-smoothing" class="nav-link" data-scroll-target="#exponential-smoothing">Exponential smoothing</a>
   <ul class="collapse">
-  <li><a href="#simple-exponential-smoothing" id="toc-simple-exponential-smoothing" class="nav-link" data-scroll-target="#simple-exponential-smoothing">Simple Exponential Smoothing</a></li>
+  <li><a href="#simple-exponential-smoothing" id="toc-simple-exponential-smoothing" class="nav-link" data-scroll-target="#simple-exponential-smoothing">Simple Exponential Smoothing</a>
+  <ul class="collapse">
+  <li><a href="#general-framework" id="toc-general-framework" class="nav-link" data-scroll-target="#general-framework">General Framework</a></li>
+  <li><a href="#weighted-average-form" id="toc-weighted-average-form" class="nav-link" data-scroll-target="#weighted-average-form">Weighted Average Form</a></li>
+  <li><a href="#smoothing-parameters-choice" id="toc-smoothing-parameters-choice" class="nav-link" data-scroll-target="#smoothing-parameters-choice">Smoothing Parameters Choice</a></li>
+  </ul></li>
   <li><a href="#models-with-trend" id="toc-models-with-trend" class="nav-link" data-scroll-target="#models-with-trend">Models with Trend</a></li>
   <li><a href="#damped-trend-method" id="toc-damped-trend-method" class="nav-link" data-scroll-target="#damped-trend-method">Damped Trend Method</a></li>
+  <li><a href="#models-with-seasonality" id="toc-models-with-seasonality" class="nav-link" data-scroll-target="#models-with-seasonality">Models with Seasonality</a>
+  <ul class="collapse">
+  <li><a href="#holt-winters-additive-method" id="toc-holt-winters-additive-method" class="nav-link" data-scroll-target="#holt-winters-additive-method">Holt-Winters Additive Method</a></li>
+  <li><a href="#holt-winters-multiplicative-method" id="toc-holt-winters-multiplicative-method" class="nav-link" data-scroll-target="#holt-winters-multiplicative-method">Holt-Winters Multiplicative Method</a></li>
+  <li><a href="#holt-winters-damped-method" id="toc-holt-winters-damped-method" class="nav-link" data-scroll-target="#holt-winters-damped-method">Holt-Winters Damped Method</a></li>
   </ul></li>
-  <li><a href="#models-with-seasonality" id="toc-models-with-seasonality" class="nav-link" data-scroll-target="#models-with-seasonality">Models with Seasonality</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -225,7 +233,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Exponential Smoothing methods.</li>
 </ul>
 </section>
-<section id="forecasting-and-time-series" class="level1 page-columns page-full">
+<section id="forecasting-and-time-series" class="level1">
 <h1>Forecasting and Time Series</h1>
 <p>Predictions have been a human interest throughout history. The ability to forecast depends on:</p>
 <ul>
@@ -278,8 +286,9 @@ Danger
 <p><img src="BA-Notes_files/figure-html/TS%20example-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
-<section id="forecasting-the-statistical-perspective" class="level2">
-<h2 class="anchored" data-anchor-id="forecasting-the-statistical-perspective">Forecasting: the Statistical Perspective</h2>
+</section>
+<section id="forecasting-the-statistical-perspective" class="level1">
+<h1>Forecasting: the Statistical Perspective</h1>
 <p>The phenomenon that we want to forecast can be conceptualized as a <em>stochastic process</em>, which is a <em>succession of stochastic variables</em> <span class="math inline">\{ y_t \}</span>. If we consider its value at time <span class="math inline">T</span>, given <span class="math inline">\mathcal{I}</span> the set of all available observations for <span class="math inline">t = 1, 2, …, T -1</span>, we can express the <em>forecast distribution</em> as a <em>joint distribution</em>, conditional on the available information: <span class="math inline">y_t \vert \mathcal{I}</span>. This notation means: “_the random variable <span class="math inline">y_t</span>, given all that we know in <span class="math inline">\mathcal{I}</span>“.</p>
 <ul>
 <li>The <em>point forecast</em> will be the <em>mean</em> or the <em>median</em> of <span class="math inline">y_t \vert \mathcal{I}</span>.</li>
@@ -296,8 +305,8 @@ Danger
 \tag{1}</span></span></p>
 <p>Models are useful to forecast because they account for <em>uncertainty</em>.</p>
 </section>
-<section id="patterns" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="patterns">Patterns</h2>
+<section id="patterns" class="level1 page-columns page-full">
+<h1>Patterns</h1>
 <p>We can filter three different components of the time series. These are <em>patterns</em> that can be used to forecast more effectively if identified correctly.</p>
 <ol type="1">
 <li><strong>Trend</strong>: long-term increase or decrease in the data.</li>
@@ -359,8 +368,8 @@ Important
 </div>
 </div>
 </section>
-<section id="autocorrelation" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="autocorrelation">Autocorrelation</h2>
+<section id="autocorrelation" class="level1 page-columns page-full">
+<h1>Autocorrelation</h1>
 <div class="page-columns page-full"><p>While in standard <em>regression models</em> we assume <em>independence</em> among the observations, this is not true with time series models. We can visualize this by comparing <span class="math inline">y_t</span> against <span class="math inline">y_{t-k}</span> for different values of <span class="math inline">k</span>. <span class="math inline">k</span> is the <em>lag</em> vaue, while <span class="math inline">y_{t-k}</span> the <em>lagged value</em>: we define <em>autocorrelation</em> the linear dependence of a variable with its lagged values<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn2"><p><sup>2</sup>&nbsp;In other words: we are concerned with the dependency of a phenomenon with its own past.</p></li></div></div>
 <div class="cell">
 <details open="">
@@ -420,8 +429,8 @@ Danger
 </div>
 </div>
 </section>
-<section id="autovariance-and-autocorrelation" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="autovariance-and-autocorrelation">Autovariance and Autocorrelation</h2>
+<section id="autovariance-and-autocorrelation" class="level1 page-columns page-full">
+<h1>Autovariance and Autocorrelation</h1>
 <blockquote class="blockquote">
 <p><em>Autocovariance</em> and <em>autocorrelation</em> measure linear relations between lagged values of a time series <span class="math inline">y</span>.</p>
 </blockquote>
@@ -518,8 +527,8 @@ r_k = \frac{c_k}{c_0}
 </div>
 <p>We can see that even if there is slight evidence of correlation, the confidence intervals help in choosing to label the series as white noise: it is not statistically significant.</p>
 </section>
-<section id="transformations" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="transformations">Transformations</h2>
+<section id="transformations" class="level1 page-columns page-full">
+<h1>Transformations</h1>
 <blockquote class="blockquote">
 <p><em>Transformations</em> have many uses: adjusting the series helps with decomposition and comparisons; also, stabilizing the variance simplifies subsequent analysis.</p>
 </blockquote>
@@ -619,8 +628,8 @@ Tip
 </div>
 </div>
 </section>
-<section id="decomposition" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="decomposition">Decomposition</h2>
+<section id="decomposition" class="level1 page-columns page-full">
+<h1>Decomposition</h1>
 <p>Time series values can be decomposed as a function of their patterns:</p>
 <p><span id="eq-decompose"><span class="math display">
 y_t = f(S_t, T_t, R_t)
@@ -710,8 +719,8 @@ y_t = S_t \times T_t \times R_t
 </div>
 <p>The trend component of classical decomposition is estimated with a <em>moving average</em>.</p>
 </section>
-<section id="moving-averages" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="moving-averages">Moving Averages</h2>
+<section id="moving-averages" class="level1 page-columns page-full">
+<h1>Moving Averages</h1>
 <p>A <em>moving average</em> of order <span class="math inline">m</span> can be written as:</p>
 <p><span id="eq-MA"><span class="math display">
 \hat T_t = \frac{1}{M} \sum_{j = -k}^k y_{t + j} \qquad m = 2k + 1
@@ -930,8 +939,8 @@ Tip
 </div>
 </div>
 </section>
-<section id="classical-decomposition" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="classical-decomposition">Classical Decomposition</h2>
+<section id="classical-decomposition" class="level1 page-columns page-full">
+<h1>Classical Decomposition</h1>
 <p>To obtain this decomposition, the following steps are needed:</p>
 <ol type="1">
 <li>The trend-cycle component is estimated using the appropriate MA smoothing.</li>
@@ -962,8 +971,8 @@ Danger
 <p>The main assumption is that the season pattern <em>is the same across time</em>.</p>
 </div>
 </div>
-<section id="additive-classical-decomposition" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="additive-classical-decomposition">Additive (classical) Decomposition</h3>
+<section id="additive-classical-decomposition" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="additive-classical-decomposition">Additive (classical) Decomposition</h2>
 <ol start="2" type="1">
 <li>Derive the de-trended series:</li>
 </ol>
@@ -979,8 +988,8 @@ y_t - \hat{T}_t
 <li>Derive a de-seasonalized series as <span class="math inline">y_t - S_t</span>.</li>
 </ol>
 </section>
-<section id="multiplicative-classical-decomposition" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="multiplicative-classical-decomposition">Multiplicative (classical) Decomposition</h3>
+<section id="multiplicative-classical-decomposition" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="multiplicative-classical-decomposition">Multiplicative (classical) Decomposition</h2>
 <ol start="2" type="1">
 <li>Derive the de-trended series:</li>
 </ol>
@@ -1028,8 +1037,8 @@ y_t - \hat{T}_t
 </div>
 </div>
 </section>
-<section id="comments-on-classical-decomposition" class="level3">
-<h3 class="anchored" data-anchor-id="comments-on-classical-decomposition">Comments on Classical Decomposition</h3>
+<section id="comments-on-classical-decomposition" class="level2">
+<h2 class="anchored" data-anchor-id="comments-on-classical-decomposition">Comments on Classical Decomposition</h2>
 <blockquote class="blockquote">
 <p>While still used, classical decomposition is not recommended.</p>
 </blockquote>
@@ -1055,8 +1064,8 @@ Note
 <p>We will focus on <em>exponential smoothing</em> instead because it provides more general tools.</p>
 </section>
 </section>
-<section id="exponential-smoothing" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="exponential-smoothing">Exponential smoothing</h2>
+<section id="exponential-smoothing" class="level1 page-columns page-full">
+<h1>Exponential smoothing</h1>
 <blockquote class="blockquote">
 <p>Exponential smoothing is based on a simple concept: a weight is given to each observation; this weight decays <em>exponentially</em>, thus modifying the relative importance of the past values of a time series.</p>
 </blockquote>
@@ -1112,8 +1121,8 @@ y_{T + h \vert T} = y_T
 <li>Single, Double, Triple Exponential Smoothing.</li>
 <li>Holt, Holt-Winter’s Method.</li>
 </ol>
-<section id="simple-exponential-smoothing" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="simple-exponential-smoothing">Simple Exponential Smoothing</h3>
+<section id="simple-exponential-smoothing" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="simple-exponential-smoothing">Simple Exponential Smoothing</h2>
 <blockquote class="blockquote">
 <p>This method is appropriate for data with no trend and no seasonality.</p>
 </blockquote>
@@ -1159,8 +1168,8 @@ y_{T + h \vert T} = y_T
 <p><img src="BA-Notes_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
-<section id="general-framework" class="level4">
-<h4 class="anchored" data-anchor-id="general-framework">General Framework</h4>
+<section id="general-framework" class="level3">
+<h3 class="anchored" data-anchor-id="general-framework">General Framework</h3>
 <blockquote class="blockquote">
 <p>Forecast equation:</p>
 </blockquote>
@@ -1179,8 +1188,8 @@ l_t = \alpha y_t + (1 - \alpha) l_{t-1}
 </ul>
 <p>These two components can be iterated to get the exponentially weighted moving average form.</p>
 </section>
-<section id="weighted-average-form" class="level4 page-columns page-full">
-<h4 class="anchored" data-anchor-id="weighted-average-form">Weighted Average Form</h4>
+<section id="weighted-average-form" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="weighted-average-form">Weighted Average Form</h3>
 <blockquote class="blockquote page-columns page-full">
 <div class="page-columns page-full"><p>Note that at time <span class="math inline">t = 1</span> we have to decide a value for <span class="math inline">l_0</span>, because <span class="math inline">\hat{y}_{1 \vert 0} = l_0</span><a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn15"><p><sup>15</sup>&nbsp;Data ends at that point.</p></li></div></div>
 </blockquote>
@@ -1190,8 +1199,8 @@ l_t = \alpha y_t + (1 - \alpha) l_{t-1}
 \tag{17}</span></span></p>
 <p>The last term becomes very small for large <span class="math inline">T</span>; the forecast consist in the <em>weighted average</em> of all observations.</p>
 </section>
-<section id="smoothing-parameters-choice" class="level4 page-columns page-full">
-<h4 class="anchored" data-anchor-id="smoothing-parameters-choice">Smoothing Parameters Choice</h4>
+<section id="smoothing-parameters-choice" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="smoothing-parameters-choice">Smoothing Parameters Choice</h3>
 <div class="page-columns page-full"><p>The parameters to be estimated are <span class="math inline">\alpha</span> and <span class="math inline">l_0</span>. Similarly to regression, we can choose optimal parameters by minimising the SSE<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn16"><p><sup>16</sup>&nbsp;Sum of Squared Errors.</p></li></div></div>
 <p><span id="eq-SSE"><span class="math display">
 SSE = \sum_{t  = 1}^T (y_t - \hat{y}_{t \vert t -1})^2
@@ -1249,8 +1258,8 @@ SSE = \sum_{t  = 1}^T (y_t - \hat{y}_{t \vert t -1})^2
 </div>
 </section>
 </section>
-<section id="models-with-trend" class="level3">
-<h3 class="anchored" data-anchor-id="models-with-trend">Models with Trend</h3>
+<section id="models-with-trend" class="level2">
+<h2 class="anchored" data-anchor-id="models-with-trend">Models with Trend</h2>
 <p>The principle is the same of SES: we can estimate a trend by giving more weight to more recent changes. There are two extreme situations:</p>
 <ul>
 <li><span class="math inline">y_T - y_{T - 1}</span></li>
@@ -1328,8 +1337,8 @@ b_t = \beta^* (l_t - l_{t - 1}) + (1 - \beta^*) b_{t - 1}
 </div>
 </div>
 </section>
-<section id="damped-trend-method" class="level3">
-<h3 class="anchored" data-anchor-id="damped-trend-method">Damped Trend Method</h3>
+<section id="damped-trend-method" class="level2">
+<h2 class="anchored" data-anchor-id="damped-trend-method">Damped Trend Method</h2>
 <div class="callout-warning callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1412,7 +1421,6 @@ b_t = \beta^* (l_t - l_{t - 1}) + (1 - \beta^*) \phi b_{t - 1}
 </div>
 </div>
 </section>
-</section>
 <section id="models-with-seasonality" class="level2">
 <h2 class="anchored" data-anchor-id="models-with-seasonality">Models with Seasonality</h2>
 <p>To deal with <em>seasonality</em> we need to adapt the smoothing principle:</p>
@@ -1420,8 +1428,8 @@ b_t = \beta^* (l_t - l_{t - 1}) + (1 - \beta^*) \phi b_{t - 1}
 <p>The <em>seasonal component</em> has to be estimated giving <em>more weight</em> to <em>more recent values of the seasonal components</em>.</p>
 </blockquote>
 <p>This approach is typically combined with model with trend; seasonality can enter the model either in an <em>additive</em> (<a href="#eq-additive">Equation&nbsp;6</a>) or <em>multiplicative</em> (<a href="#eq-multiplicative">Equation&nbsp;7</a>) way. It is called Triple Exponential Smoothing_ or <em>Holt-Winters method</em>.</p>
-<section id="holt-winters-additive-method" class="level4">
-<h4 class="anchored" data-anchor-id="holt-winters-additive-method">Holt-Winters Additive Method</h4>
+<section id="holt-winters-additive-method" class="level3">
+<h3 class="anchored" data-anchor-id="holt-winters-additive-method">Holt-Winters Additive Method</h3>
 <div class="callout-tip callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1521,8 +1529,8 @@ Danger
 </div>
 </div>
 </section>
-<section id="holt-winters-multiplicative-method" class="level4">
-<h4 class="anchored" data-anchor-id="holt-winters-multiplicative-method">Holt-Winters Multiplicative Method</h4>
+<section id="holt-winters-multiplicative-method" class="level3">
+<h3 class="anchored" data-anchor-id="holt-winters-multiplicative-method">Holt-Winters Multiplicative Method</h3>
 <div class="callout-tip callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1629,8 +1637,8 @@ Danger
 </div>
 </div>
 </section>
-<section id="holt-winters-damped-method" class="level4">
-<h4 class="anchored" data-anchor-id="holt-winters-damped-method">Holt-Winters Damped Method</h4>
+<section id="holt-winters-damped-method" class="level3">
+<h3 class="anchored" data-anchor-id="holt-winters-damped-method">Holt-Winters Damped Method</h3>
 <p>This approach combines Holt’s damped method with the seasonality of the Holt-Winters method.</p>
 <p>The component form is:</p>
 <blockquote class="blockquote">
