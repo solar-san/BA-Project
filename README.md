@@ -12,24 +12,20 @@ The course introduces the concept of Business Analytics and discusses various mo
 
 ## Syllabus
 
-1. [**Forecasting and Time Series Data Analysis**](https://solar-san.github.io/BA-Project/BA-Notes.html)
+1. [**Forecasting and Time Series Data Analysis**](https://solar-san.github.io/BA-Project/BA-TSF.html)
    - Explore the basics of time series data analysis.
    - Understand seasonality and trends, and techniques such as moving averages and exponential smoothing.
    - Implementation using the `R` software with a focus on reproducible research.
 
-2. **Quantile Regression**
+2. **Quantile Regression** (Work in Progress)
    - Introduce quantile regression as a powerful modeling approach.
    - Understand its applications in predictive analytics.
    - Practical implementation using `R`, with a strong focus on reproducibility and visualization.
 
-3. **Simulation and Monte Carlo Analysis**
+3. **Simulation and Monte Carlo Analysis** (Work in Progress)
    - Dive into simulation techniques for predictive analysis.
    - Understand Monte Carlo analysis and its applications.
    - Hands-on implementation using `R`, emphasizing reproducibility and visualization.
-   
-4. **Decision Making**
-   - Discuss decision-making processes in the context of Business Analytics.
-   - Explore methods for making informed decisions based on data insights.
 
 ## Repository Contents
 
