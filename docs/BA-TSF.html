@@ -87,16 +87,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 
-<script src="BA-Notes_files/libs/clipboard/clipboard.min.js"></script>
-<script src="BA-Notes_files/libs/quarto-html/quarto.js"></script>
-<script src="BA-Notes_files/libs/quarto-html/popper.min.js"></script>
-<script src="BA-Notes_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="BA-Notes_files/libs/quarto-html/anchor.min.js"></script>
-<link href="BA-Notes_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="BA-Notes_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="BA-Notes_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="BA-Notes_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="BA-Notes_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="BA-TSF_files/libs/clipboard/clipboard.min.js"></script>
+<script src="BA-TSF_files/libs/quarto-html/quarto.js"></script>
+<script src="BA-TSF_files/libs/quarto-html/popper.min.js"></script>
+<script src="BA-TSF_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="BA-TSF_files/libs/quarto-html/anchor.min.js"></script>
+<link href="BA-TSF_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="BA-TSF_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="BA-TSF_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="BA-TSF_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="BA-TSF_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <meta name="author" content="solar-san">
 <meta name="image" property="https://raw.githubusercontent.com/solar-san/BA-Project/main/docs/figures/BA-Project_header.png">
 <meta name="description" content="Notes on time series analysis for business analysts. It contains a self-contained introduction to smoothings and decomposition, with R code snippets and the necessary mathematical and statistical notation.">
@@ -188,7 +188,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">December 7, 2023</p>
+      <p class="date-modified">December 9, 2023</p>
     </div>
   </div>
     
@@ -280,7 +280,7 @@ Danger
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/TS%20example-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/TS%20example-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -340,7 +340,7 @@ Important
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p></p><figcaption class="figure-caption">We can observe a quarterly season pattern in the Australian beer production.</figcaption><p></p>
-<p><img src="BA-Notes_files/figure-html/TS%20example%20seasonality-1.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/TS%20example%20seasonality-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -361,7 +361,7 @@ Important
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/TS%20example%20cyclic%20+%20seasonal-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/TS%20example%20cyclic%20+%20seasonal-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -384,7 +384,7 @@ Important
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/TS%20example%20lag%20plot-1.png" class="img-fluid" width="1152"></p>
+<p><img src="BA-TSF_files/figure-html/TS%20example%20lag%20plot-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 <p>From the following plot, we can see that at each 4th lag<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> there is clear evidence of a correlation between <span class="math inline">y_t</span> and <span class="math inline">y_{t-k}</span>. This is a tell-tale sign of <em>seasonality</em>.</p>
@@ -409,7 +409,7 @@ Important
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/TS%20example%20lag%20and%20ciclycality-1.png" class="img-fluid" width="1152"></p>
+<p><img src="BA-TSF_files/figure-html/TS%20example%20lag%20and%20ciclycality-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 <div class="callout-caution callout callout-style-default callout-captioned">
@@ -456,7 +456,7 @@ r_k = \frac{c_k}{c_0}
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">autoplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/ACF%20TS%20example%201-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/ACF%20TS%20example%201-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <div class="cell">
@@ -474,7 +474,7 @@ r_k = \frac{c_k}{c_0}
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">autoplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/ACF%20TS%20example%202-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/ACF%20TS%20example%202-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <ul>
@@ -501,7 +501,7 @@ r_k = \frac{c_k}{c_0}
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/WN%20plot-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/WN%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <div class="cell">
@@ -519,7 +519,7 @@ r_k = \frac{c_k}{c_0}
 <pre><code>Response variable not specified, automatically selected `var = wn`</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/WN%20ACF%20plot-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/WN%20ACF%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <p>We can see that even if there is slight evidence of correlation, the confidence intervals help in choosing to label the series as white noise: it is not statistically significant.</p>
@@ -581,7 +581,7 @@ r_k = \frac{c_k}{c_0}
 <span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/transformation%20example-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/transformation%20example-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <p>Mathematical transformations are useful to stabilize the variability of the time series, which should be constant: when it varies with the level of the series, a <code>log</code> transformation can eliminate the issue<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>, Changes in a log value are relative changes on the original scale.</p>
@@ -608,7 +608,7 @@ Y_t = b_t X_t \to log(Y_t) = log(b_t) * log(X_t)
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/TS%20log%20transformation%20example-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/TS%20log%20transformation%20example-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <div class="callout-tip callout callout-style-default callout-captioned">
@@ -684,7 +684,7 @@ y_t = S_t \times T_t \times R_t
 <pre><code>Warning: Removed 6 rows containing missing values (`geom_line()`).</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/classical%20decomposition%20example%201-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/classical%20decomposition%20example%201-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <div class="cell">
@@ -711,7 +711,7 @@ y_t = S_t \times T_t \times R_t
 <pre><code>Warning: Removed 2 rows containing missing values (`geom_line()`).</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/classical%20decomposition%20example%202-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/classical%20decomposition%20example%202-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <p>The trend component of classical decomposition is estimated with a <em>moving average</em>.</p>
@@ -776,7 +776,7 @@ y_t = S_t \times T_t \times R_t
 <pre><code>Warning: Removed 8 rows containing missing values (`geom_line()`).</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/MA%20example%201-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/MA%20example%201-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <div class="callout-important callout callout-style-default callout-captioned">
@@ -857,7 +857,7 @@ Important
 <pre><code>Warning: Removed 10 rows containing missing values (`geom_line()`).</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/MA%20example%202-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/MA%20example%202-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <p>To <em>smooth out the seasonal component</em> we use moving averages of the order of the periodicity of the seasonality.</p>
@@ -932,7 +932,7 @@ Tip
 <span id="cb23-52"><a href="#cb23-52" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/nxm%20MA-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/nxm%20MA-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -1030,7 +1030,7 @@ y_t - \hat{T}_t
 <pre><code>Warning: Removed 2 rows containing missing values (`geom_line()`).</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/mult%20class%20decomposition%20example-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/mult%20class%20decomposition%20example-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -1109,7 +1109,7 @@ y_{T + h \vert T} = y_T
 <span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/benchmark%20forecasting%20google%20stock-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/benchmark%20forecasting%20google%20stock-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <p>Exponential smoothing allows to achieve forecasts that are <em>in between</em> these extremes, giving heavier weights to later observations.</p>
@@ -1162,7 +1162,7 @@ y_{T + h \vert T} = y_T
 <span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/ses%20smoothing%20plot-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/ses%20smoothing%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <section id="general-framework" class="level3">
@@ -1250,7 +1250,7 @@ SSE = \sum_{t  = 1}^T (y_t - \hat{y}_{t \vert t -1})^2
 <span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/weighted%20average%20plot-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/weighted%20average%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -1330,7 +1330,7 @@ b_t = \beta^* (l_t - l_{t - 1}) + (1 - \beta^*) b_{t - 1}
 <span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/des%20plot-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/des%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -1414,7 +1414,7 @@ b_t = \beta^* (l_t - l_{t - 1}) + (1 - \beta^*) \phi b_{t - 1}
 <span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/damp%20forecast-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/damp%20forecast-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -1522,7 +1522,7 @@ Danger
 <span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/seasonal%20add%20plot-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/seasonal%20add%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -1630,7 +1630,7 @@ Danger
 <span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/seasonal%20mult%20plot-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/seasonal%20mult%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -1710,7 +1710,7 @@ s_t = \gamma \frac{y_t}{ l_{t - 1} - \phi b_{t - 1}} + (1 - \gamma) s_{t - m}
 <span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-Notes_files/figure-html/seasonal%20damp%20plot-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-TSF_files/figure-html/seasonal%20damp%20plot-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
