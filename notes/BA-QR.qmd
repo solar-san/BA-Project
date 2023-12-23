@@ -155,9 +155,17 @@ ggplot(
 Many variables are _not_ symmetric. Moreover, we are often not only interested in the _mean_, but in understanding _extremes_. Since linear regression model cannot give the full description of the distribution and everything is described by its mean, we need an alternative Framework.
 :::
 
+We do not need to forget that linear regression is appropriate for several applications and comes with many practical and theoretical reason to explain its widespread adoption. For example, it is computationally feasible and easy to implement and can be adapted to handle heteroskedasticity and robustness. Moreover, it can be _generalized_ to handle the non-gaussian case and even non-linearity^[Generalized Linear Models.].
+
 # Quantiles 
 
-We do not need to forget that linear regression is appropriate for several applications and comes with many practical and theoretical reason to explain its widespread adoption. For example, it is computationally feasible and easy to implement and can be adapted to handle heteroskedasticity and robustness. Moreover, it can be _generalized_ to handle the non-gaussian case and even non-linearity^[Generalized Linear Models.].
+_Quantiles_ are defined mathematically as:
+
+$$
+Q(p) = \mathrm{inf} \{ x: P(X \leq x) \geq p \}
+$${#eq-quantile}
+
+This is strictly related to the _cumulative distribution function_. The quantile of order $\alpha$ can also be interpred as that point in the distribution for which you have a probability $\alpha$ of observing a value less than that quantile^[In other words, it determines a specific point in the distribution. For example, the _median_ is the quantile of order 0.5: you have a $50%$ probability of observing a value lower than the median.].
 
 We can compute a set of quantiles to help prove the point. Note that the mean of the distribution is `r mean(incomeEx$income)`.
 
@@ -167,10 +175,19 @@ pquant
 ```
 
 There is a noticeable positive difference between _median_ and _mean_, indicating a right-skewed distribution. Computing such differences helps in understanding the _shape_ of our distribution.
+
+We notice that the difference between the 75th and the 50th quantile is larger than the difference between the 50th and the 25th percentile: this is an indication of an asymmetry in the distribution. The same goes when comparing the the more extreme tails (e.g. the 10th and 90th quantile): 
+
 ```{r}
 pquant[4]- pquant[3]; pquant[3] - pquant[2]  
 pquant[5]- pquant[3]; pquant[3] - pquant[1]
 ```
 
-We notice that the difference between the 75th and the 50th quantile is larger than the difference between the 50th and the 25th percentile: this is an indication of an asymmetry in the distribution. The same goes when comparing the the more extreme tails (e.g. the 10th and 90th quantile): 
+Quantiles are not only _theoretical_: we can build an _Empirical Cumulative Distribution_ function that describes the cumulative _frequencies_ of the observed values in our data.
+
+For example, for an $iid$ sample:
+
+$$
+\hat F = \frac{\mathrm{number \ of \ observations} \leq t}{n}
+$${#eq-ECDF}
 

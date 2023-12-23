@@ -132,6 +132,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#quantiles" id="toc-quantiles" class="nav-link" data-scroll-target="#quantiles">Quantiles</a></li>
   </ul>
 </nav>
 </div>
@@ -263,6 +264,15 @@ dbl (6): age, ed, hkids, cinc, lcinc, hid
 <div class="{callout.important}">
 <p>Many variables are <em>not</em> symmetric. Moreover, we are often not only interested in the <em>mean</em>, but in understanding <em>extremes</em>. Since linear regression model cannot give the full description of the distribution and everything is described by its mean, we need an alternative Framework.</p>
 </div>
+<p>We do not need to forget that linear regression is appropriate for several applications and comes with many practical and theoretical reason to explain its widespread adoption. For example, it is computationally feasible and easy to implement and can be adapted to handle heteroskedasticity and robustness. Moreover, it can be <em>generalized</em> to handle the non-gaussian case and even non-linearity<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
+</section>
+<section id="quantiles" class="level1">
+<h1>Quantiles</h1>
+<p><em>Quantiles</em> are defined mathematically as:</p>
+<p><span id="eq-quantile"><span class="math display">
+Q(p) = \mathrm{inf} \{ x: P(X \leq x) \geq p \}
+\tag{3}</span></span></p>
+<p>This is strictly related to the <em>cumulative distribution function</em>. The quantile of order <span class="math inline">\alpha</span> can also be interpred as that point in the distribution for which you have a probability <span class="math inline">\alpha</span> of observing a value less than that quantile<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
 <p>We can compute a set of quantiles to help prove the point. Note that the mean of the distribution is 47.0563867.</p>
 <div class="cell">
 <details open="">
@@ -275,6 +285,39 @@ dbl (6): age, ed, hkids, cinc, lcinc, hid
 11.64731 21.86632 39.18834 63.15703 92.93739 </code></pre>
 </div>
 </div>
+<p>There is a noticeable positive difference between <em>median</em> and <em>mean</em>, indicating a right-skewed distribution. Computing such differences helps in understanding the <em>shape</em> of our distribution.</p>
+<p>We notice that the difference between the 75th and the 50th quantile is larger than the difference between the 50th and the 25th percentile: this is an indication of an asymmetry in the distribution. The same goes when comparing the the more extreme tails (e.g.&nbsp;the 10th and 90th quantile):</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pquant[<span class="dv">4</span>]<span class="sc">-</span> pquant[<span class="dv">3</span>]; pquant[<span class="dv">3</span>] <span class="sc">-</span> pquant[<span class="dv">2</span>]  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>     75% 
+23.96869 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     50% 
+17.32201 </code></pre>
+</div>
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>pquant[<span class="dv">5</span>]<span class="sc">-</span> pquant[<span class="dv">3</span>]; pquant[<span class="dv">3</span>] <span class="sc">-</span> pquant[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>     90% 
+53.74905 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     50% 
+27.54102 </code></pre>
+</div>
+</div>
+<p>Quantiles are not only <em>theoretical</em>: we can build an <em>Empirical Cumulative Distribution</em> function that describes the cumulative <em>frequencies</em> of the observed values in our data.</p>
+<p>For example, for an <span class="math inline">iid</span> sample:</p>
+<p><span id="eq-ECDF"><span class="math display">
+\hat F = \frac{\mathrm{number \ of \ observations} \leq t}{n}
+\tag{4}</span></span></p>
 </section>
 
 
@@ -285,6 +328,8 @@ dbl (6): age, ed, hkids, cinc, lcinc, hid
 <li id="fn2"><p>This last one, however, is not strictly necessary.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>This assumption allows for inference on the model parameters.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Warning: the mean is <em>not</em> a robust indicator of position.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Generalized Linear Models.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>In other words, it determines a specific point in the distribution. For example, the <em>median</em> is the quantile of order 0.5: you have a <span class="math inline">50%</span> probability of observing a value lower than the median.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
