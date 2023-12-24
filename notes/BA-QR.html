@@ -132,7 +132,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#quantiles" id="toc-quantiles" class="nav-link" data-scroll-target="#quantiles">Quantiles</a></li>
+  <li><a href="#quantiles" id="toc-quantiles" class="nav-link" data-scroll-target="#quantiles">Quantiles</a>
+  <ul class="collapse">
+  <li><a href="#sample-quantiles-and-sampling-distribution" id="toc-sample-quantiles-and-sampling-distribution" class="nav-link" data-scroll-target="#sample-quantiles-and-sampling-distribution">Sample Quantiles and Sampling Distribution</a></li>
+  <li><a href="#quantiles-as-a-minimization-problem" id="toc-quantiles-as-a-minimization-problem" class="nav-link" data-scroll-target="#quantiles-as-a-minimization-problem">Quantiles as a Minimization Problem</a></li>
+  <li><a href="#advantages-of-quantiles" id="toc-advantages-of-quantiles" class="nav-link" data-scroll-target="#advantages-of-quantiles">Advantages of quantiles</a></li>
+  <li><a href="#quantile-based-summary-statistics" id="toc-quantile-based-summary-statistics" class="nav-link" data-scroll-target="#quantile-based-summary-statistics">Quantile-based Summary Statistics</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -158,7 +164,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">December 23, 2023</p>
+      <p class="date-modified">December 24, 2023</p>
     </div>
   </div>
     
@@ -313,11 +319,81 @@ Q(p) = \mathrm{inf} \{ x: P(X \leq x) \geq p \}
 27.54102 </code></pre>
 </div>
 </div>
-<p>Quantiles are not only <em>theoretical</em>: we can build an <em>Empirical Cumulative Distribution</em> function that describes the cumulative <em>frequencies</em> of the observed values in our data.</p>
+<p>Quantiles are not only <em>theoretical</em>: we can build an <em>Empirical Cumulative Distribution Function</em> that describes the cumulative <em>frequencies</em> of the observed values in our data.</p>
 <p>For example, for an <span class="math inline">iid</span> sample:</p>
 <p><span id="eq-ECDF"><span class="math display">
 \hat F = \frac{\mathrm{number \ of \ observations} \leq t}{n}
 \tag{4}</span></span></p>
+<section id="sample-quantiles-and-sampling-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="sample-quantiles-and-sampling-distribution">Sample Quantiles and Sampling Distribution</h2>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If we wish to make inference we need to account for uncertainty.</p>
+</div>
+</div>
+<p>The quantiles can be <em>estimated</em> by inverting the <em>ECDF</em>: this amounts to finding <span class="math inline">Q(p)</span> for a given <span class="math inline">p</span> and, even if the function is <em>discrete</em>, we can extrapolate between the jumps. However, we need to take into account the sampling distribution to make any inference about the characteristic of interest and their distribution shape in the population we are sampling from.</p>
+<p>Asymptotic results shows that, for an <em>identically and independently distributed</em> (<span class="math inline">iid</span>) sample, being <span class="math inline">f(x)</span> the <em>probability density function</em> and <span class="math inline">Q(p)</span> the <em>quantile function</em>:</p>
+<p><span id="eq-quantileasymptotic"><span class="math display">
+\hat Q \stackrel{\mathrm{approx}}{\sim} N \left ( Q(p), \sqrt{\frac{(1- p)p}{n} \frac{1}{f(Q(p))^2}} \right )
+\tag{5}</span></span></p>
+<p>This function depends on the unknown: probability density function, <span class="math inline">n</span>, and <span class="math inline">p</span>.</p>
+</section>
+<section id="quantiles-as-a-minimization-problem" class="level2">
+<h2 class="anchored" data-anchor-id="quantiles-as-a-minimization-problem">Quantiles as a Minimization Problem</h2>
+<p>Quantiles can be considered as a solution to a certain minimization problem; for example, the mean is defined as:</p>
+<p><span id="eq-medianargmin"><span class="math display">
+x_{0.5} = \underset{c}{\mathrm{argmin}} \ \mathbb{E} [ \ \vert Y - c \vert \ ]
+\tag{6}</span></span></p>
+<p>A more general formula is:</p>
+<p><span id="eq-quantileargmin1"><span class="math display">
+Q(p) = \underset{c}{\mathrm{argmin}} \ \mathbb{E} [d_p(Y, c)]
+\tag{7}</span></span></p>
+<p>Where:</p>
+<p><span id="eq-quantileargmin2"><span class="math display">
+d_p (Y, c) =
+\begin{cases}
+\begin{aligned}
+(1 -p) \ \vert Y - c \vert \qquad \mathrm{for} \ Y &amp;&lt; c \\
+p \ \vert Y - c \vert \qquad \mathrm{for} \ Y &amp;\geq c
+\end{aligned}
+\end{cases}
+\tag{8}</span></span></p>
+<p>If we are dealing with <em>sample</em> quantiles instead, we find <span class="math inline">Q(p)</span> as the value that minimises:</p>
+<p><span id="eq-quantilesample"><span class="math display">
+\frac{1}{n} \sum^n_{i=1} d_p(y_i, c) = \frac{1 - p}{n} \sum_{y_i &lt; q} \ \vert y_i - q \vert + \frac{p}{n} \sum_{y_i &gt; q} \ \vert y_i - q \vert
+\tag{9}</span></span></p>
+<p>Each point contributes to a certain value and we can represent a <em>loss function</em>.</p>
+</section>
+<section id="advantages-of-quantiles" class="level2">
+<h2 class="anchored" data-anchor-id="advantages-of-quantiles">Advantages of quantiles</h2>
+<ul>
+<li>The mean, standard deviantion, and skewness are <em>not robust</em>: they are highly sensitive to <em>outliers</em>.</li>
+<li>Quantiles are <em>equivariant</em> to non-decreasing transformation.</li>
+</ul>
+<p>A function is non decreasing if <span class="math inline">h(b) \geq h(a)</span> if <span class="math inline">b&gt;a</span><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. This property implies that <span class="math inline">Q(p, h(Y)) = h(Q(p, Y))</span><a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>.</p>
+</section>
+<section id="quantile-based-summary-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="quantile-based-summary-statistics">Quantile-based Summary Statistics</h2>
+<p>Quantiles allow to describe the <em>scale</em> and <em>shape</em> of distributions.</p>
+<p>Scale can be summarised with a <em>quantile-based scale</em> measure (<strong>QSC</strong>) at a selected <span class="math inline">p</span>:</p>
+<p><span id="eq-QSC"><span class="math display">
+QSC(p) = Q(1 - p) - Q(p) \ \mathrm{for} \ p &lt; 0.5
+\tag{10}</span></span></p>
+<p>The <em>interquartile range</em> (IQR) corresponds to QSC(0.25).</p>
+<p>Skewness can be summarised with a <em>quantile-based skewness</em> (<strong>QSK</strong>) or <em>asymmetry</em> index:</p>
+<p><span id="eq-QSK"><span class="math display">
+QSK(p) = \frac{Q(1 - p) - Q(.5)}{Q(.5) - Q(p)} - 1\ \mathrm{for} \ p &lt; 0.5
+\tag{11}</span></span></p>
+<p>If <span class="math inline">QSK(p) &gt; 0</span>, we have <em>right-skewness</em>.</p>
+</section>
 </section>
 
 
@@ -330,6 +406,8 @@ Q(p) = \mathrm{inf} \{ x: P(X \leq x) \geq p \}
 <li id="fn4"><p>Warning: the mean is <em>not</em> a robust indicator of position.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>Generalized Linear Models.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn6"><p>In other words, it determines a specific point in the distribution. For example, the <em>median</em> is the quantile of order 0.5: you have a <span class="math inline">50%</span> probability of observing a value lower than the median.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>The basic example is a <em>linear transformation</em>, but this property also applies to <em>logarithms</em>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>For example, <span class="math inline">Q(p, a + bY) = a + bQ(p, Y)</span>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

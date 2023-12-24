@@ -183,7 +183,7 @@ pquant[4]- pquant[3]; pquant[3] - pquant[2]
 pquant[5]- pquant[3]; pquant[3] - pquant[1]
 ```
 
-Quantiles are not only _theoretical_: we can build an _Empirical Cumulative Distribution_ function that describes the cumulative _frequencies_ of the observed values in our data.
+Quantiles are not only _theoretical_: we can build an _Empirical Cumulative Distribution Function_ that describes the cumulative _frequencies_ of the observed values in our data.
 
 For example, for an $iid$ sample:
 
@@ -191,3 +191,79 @@ $$
 \hat F = \frac{\mathrm{number \ of \ observations} \leq t}{n}
 $${#eq-ECDF}
 
+## Sample Quantiles and Sampling Distribution
+
+:::{.callout-warning}
+If we wish to make inference we need to account for uncertainty.
+:::
+
+The quantiles can be _estimated_ by inverting the _ECDF_: this amounts to finding $Q(p)$ for a given $p$ and, even if the function is _discrete_, we can extrapolate between the jumps. However, we need to take into account the sampling distribution to make any inference about the characteristic of interest and their distribution shape in the population we are sampling from.
+
+Asymptotic results shows that, for an _identically and independently distributed_ ($iid$) sample, being $f(x)$ the _probability density function_ and $Q(p)$ the _quantile function_:
+
+$$
+\hat Q \stackrel{\mathrm{approx}}{\sim} N \left ( Q(p), \sqrt{\frac{(1- p)p}{n} \frac{1}{f(Q(p))^2}} \right )
+$${#eq-quantileasymptotic}
+
+This function depends on the unknown: probability density function, $n$, and $p$.
+
+## Quantiles as a Minimization Problem
+
+Quantiles can be considered as a solution to a certain minimization problem; for example, the mean is defined as:
+
+$$
+x_{0.5} = \underset{c}{\mathrm{argmin}} \ \mathbb{E} [ \ \vert Y - c \vert \ ]
+$${#eq-medianargmin}
+
+A more general formula is:
+
+$$
+Q(p) = \underset{c}{\mathrm{argmin}} \ \mathbb{E} [d_p(Y, c)]
+$${#eq-quantileargmin1}
+
+Where:
+
+$$
+d_p (Y, c) = 
+\begin{cases}
+\begin{aligned}
+(1 -p) \ \vert Y - c \vert \qquad \mathrm{for} \ Y &< c \\
+p \ \vert Y - c \vert \qquad \mathrm{for} \ Y &\geq c
+\end{aligned}
+\end{cases}
+$${#eq-quantileargmin2}
+
+If we are dealing with _sample_ quantiles instead, we find $Q(p)$ as the value that minimises:
+
+$$
+\frac{1}{n} \sum^n_{i=1} d_p(y_i, c) = \frac{1 - p}{n} \sum_{y_i < q} \ \vert y_i - q \vert + \frac{p}{n} \sum_{y_i > q} \ \vert y_i - q \vert
+$${#eq-quantilesample}
+
+Each point contributes to a certain value and we can represent a _loss function_.
+
+## Advantages of quantiles
+
+- The mean, standard deviantion, and skewness are _not robust_: they are highly sensitive to _outliers_.
+- Quantiles are _equivariant_ to non-decreasing transformation.
+
+A function is non decreasing if $h(b) \geq h(a)$ if $b>a$^[The basic example is a _linear transformation_, but this property also applies to _logarithms_.]. This property implies that $Q(p, h(Y)) = h(Q(p, Y))$^[For example, $Q(p, a + bY) = a + bQ(p, Y)$.]. 
+
+## Quantile-based Summary Statistics
+
+Quantiles allow to describe the _scale_ and _shape_ of distributions.
+
+Scale can be summarised with a _quantile-based scale_ measure (__QSC__) at a selected $p$:
+
+$$
+QSC(p) = Q(1 - p) - Q(p) \ \mathrm{for} \ p < 0.5
+$${#eq-QSC}
+
+The _interquartile range_ (IQR) corresponds to QSC(0.25).
+
+Skewness can be summarised with a _quantile-based skewness_ (__QSK__) or _asymmetry_ index:
+
+$$
+QSK(p) = \frac{Q(1 - p) - Q(.5)}{Q(.5) - Q(p)} - 1\ \mathrm{for} \ p < 0.5
+$${#eq-QSK}
+
+If $QSK(p) > 0$, we have _right-skewness_.
