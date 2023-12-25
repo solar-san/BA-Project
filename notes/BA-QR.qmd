@@ -57,6 +57,7 @@ pathmaker <- function(filename, data_path = "/Users/themagician/Documents/DABS/A
 
 lib_list <- list(
   "tidyverse",
+  "quantreg",
   "ggthemes",
   "patchwork"
 )
@@ -267,3 +268,146 @@ QSK(p) = \frac{Q(1 - p) - Q(.5)}{Q(.5) - Q(p)} - 1\ \mathrm{for} \ p < 0.5
 $${#eq-QSK}
 
 If $QSK(p) > 0$, we have _right-skewness_.
+
+# Quantile regression
+
+> We are modeling the $\tau$ quantile of a distribution as a function of the _conditional quantile_ $X$.
+
+The _linear quantile regression_ model (__QRM__) is:
+
+$$
+Q_{\tau} (Y \vert X) = \beta_0^{(\tau)} + \beta_1^{(\tau)} X
+$${#eq-QRMcond}
+
+If we assume that $\epsilon^{(\tau)}$ is a _random variable_ such that $Q_{\tau} (\epsilon^{(\tau)} \vert X) = 0$ we can rewrite the previous equation as:
+
+$$
+Y = \beta_0^{(\tau)} + \beta_1^{(\tau)} X + \epsilon^{(\tau)}
+$${#eq-QRMlin}
+
+Choosing $\tau$ determines the type of QRM: for $\tau = 0.5$, we have a _median regression_.
+
+## Estimation
+
+If we have pairs of independently sampled observations $(x_i, y_i)$, for $i = 1, ..., n$, the QRM leads to $y_i = \beta_0^{(\tau)} + \beta_1^{(\tau)} x_i + \epsilon_i^{(\tau)}$.
+
+Based on the sampled points, we need a way to fit the function: we need an estimator for $\beta^{(\tau)} = (\beta_0^{(\tau)}, \beta_1^{(\tau)})$.
+
+The median regression model estimates are such as to minimise^[This is the same _loss function_ used to find the median.s]:
+
+$$
+\sum^n_{i = 1} \vert y_i - a - bx_i \vert
+$${#eq-QRMmedianloss}
+
+More generally:
+
+$$
+\sum^n_{i = 1} d_{\tau} (y_i, a + b x_i)
+$${#eq-QRMloss1}
+
+where:
+
+$$
+d_{\tau} (y_i, a + b x_i) =
+\begin{cases}
+\begin{aligned}
+(1 - \tau) \vert y_i - a - bx_i \vert \qquad \mathrm{for} \ y_i < a + b x_i \\
+\tau \vert y_i - a - bx_i \vert \qquad \mathrm{for} \ y_i \geq a + b x_i
+\end{aligned}
+\end{cases}
+$${#eq-QRMloss2}
+
+
+:::{.callout-note}
+Minimisation is achieved with _linear programming_ methods. The solution _might be not unique_.
+:::
+
+## Example
+
+We will use Engel food expenditure data used in Koenker and Bassett(1982). This is a regression dataset consisting of 235 observations on income and expenditure on food for Belgian working class households.
+
+```{r}
+data(engel)
+```
+
+Plotting the dataset:
+
+```{r}
+ggplot(
+  data = engel, 
+  aes(
+    x = income, 
+    y = foodexp
+    )
+  ) + 
+  geom_point() + 
+  labs(
+    title = "Engel food expenditure data"
+    )
+```
+
+We need the `quantreg` dataset to perform QRM. The function `geom_quantile()` can be used to compare the standard linear regression fit and the median fit:
+
+```{r}
+ggplot(
+  data = engel, 
+  aes(
+    x = income,
+    y = foodexp
+    )
+  ) + 
+  geom_point() + 
+  geom_smooth(
+    method = "lm", 
+    aes(
+      col = "limegreen"
+      ), 
+    se = FALSE
+    ) + 
+  geom_quantile(
+    quantiles = 0.5, 
+    aes(
+      col = "dodgerblue"
+      )
+    ) +
+  labs(
+    title = "Engel food expenditure data - mean and median regression"
+    ) +
+  scale_colour_manual(
+    name = 'Regression type:',
+    values =c(
+      'limegreen'='limegreen',
+      'dodgerblue'='dodgerblue'
+      ), 
+    labels = c(
+      'Linear Regression','
+      Median Regression'
+      )
+    )
+```
+
+The following plot represents a set of _deciles regressions_:
+  
+```{r}
+ggplot(
+  data = engel, 
+  aes(
+    x = income,
+    y = foodexp
+    )
+  ) + 
+  geom_point() + 
+  labs(
+    title = "Engel food expenditure data"
+    ) +
+  geom_quantile(
+    quantiles = seq(
+      .1,
+      .9,
+      by=0.1
+      ), 
+    col = "indianred"
+    )
+```
+  
+> With this approach we can clearly see that expenditure on food is _not_ the same in the different quantiles.
