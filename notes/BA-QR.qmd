@@ -505,6 +505,23 @@ In particular, we will use __non parametric resampling bootstrap__.
 - For each bootstrap sample, we compute the estimate of the parameter, giving us a _bootstrap estimate_.
 - We collect the bootstrap estimates for many bootstrap samples to create a _bootstrap distribution_ which we use as a _sampling distribution_ for the estimate.
 
+### Bootstrap Confidence Intervals
 
+We can construct confidence intervals by bootstrap. 
 
+> When a bootstrap distribution for an estimate is __symmetric__ and __bell-shaped__, we calculate a $1 − \alpha$% confidence interval using:
+
+$$
+[\hat \theta - q_{1- \frac{\alpha}{2}} \times \mathrm{sd_{boot}}, 
+\hat \theta + q_{1- \frac{\alpha}{2}} \times \mathrm{sd_{boot}}]
+$${#eq-CIsymmetricbootstrap}
+
+where $\mathrm{sd_{boot}$ denotes the standard deviation of the bootstrap estimates.
+
+> When a bootstrap distribution for an estimate is ___not_ symmetric__ we calculate a $1 − \alpha$% confidence interval using:
+
+$$
+\left [\theta_{\mathrm{boot}} \left (\frac{\alpha}{2} \right),
+\theta_{\mathrm{boot}}\left (1 - \frac{\alpha}{2} \right) \right]
+$${#eq-CIasymmetricbootstrap}
 

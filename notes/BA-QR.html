@@ -148,7 +148,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#non-iid-case" id="toc-non-iid-case" class="nav-link" data-scroll-target="#non-iid-case">Non-<span class="math inline">iid</span> case</a></li>
   </ul></li>
-  <li><a href="#the-bootstrap" id="toc-the-bootstrap" class="nav-link" data-scroll-target="#the-bootstrap">The Bootstrap</a></li>
+  <li><a href="#the-bootstrap" id="toc-the-bootstrap" class="nav-link" data-scroll-target="#the-bootstrap">The Bootstrap</a>
+  <ul class="collapse">
+  <li><a href="#bootstrap-confidence-intervals" id="toc-bootstrap-confidence-intervals" class="nav-link" data-scroll-target="#bootstrap-confidence-intervals">Bootstrap Confidence Intervals</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -676,6 +679,25 @@ Tip
 <li>For each bootstrap sample, we compute the estimate of the parameter, giving us a <em>bootstrap estimate</em>.</li>
 <li>We collect the bootstrap estimates for many bootstrap samples to create a <em>bootstrap distribution</em> which we use as a <em>sampling distribution</em> for the estimate.</li>
 </ul>
+<section id="bootstrap-confidence-intervals" class="level3">
+<h3 class="anchored" data-anchor-id="bootstrap-confidence-intervals">Bootstrap Confidence Intervals</h3>
+<p>We can construct confidence intervals by bootstrap.</p>
+<blockquote class="blockquote">
+<p>When a bootstrap distribution for an estimate is <strong>symmetric</strong> and <strong>bell-shaped</strong>, we calculate a <span class="math inline">1 − \alpha</span>% confidence interval using:</p>
+</blockquote>
+<p><span id="eq-CIsymmetricbootstrap"><span class="math display">
+[\hat \theta - q_{1- \frac{\alpha}{2}} \times \mathrm{sd_{boot}},
+\hat \theta + q_{1- \frac{\alpha}{2}} \times \mathrm{sd_{boot}}]
+\tag{21}</span></span></p>
+<p>where <span class="math inline">\mathrm{sd_{boot}</span> denotes the standard deviation of the bootstrap estimates.</p>
+<blockquote class="blockquote">
+<p>When a bootstrap distribution for an estimate is <strong><em>not</em> symmetric</strong> we calculate a <span class="math inline">1 − \alpha</span>% confidence interval using:</p>
+</blockquote>
+<p><span id="eq-CIasymmetricbootstrap"><span class="math display">
+\left [\theta_{\mathrm{boot}} \left (\frac{\alpha}{2} \right),
+\theta_{\mathrm{boot}}\left (1 - \frac{\alpha}{2} \right) \right]
+\tag{22}</span></span></p>
+</section>
 </section>
 </section>
 
