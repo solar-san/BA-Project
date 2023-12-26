@@ -380,8 +380,8 @@ ggplot(
       'dodgerblue'='dodgerblue'
       ), 
     labels = c(
-      'Linear Regression','
-      Median Regression'
+      'Linear Regression',
+      'Median Regression'
       )
     )
 ```
@@ -411,3 +411,100 @@ ggplot(
 ```
   
 > With this approach we can clearly see that expenditure on food is _not_ the same in the different quantiles.
+
+By default `geom_quantile` shows the quartile fits^[$\tau = c(0.25, 0.5, 0.75)$.].
+
+```{r}
+ggplot(
+    data = engel, 
+    aes(
+        x = income, 
+        y = foodexp
+        )
+    ) + 
+    geom_point() + 
+    labs(
+        title = "Engel food expenditure data"
+        ) +
+    geom_quantile(
+        col = "dodgerblue"
+        )
+```
+
+> What are the implications of different $\beta_1^{(\tau)}$ slopes?
+
+If we take two models for $\tau = p$ and $\tau = q$ and rearrange the two equations, having the same data points $(y_i, x_i)$, we obtain:
+
+$$
+(\epsilon_i^{(p)} - \epsilon_i^{(q)}) = (\beta_0^{(p)} - \beta_0^{(q)}) + (\beta_1^{(p)} - \beta_1^{(q)})x_i
+$${#eq-slopedifferences1}
+
+The difference between the two errors depend on $x_i$. If the two slopes are equal^[$(\beta_1^{(p)} - \beta_1^{(q)}) = 0$.], then the two errors differ only by a constant: hence, the quantile error distribution only differ for a constant. This means that the observations are identically distributed for different values of $X$.
+
+:::{.callout-important}
+QRM can be used to assess whether the assumption of _identically distributed_ observations is valid.
+:::
+
+Note that, however, to formally test the equality of slopes we need a way to make _inference_.
+
+## Multiple Independent variables
+
+We can extend the model and obtain a _multivariate_ quantle regression. In the (compact) matrix notation we have:
+
+$$
+Q_{\tau} = (Y \vert \mathbf{X}) = \mathbf{X} \mathbf{\beta}^{(\tau)} + \epsilon_i^{\tau}
+$${#eq-multiQRM}
+
+:::{.callout-tip}
+The coefficients $\mathbf{\beta}^{(\tau)}$ can be interpreted as the effect of $x$ on the quantile once the effect of other variables is also taken into account.
+:::
+
+Again, we need a way to assess the significance of each added variable: in other words, a way to make _inference_. 
+
+## Inference
+
+### $iid$ case
+
+> Does the addition of a variable $x_j$ _improve_ the goodness of fit?
+
+There are two approaches to conduct inference in the context of quantile regression:
+
+1. With lots of mathematics we can derive some asymptotic results for $\beta^{(\tau)}$.
+2. Another option is to use _simulation based inference_, such as __the bootstrap__.
+
+For $iid$ observations it can be shown that, under some weak conditions:
+
+$$
+\sqrt{n} (\hat \beta - \beta) \stackrel{d} {\to} N( 0, \mathbf{\Sigma}) 
+$${#eq-inference}
+
+$\mathbf{\Sigma}$ is the _variance-covariance_ matrix of form:
+
+$$
+\mathbf{\Sigma} = \frac{\tau(1 - \tau)}{f_{\epsilon (\tau)}} (\mathbf{X}^T \mathbf{X})^{-1}
+$${#eq-inferencevarcovarmatrix}
+
+The term $f_{\epsilon (\tau)}$ is the _pdf_ of the error term $\epsilon (\tau)$ evaluated at the $\tau^{th}$ quantile of the error distribution, which we assumed to be 0.
+
+### Non-$iid$ case
+
+The form of $\mathbf{\Sigma}$ for the non-identically distributed case is fairly complex.
+
+In general, the mathematics is difficult and it is not always possible to derive asymptotic variances analytically. Hence, a simulation-based method such as the __bootstrap__ is required.
+
+## The Bootstrap
+
+> __Bootstrapping__^[First introduced by Bradley Efron in the late 70s.] is _any test or metric that uses random sampling with replacement_, mimicking the sampling process, and falls under the broader class of _resampling methods_. Bootstrapping assigns _measures of accuracy_^[bias, variance, confidence intervals, prediction error, etc.] to sample estimates. This technique allows estimation of the sampling distribution of almost any statistic using random sampling methods.
+
+It is based on the sample data and having _enough_ computing power. The key idea is that we assume the population is just many copies of the sample; then, we make lots of copies of the sample and then we sample repeatedly from the population. In practice, instead of actually making many copies of the sample and sampling from that, we use a sampling technique that is equivalent, based on _sampling with replacement_.
+
+In particular, we will use __non parametric resampling bootstrap__.
+
+- We sample _with replacement_ from the original sample.
+- Each sample selected is called a _bootstrap sample_.
+- For each bootstrap sample, we compute the estimate of the parameter, giving us a _bootstrap estimate_.
+- We collect the bootstrap estimates for many bootstrap samples to create a _bootstrap distribution_ which we use as a _sampling distribution_ for the estimate.
+
+
+
+

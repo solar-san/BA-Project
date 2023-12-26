@@ -143,6 +143,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#estimation" id="toc-estimation" class="nav-link" data-scroll-target="#estimation">Estimation</a></li>
   <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  <li><a href="#multiple-independent-variables" id="toc-multiple-independent-variables" class="nav-link" data-scroll-target="#multiple-independent-variables">Multiple Independent variables</a></li>
+  <li><a href="#inference" id="toc-inference" class="nav-link" data-scroll-target="#inference">Inference</a>
+  <ul class="collapse">
+  <li><a href="#non-iid-case" id="toc-non-iid-case" class="nav-link" data-scroll-target="#non-iid-case">Non-<span class="math inline">iid</span> case</a></li>
+  </ul></li>
+  <li><a href="#the-bootstrap" id="toc-the-bootstrap" class="nav-link" data-scroll-target="#the-bootstrap">The Bootstrap</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -169,7 +175,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">December 25, 2023</p>
+      <p class="date-modified">December 26, 2023</p>
     </div>
   </div>
     
@@ -514,8 +520,8 @@ Note
 <span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>      <span class="st">'dodgerblue'</span><span class="ot">=</span><span class="st">'dodgerblue'</span></span>
 <span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>      ), </span>
 <span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(</span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>      <span class="st">'Linear Regression'</span>,<span class="st">'</span></span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="st">      Median Regression'</span></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>      <span class="st">'Linear Regression'</span>,</span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>      <span class="st">'Median Regression'</span></span>
 <span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>      )</span>
 <span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -561,6 +567,115 @@ Smoothing formula not specified. Using: y ~ x</code></pre>
 <blockquote class="blockquote">
 <p>With this approach we can clearly see that expenditure on food is <em>not</em> the same in the different quantiles.</p>
 </blockquote>
+<p>By default <code>geom_quantile</code> shows the quartile fits<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> engel, </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> income, </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> foodexp</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span> </span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Engel food expenditure data"</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">+</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_quantile</span>(</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="st">"dodgerblue"</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Smoothing formula not specified. Using: y ~ x</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="BA-QR_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>What are the implications of different <span class="math inline">\beta_1^{(\tau)}</span> slopes?</p>
+</blockquote>
+<p>If we take two models for <span class="math inline">\tau = p</span> and <span class="math inline">\tau = q</span> and rearrange the two equations, having the same data points <span class="math inline">(y_i, x_i)</span>, we obtain:</p>
+<p><span id="eq-slopedifferences1"><span class="math display">
+(\epsilon_i^{(p)} - \epsilon_i^{(q)}) = (\beta_0^{(p)} - \beta_0^{(q)}) + (\beta_1^{(p)} - \beta_1^{(q)})x_i
+\tag{17}</span></span></p>
+<p>The difference between the two errors depend on <span class="math inline">x_i</span>. If the two slopes are equal<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>, then the two errors differ only by a constant: hence, the quantile error distribution only differ for a constant. This means that the observations are identically distributed for different values of <span class="math inline">X</span>.</p>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>QRM can be used to assess whether the assumption of <em>identically distributed</em> observations is valid.</p>
+</div>
+</div>
+<p>Note that, however, to formally test the equality of slopes we need a way to make <em>inference</em>.</p>
+</section>
+<section id="multiple-independent-variables" class="level2">
+<h2 class="anchored" data-anchor-id="multiple-independent-variables">Multiple Independent variables</h2>
+<p>We can extend the model and obtain a <em>multivariate</em> quantle regression. In the (compact) matrix notation we have:</p>
+<p><span id="eq-multiQRM"><span class="math display">
+Q_{\tau} = (Y \vert \mathbf{X}) = \mathbf{X} \mathbf{\beta}^{(\tau)} + \epsilon_i^{\tau}
+\tag{18}</span></span></p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The coefficients <span class="math inline">\mathbf{\beta}^{(\tau)}</span> can be interpreted as the effect of <span class="math inline">x</span> on the quantile once the effect of other variables is also taken into account.</p>
+</div>
+</div>
+<p>Again, we need a way to assess the significance of each added variable: in other words, a way to make <em>inference</em>.</p>
+</section>
+<section id="inference" class="level2">
+<h2 class="anchored" data-anchor-id="inference">Inference</h2>
+<p>###&nbsp;<span class="math inline">iid</span> case</p>
+<blockquote class="blockquote">
+<p>Does the addition of a variable <span class="math inline">x_j</span> <em>improve</em> the goodness of fit?</p>
+</blockquote>
+<p>There are two approaches to conduct inference in the context of quantile regression:</p>
+<ol type="1">
+<li>With lots of mathematics we can derive some asymptotic results for <span class="math inline">\beta^{(\tau)}</span>.</li>
+<li>Another option is to use <em>simulation based inference</em>, such as <strong>the bootstrap</strong>.</li>
+</ol>
+<p>For <span class="math inline">iid</span> observations it can be shown that, under some weak conditions:</p>
+<p><span id="eq-inference"><span class="math display">
+\sqrt{n} (\hat \beta - \beta) \stackrel{d} {\to} N( 0, \mathbf{\Sigma})
+\tag{19}</span></span></p>
+<p><span class="math inline">\mathbf{\Sigma}</span> is the <em>variance-covariance</em> matrix of form:</p>
+<p><span id="eq-inferencevarcovarmatrix"><span class="math display">
+\mathbf{\Sigma} = \frac{\tau(1 - \tau)}{f_{\epsilon (\tau)}} (\mathbf{X}^T \mathbf{X})^{-1}
+\tag{20}</span></span></p>
+<p>The term <span class="math inline">f_{\epsilon (\tau)}</span> is the <em>pdf</em> of the error term <span class="math inline">\epsilon (\tau)</span> evaluated at the <span class="math inline">\tau^{th}</span> quantile of the error distribution, which we assumed to be 0.</p>
+<section id="non-iid-case" class="level3">
+<h3 class="anchored" data-anchor-id="non-iid-case">Non-<span class="math inline">iid</span> case</h3>
+<p>The form of <span class="math inline">\mathbf{\Sigma}</span> for the non-identically distributed case is fairly complex.</p>
+<p>In general, the mathematics is difficult and it is not always possible to derive asymptotic variances analytically. Hence, a simulation-based method such as the <strong>bootstrap</strong> is required.</p>
+</section>
+</section>
+<section id="the-bootstrap" class="level2">
+<h2 class="anchored" data-anchor-id="the-bootstrap">The Bootstrap</h2>
+<blockquote class="blockquote">
+<p><strong>Bootstrapping</strong><a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> is <em>any test or metric that uses random sampling with replacement</em>, mimicking the sampling process, and falls under the broader class of <em>resampling methods</em>. Bootstrapping assigns <em>measures of accuracy</em><a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> to sample estimates. This technique allows estimation of the sampling distribution of almost any statistic using random sampling methods.</p>
+</blockquote>
+<p>It is based on the sample data and having <em>enough</em> computing power. The key idea is that we assume the population is just many copies of the sample; then, we make lots of copies of the sample and then we sample repeatedly from the population. In practice, instead of actually making many copies of the sample and sampling from that, we use a sampling technique that is equivalent, based on <em>sampling with replacement</em>.</p>
+<p>In particular, we will use <strong>non parametric resampling bootstrap</strong>.</p>
+<ul>
+<li>We sample <em>with replacement</em> from the original sample.</li>
+<li>Each sample selected is called a <em>bootstrap sample</em>.</li>
+<li>For each bootstrap sample, we compute the estimate of the parameter, giving us a <em>bootstrap estimate</em>.</li>
+<li>We collect the bootstrap estimates for many bootstrap samples to create a <em>bootstrap distribution</em> which we use as a <em>sampling distribution</em> for the estimate.</li>
+</ul>
 </section>
 </section>
 
@@ -577,6 +692,10 @@ Smoothing formula not specified. Using: y ~ x</code></pre>
 <li id="fn7"><p>The basic example is a <em>linear transformation</em>, but this property also applies to <em>logarithms</em>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn8"><p>For example, <span class="math inline">Q(p, a + bY) = a + bQ(p, Y)</span>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn9"><p>This is the same <em>loss function</em> used to find the median.s<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p><span class="math inline">\tau = c(0.25, 0.5, 0.75)</span>.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p><span class="math inline">(\beta_1^{(p)} - \beta_1^{(q)}) = 0</span>.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>First introduced by Bradley Efron in the late 70s.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>bias, variance, confidence intervals, prediction error, etc.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
