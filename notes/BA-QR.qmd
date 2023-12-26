@@ -525,3 +525,4 @@ $$
 \theta_{\mathrm{boot}}\left (1 - \frac{\alpha}{2} \right) \right]
 $${#eq-CIasymmetricbootstrap}
 
+These tqo extremes denote the $\alpha/2$ and $1 - \alpha/2$ _empirical quantiles_ of the bootstrap estimates.
