@@ -146,13 +146,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#multiple-independent-variables" id="toc-multiple-independent-variables" class="nav-link" data-scroll-target="#multiple-independent-variables">Multiple Independent variables</a></li>
   <li><a href="#inference" id="toc-inference" class="nav-link" data-scroll-target="#inference">Inference</a>
   <ul class="collapse">
+  <li><a href="#iid-case" id="toc-iid-case" class="nav-link" data-scroll-target="#iid-case"><span class="math inline">iid</span> case</a></li>
   <li><a href="#non-iid-case" id="toc-non-iid-case" class="nav-link" data-scroll-target="#non-iid-case">Non-<span class="math inline">iid</span> case</a></li>
   </ul></li>
   <li><a href="#the-bootstrap" id="toc-the-bootstrap" class="nav-link" data-scroll-target="#the-bootstrap">The Bootstrap</a>
   <ul class="collapse">
   <li><a href="#bootstrap-confidence-intervals" id="toc-bootstrap-confidence-intervals" class="nav-link" data-scroll-target="#bootstrap-confidence-intervals">Bootstrap Confidence Intervals</a></li>
+  <li><a href="#bootstrap-inference" id="toc-bootstrap-inference" class="nav-link" data-scroll-target="#bootstrap-inference">Bootstrap Inference</a></li>
   </ul></li>
   </ul></li>
+  <li><a href="#more-intepretation-of-the-quantile-regression" id="toc-more-intepretation-of-the-quantile-regression" class="nav-link" data-scroll-target="#more-intepretation-of-the-quantile-regression">More Intepretation of the Quantile Regression</a></li>
   </ul>
 </nav>
 </div>
@@ -178,7 +181,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">December 26, 2023</p>
+      <p class="date-modified">December 27, 2023</p>
     </div>
   </div>
     
@@ -642,7 +645,8 @@ Tip
 </section>
 <section id="inference" class="level2">
 <h2 class="anchored" data-anchor-id="inference">Inference</h2>
-<p>###&nbsp;<span class="math inline">iid</span> case</p>
+<section id="iid-case" class="level3">
+<h3 class="anchored" data-anchor-id="iid-case"><span class="math inline">iid</span> case</h3>
 <blockquote class="blockquote">
 <p>Does the addition of a variable <span class="math inline">x_j</span> <em>improve</em> the goodness of fit?</p>
 </blockquote>
@@ -660,6 +664,7 @@ Tip
 \mathbf{\Sigma} = \frac{\tau(1 - \tau)}{f_{\epsilon (\tau)}} (\mathbf{X}^T \mathbf{X})^{-1}
 \tag{20}</span></span></p>
 <p>The term <span class="math inline">f_{\epsilon (\tau)}</span> is the <em>pdf</em> of the error term <span class="math inline">\epsilon (\tau)</span> evaluated at the <span class="math inline">\tau^{th}</span> quantile of the error distribution, which we assumed to be 0.</p>
+</section>
 <section id="non-iid-case" class="level3">
 <h3 class="anchored" data-anchor-id="non-iid-case">Non-<span class="math inline">iid</span> case</h3>
 <p>The form of <span class="math inline">\mathbf{\Sigma}</span> for the non-identically distributed case is fairly complex.</p>
@@ -686,10 +691,10 @@ Tip
 <p>When a bootstrap distribution for an estimate is <strong>symmetric</strong> and <strong>bell-shaped</strong>, we calculate a <span class="math inline">1 − \alpha</span>% confidence interval using:</p>
 </blockquote>
 <p><span id="eq-CIsymmetricbootstrap"><span class="math display">
-[\hat \theta - q_{1- \frac{\alpha}{2}} \times \mathrm{sd_{boot}},
-\hat \theta + q_{1- \frac{\alpha}{2}} \times \mathrm{sd_{boot}}]
+\left [\hat \theta - q_{1- \frac{\alpha}{2}} \times \mathrm{sd_{boot}},
+\hat \theta + q_{1- \frac{\alpha}{2}} \times \mathrm{sd_{boot}} \right ]
 \tag{21}</span></span></p>
-<p>where <span class="math inline">\mathrm{sd_{boot}</span> denotes the standard deviation of the bootstrap estimates.</p>
+<p>where <span class="math inline">\mathrm{sd_{boot}}</span> denotes the standard deviation of the bootstrap estimates.</p>
 <blockquote class="blockquote">
 <p>When a bootstrap distribution for an estimate is <strong><em>not</em> symmetric</strong> we calculate a <span class="math inline">1 − \alpha</span>% confidence interval using:</p>
 </blockquote>
@@ -697,9 +702,90 @@ Tip
 \left [\theta_{\mathrm{boot}} \left (\frac{\alpha}{2} \right),
 \theta_{\mathrm{boot}}\left (1 - \frac{\alpha}{2} \right) \right]
 \tag{22}</span></span></p>
-<p>These tqo extremes denote the <span class="math inline">\alpha/2</span> and <span class="math inline">1 - \alpha/2</span> <em>empirical quantiles</em> of the bootstrap estimates.</p>
+<p>These two extremes denote the <span class="math inline">\alpha/2</span> and <span class="math inline">1 - \alpha/2</span> <em>empirical quantiles</em> of the bootstrap estimates.</p>
+</section>
+<section id="bootstrap-inference" class="level3">
+<h3 class="anchored" data-anchor-id="bootstrap-inference">Bootstrap Inference</h3>
+<p>Using the <em>standard error</em> derived with the bootstrap samples we can build a test on <span class="math inline">\beta_j^{\tau}</span><a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>, in the form</p>
+<p><span id="eq-bootstrapinference"><span class="math display">
+\begin{cases}
+\begin{aligned}
+H_0: B_j = 0 \\
+H_1 : B_j \neq 0
+\end{aligned}
+\end{cases}
+\tag{23}</span></span></p>
+<p>Under the null hypothesis, our null statistic is:</p>
+<p><span id="eq-teststatistic"><span class="math display">
+TS_{B_j} = \frac{\hat \beta_j}{se(B_j)} \sim N(0, 1)
+\tag{24}</span></span></p>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We estimate <span class="math inline">se(\beta_j)</span> with the bootstrap or with some theoretical derivation: hence, we need to compare the test statistic against a <span class="math inline">T</span> distribution with <span class="math inline">n − (p + 1)</span> degrees of freedom.</p>
+</div>
+</div>
+<p>Inference on single coefficient is often useful; however, we wish to test other hypothesis and also a to test <em>set</em> of hypothesis.</p>
+<p>For a QR model for a single quantile τ we can have two different <em>nested model</em> structures; for <span class="math inline">q \geq p</span>:</p>
+<p><span id="eq-nestedmodels"><span class="math display">
+\begin{aligned}
+\mathrm{Model \ 0}: \qquad Q_{\tau} (Y \vert X_1, …, X_q) = \beta_0^{\tau} + \beta_1^{\tau} X_1 + … + \beta_q^{\tau} \\
+\mathrm{Model \ 1}: \qquad Q_{\tau} (Y \vert X_1, …, X_p) = \beta_0^{\tau} + \beta_1^{\tau} X_1 + … + \beta_p^{\tau} \\
+\end{aligned}
+\tag{25}</span></span></p>
+<p>Note that <em>Model 1</em> reduces to <em>Model 2</em> when <span class="math inline">\beta_{p + 1} = … = \beta_q = 0</span>.</p>
+<p>We are interested in constructing a test to verify the following null hypothesis<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a>:</p>
+<p><span id="eq-nestedinference"><span class="math display">
+\begin{cases}
+\begin{aligned}
+H_0: B_{p + 1} = … = \beta_q = 0 \\
+H_1: B_{p + 1} = … = \beta_q \neq 0
+\end{aligned}
+\end{cases}
+\tag{26}</span></span></p>
+<p>This null hypothesis can be tested through an ANOVA test, based on the asymptotic <em>normality</em>.</p>
+<p>Another important test might involve the comparison of the slopes of <span class="math inline">\beta^{(p)}_1</span> and <span class="math inline">\beta^{(q)}_1</span>, under the assumption of <em>identically distributed</em> data. In this case, we are comparing models for <em>different quantiles</em>; if we have one explanatory variable, then:</p>
+<p><span id="eq-slopecomparison"><span class="math display">
+\begin{aligned}
+\mathrm{Model \ 1}: Q_{q} (Y \vert X) = \beta_0^{(q)} + \beta_1^{(q)} X \\
+\mathrm{Model \ 2}: Q_{p} (Y \vert X) = \beta_0^{(p)} + \beta_1^{(p)} X
+\end{aligned}
+\tag{27}</span></span></p>
+<p>We are interested in the following hypothesis:</p>
+<p><span id="eq-slopetest"><span class="math display">
+\begin{cases}
+\begin{aligned}
+H_0: B_{p} = B_{q} \\
+H_1: B_{p} \neq B_{q}
+\end{aligned}
+\end{cases}
+\tag{28}</span></span></p>
+<p>Again, this test can be performed via ANOVA, based on the asymptotic normality.</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>we should test for <em>more</em> that two quantiles; formal testing gives <em>evidence</em> of varying slopes.</p>
+</div>
+</div>
 </section>
 </section>
+</section>
+<section id="more-intepretation-of-the-quantile-regression" class="level1">
+<h1>More Intepretation of the Quantile Regression</h1>
 </section>
 
 
@@ -719,6 +805,8 @@ Tip
 <li id="fn11"><p><span class="math inline">(\beta_1^{(p)} - \beta_1^{(q)}) = 0</span>.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn12"><p>First introduced by Bradley Efron in the late 70s.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn13"><p>bias, variance, confidence intervals, prediction error, etc.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>In the following notation the <span class="math inline">\tau</span> is omitted for readability.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>This test amounts to asking the question: “Are the added variables <em>significant</em> in explaining the behaviour of our dependent variable?”<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

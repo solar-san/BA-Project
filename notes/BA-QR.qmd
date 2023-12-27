@@ -463,7 +463,7 @@ Again, we need a way to assess the significance of each added variable: in other
 
 ## Inference
 
-### $iid$ case
+### $iid$ case
 
 > Does the addition of a variable $x_j$ _improve_ the goodness of fit?
 
@@ -512,11 +512,11 @@ We can construct confidence intervals by bootstrap.
 > When a bootstrap distribution for an estimate is __symmetric__ and __bell-shaped__, we calculate a $1 − \alpha$% confidence interval using:
 
 $$
-[\hat \theta - q_{1- \frac{\alpha}{2}} \times \mathrm{sd_{boot}}, 
-\hat \theta + q_{1- \frac{\alpha}{2}} \times \mathrm{sd_{boot}}]
+\left [\hat \theta - q_{1- \frac{\alpha}{2}} \times \mathrm{sd_{boot}}, 
+\hat \theta + q_{1- \frac{\alpha}{2}} \times \mathrm{sd_{boot}} \right ]
 $${#eq-CIsymmetricbootstrap}
 
-where $\mathrm{sd_{boot}$ denotes the standard deviation of the bootstrap estimates.
+where $\mathrm{sd_{boot}}$ denotes the standard deviation of the bootstrap estimates.
 
 > When a bootstrap distribution for an estimate is ___not_ symmetric__ we calculate a $1 − \alpha$% confidence interval using:
 
@@ -525,4 +525,82 @@ $$
 \theta_{\mathrm{boot}}\left (1 - \frac{\alpha}{2} \right) \right]
 $${#eq-CIasymmetricbootstrap}
 
-These tqo extremes denote the $\alpha/2$ and $1 - \alpha/2$ _empirical quantiles_ of the bootstrap estimates.
+These two extremes denote the $\alpha/2$ and $1 - \alpha/2$ _empirical quantiles_ of the bootstrap estimates.
+
+### Bootstrap Inference
+
+Using the _standard error_ derived with the bootstrap samples we can build a test on $\beta_j^{\tau}$^[In the following notation the $\tau$ is omitted for readability.], in the form 
+
+$$
+\begin{cases}
+\begin{aligned}
+H_0: B_j = 0 \\
+H_1 : B_j \neq 0 
+\end{aligned}
+\end{cases}
+$${#eq-bootstrapinference}
+
+Under the null hypothesis, our null statistic is:
+
+$$
+TS_{B_j} = \frac{\hat \beta_j}{se(B_j)} \sim N(0, 1)
+$${#eq-teststatistic}
+
+:::{.callout-important}
+We estimate $se(\beta_j)$ with the bootstrap or with some theoretical derivation: hence, we need to compare the test statistic against a $T$ distribution with $n − (p + 1)$ degrees of freedom.
+:::
+
+Inference on single coefficient is often useful; however, we wish to test other hypothesis and also a to test _set_ of hypothesis.
+
+For a QR model for a single quantile τ we can have two different _nested model_
+structures; for $q \geq p$:
+
+$$
+\begin{aligned}
+\mathrm{Model \ 0}: \qquad Q_{\tau} (Y \vert X_1, …, X_q) = \beta_0^{\tau} + \beta_1^{\tau} X_1 + … + \beta_q^{\tau} \\
+\mathrm{Model \ 1}: \qquad Q_{\tau} (Y \vert X_1, …, X_p) = \beta_0^{\tau} + \beta_1^{\tau} X_1 + … + \beta_p^{\tau} \\
+\end{aligned}
+$${#eq-nestedmodels}
+
+Note that _Model 1_ reduces to _Model 2_ when $\beta_{p + 1} = … = \beta_q = 0$. 
+
+We are interested in constructing a test to verify the following null hypothesis^[This test amounts to asking the question: "Are the added variables _significant_ in explaining the behaviour of our dependent variable?"]:
+
+$$
+\begin{cases}
+\begin{aligned}
+H_0: B_{p + 1} = … = \beta_q = 0 \\
+H_1: B_{p + 1} = … = \beta_q \neq 0
+\end{aligned}
+\end{cases}
+$${#eq-nestedinference}
+
+This null hypothesis can be tested through an ANOVA test, based on the asymptotic _normality_.
+
+Another important test might involve the comparison of the slopes of $\beta^{(p)}_1$ and $\beta^{(q)}_1$, under the assumption of _identically distributed_ data. In this case, we are comparing models for _different quantiles_; if we have one explanatory variable, then:
+
+$$
+\begin{aligned}
+\mathrm{Model \ 1}: Q_{q} (Y \vert X) = \beta_0^{(q)} + \beta_1^{(q)} X \\
+\mathrm{Model \ 2}: Q_{p} (Y \vert X) = \beta_0^{(p)} + \beta_1^{(p)} X
+\end{aligned}
+$${#eq-slopecomparison}
+
+We are interested in the following hypothesis:
+
+$$
+\begin{cases}
+\begin{aligned}
+H_0: B_{p} = B_{q} \\
+H_1: B_{p} \neq B_{q}
+\end{aligned}
+\end{cases}
+$${#eq-slopetest}
+
+Again, this test can be performed via ANOVA, based on the asymptotic normality.
+
+:::{.callout-tip}
+we should test for _more_ that two quantiles; formal testing gives _evidence_ of varying slopes.
+:::
+
+# More Intepretation of the Quantile Regression
