@@ -82,7 +82,7 @@ theme_update(
 )
 ```
 
-# Introduction
+# Introduction {#sec-intro}
 
 > What is _Business Analytics_? It is an applied discipline, tasked with gaining insight into business operations and helping to make better, fact-based decisions: a basic pillar of being _data-driven_. It combines Statistics, Computer Sciences, Management Science, Operational Research, and much more.
 
@@ -120,7 +120,10 @@ The main consequence of having homoskedastic and normal errors are:
 - Symmetry.
 - If the mean and scaled are known, we can assume that we know the whole distribution. Therefore, knowing _how the mean changes_ explains _all the changes in the distribution_.
 
-However, this is often not the case: 
+However, this is often not the case. 
+
+> This dataset contains information from the 2001 panel of the _Survey of Income and Program Participation_ (SIPP). The dataset contains information on several American households and on the household annual income in 2001.
+
 ```{r}
 incomeEx <- readr::read_csv(
     pathmaker(
@@ -175,14 +178,20 @@ pquant <- quantile(incomeEx %>% pull(income), c(0.1,0.25,0.5,0.75,0.9))
 pquant
 ```
 
-There is a noticeable positive difference between _median_ and _mean_, indicating a right-skewed distribution. Computing such differences helps in understanding the _shape_ of our distribution.
+There is a noticeable positive difference between _median_ and _mean_^[The mean of this distribution is `r mean(incomeEx %>% pull(income))`.], indicating a right-skewed distribution. Computing such differences helps in understanding the _shape_ of our distribution.
 
-We notice that the difference between the 75th and the 50th quantile is larger than the difference between the 50th and the 25th percentile: this is an indication of an asymmetry in the distribution. The same goes when comparing the the more extreme tails (e.g. the 10th and 90th quantile): 
+Moreover, the difference between the 75th and the 50th quantile is larger than the difference between the 50th and the 25th percentile: this is an indication of an _asymmetry_ in the distribution. The same goes when comparing the the more extreme tails (e.g. the 10th and 90th quantile): 
 
 ```{r}
+#Difference between the 75th and 50th and the 50th and 25th quartiles:
 pquant[4]- pquant[3]; pquant[3] - pquant[2]  
+#Difference between the 90th and 50th and the 50th and 10th quartiles:
 pquant[5]- pquant[3]; pquant[3] - pquant[1]
 ```
+
+:::{.callout-tip}
+Comparing the _mean_ and the _median_ helps in spotting _skewness_: a __right-skewed__ distribution will have a _positive_ difference between them, while a _negative_ difference signals a __left-skewed__ distribution. Comparing the difference between quartiles, or between deciles and quartiles, instead, indicates _asymmetry_: in an __asymmetrical__ distribution, these differences will be uneven and wide.
+:::
 
 Quantiles are not only _theoretical_: we can build an _Empirical Cumulative Distribution Function_ that describes the cumulative _frequencies_ of the observed values in our data.
 
@@ -268,6 +277,100 @@ QSK(p) = \frac{Q(1 - p) - Q(.5)}{Q(.5) - Q(p)} - 1\ \mathrm{for} \ p < 0.5
 $${#eq-QSK}
 
 If $QSK(p) > 0$, we have _right-skewness_.
+
+### Computing the QSK and QSC
+
+Back at the SIPP example^[@sec-intro.], computing the QSC(.25) and the QSK(.1) will help to determine the scale and shape of the `income` distribution.
+
+- QSC(.25):
+
+```{r}
+(pquant[4]- pquant[3])/(pquant[3] - pquant[2]) - 1
+```
+
+- QSK(.1):
+
+```{r}
+(pquant[5]- pquant[3])/(pquant[3] - pquant[1]) - 1
+```
+
+Both these values are _positive_: this indicates a _right-skewed_ distribution.
+
+### Analysing Known Distributions
+
+In this second example, we will compare two known distributions that have the _same mean_ but different characteristics, the Gamma and the Normal, sampling values from them.
+
+```{r}
+df <- data.frame(
+  x = seq(
+    -100,
+    450
+    )
+  )
+ggplot(df) + 
+  geom_line(
+    aes(
+      x = x, 
+      y = dnorm(
+        x, 
+        47.5, 
+        34.2
+        ),
+      ),
+      col = "limegreen"
+    ) + 
+  geom_line(
+    aes(
+      x = x, 
+      y = dgamma(
+        x, 
+        1.9, 
+        rate = 0.04
+        ),
+      ),
+      col = "#004D73"
+    ) +
+  labs(
+    title = "Gamma and Gaussian Densities",
+    y = expression(f[x](x))
+  )
+```
+
+The following code computes the relevant quartiles and deciles:
+```{r}
+pn <- qnorm(c(0.1,0.25,0.5,0.75,0.9), 47, 34.2)
+pg <- qgamma(c(0.1,0.25,0.5,0.75,0.9), 1.9, rate = 0.04)
+```
+
+We can immediately confirm that the Normal density is perfectly symmetric^[Well, no surprises here.].
+
+```{r}
+pn[4] - pn[3]; pn[3] - pn[2]
+```
+
+```{r}
+pn[5] - pn[3]; pn[3] - pn[1]
+```
+
+The Gamma density is a whole other story:
+
+```{r}
+pg[4] - pg[3]; pg[3] - pg[2]
+```
+
+```{r}
+pg[5] - pg[3]; pg[3] - pg[1]
+```
+
+Comparing the QSK(0.1) value for the two distributions confirms our result:
+
+```{r}
+(pn[5]-pn[3])/(pn[3]-pn[1]) - 1
+```
+
+```{r}
+(pg[5]-pg[3])/(pg[3]-pg[1]) - 1 
+```
 
 # Quantile regression
 
