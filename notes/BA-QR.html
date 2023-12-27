@@ -150,6 +150,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#estimation" id="toc-estimation" class="nav-link" data-scroll-target="#estimation">Estimation</a></li>
   <li><a href="#example-engel-food-expenditure-data" id="toc-example-engel-food-expenditure-data" class="nav-link" data-scroll-target="#example-engel-food-expenditure-data">Example: Engel Food Expenditure Data</a></li>
+  <li><a href="#interpreting-the-slope-difference" id="toc-interpreting-the-slope-difference" class="nav-link" data-scroll-target="#interpreting-the-slope-difference">Interpreting the Slope Difference</a></li>
   <li><a href="#multiple-independent-variables" id="toc-multiple-independent-variables" class="nav-link" data-scroll-target="#multiple-independent-variables">Multiple Independent variables</a></li>
   <li><a href="#sec-inference" id="toc-sec-inference" class="nav-link" data-scroll-target="#sec-inference">Inference</a>
   <ul class="collapse">
@@ -777,29 +778,7 @@ Smoothing formula not specified. Using: y ~ x</code></pre>
 <p><img src="BA-QR_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
-<blockquote class="blockquote">
-<p>What are the implications of different <span class="math inline">\beta_1^{(\tau)}</span> slopes?</p>
-</blockquote>
-<p>If we take two models for <span class="math inline">\tau = p</span> and <span class="math inline">\tau = q</span> and rearrange the two equations, having the same data points <span class="math inline">(y_i, x_i)</span>, we obtain:</p>
-<p><span id="eq-slopedifferences1"><span class="math display">
-(\epsilon_i^{(p)} - \epsilon_i^{(q)}) = (\beta_0^{(p)} - \beta_0^{(q)}) + (\beta_1^{(p)} - \beta_1^{(q)})x_i
-\tag{17}</span></span></p>
-<p>The difference between the two errors depend on <span class="math inline">x_i</span>. If the two slopes are equal<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>, then the two errors differ only by a constant: hence, the quantile error distribution only differ for a constant. This means that the observations are identically distributed for different values of <span class="math inline">X</span>.</p>
-<div class="callout-important callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Important
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>QRM can be used to assess whether the assumption of <em>identically distributed</em> observations is valid.</p>
-</div>
-</div>
-<p>Note that, however, to formally test the equality of slopes we need a way to make <em>inference</em><a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a>.</p>
-<p>We can estimate the QR with the <code>quantreg</code> package, calling the <code>rq</code> function<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a>.</p>
+<p>We can estimate the QR with the <code>quantreg</code> package, calling the <code>rq</code> function<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>.</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -1081,6 +1060,58 @@ income        0.68630      0.64937   0.74223</code></pre>
 </div>
 </div>
 </section>
+<section id="interpreting-the-slope-difference" class="level2">
+<h2 class="anchored" data-anchor-id="interpreting-the-slope-difference">Interpreting the Slope Difference</h2>
+<blockquote class="blockquote">
+<p>What are the implications of different <span class="math inline">\beta_1^{(\tau)}</span> slopes?</p>
+</blockquote>
+<p>If we take two models for <span class="math inline">\tau = p</span> and <span class="math inline">\tau = q</span> and rearrange the two equations, having the same data points <span class="math inline">(y_i, x_i)</span>, we obtain:</p>
+<p><span id="eq-slopedifferences1"><span class="math display">
+(\epsilon_i^{(p)} - \epsilon_i^{(q)}) = (\beta_0^{(p)} - \beta_0^{(q)}) + (\beta_1^{(p)} - \beta_1^{(q)})x_i
+\tag{17}</span></span></p>
+<p>The difference between the two errors depend on <span class="math inline">x_i</span>. If the two slopes are equal<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a>, then the two errors differ only by a constant: hence, the quantile error distribution only differ for a constant. This means that the observations are identically distributed for different values of <span class="math inline">X</span>.</p>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>QRM can be used to assess whether the assumption of <em>identically distributed</em> observations is valid.</p>
+</div>
+</div>
+<p>Note that, however, to formally test the equality of slopes we need a way to make <em>inference</em><a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a>: if that was the case we would be in a situation in which we have the <em>same shape</em> for the distribution conditional on the different values of the predictor<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a>. In other words, we need inference because we are interested in testing:</p>
+<p><span class="math display">
+\begin{cases}
+\begin{aligned}
+H_0: \beta_1^{(\tau_1)} = … = \beta_1^{(\tau_q)} \\
+H_1: \beta_1^{(\tau_1)} \neq … \neq \beta_1^{(\tau_q)}
+\end{aligned}
+\end{cases}
+</span></p>
+<p>To carry out this test we can use <code>anova</code> on a <code>rqs</code> object:</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(rqmultfit_engel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Quantile Regression Analysis of Deviance Table
+
+Model: foodexp ~ income
+Joint Test of Equality of Slopes: tau in {  0.1 0.25 0.5 0.75 0.9  }
+
+  Df Resid Df F value    Pr(&gt;F)    
+1  4     1171  11.466 3.927e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>We can see in this case we confidently reject the null hypothesis: the slopes are quite different and we would be inclined to consider that the conditional distribution of <code>foodexp</code> changes at different levels of <code>income</code>.</p>
+</section>
 <section id="multiple-independent-variables" class="level2">
 <h2 class="anchored" data-anchor-id="multiple-independent-variables">Multiple Independent variables</h2>
 <p>We can extend the model and obtain a <em>multivariate</em> quantle regression. In the (compact) matrix notation we have:</p>
@@ -1133,7 +1164,7 @@ Tip
 <section id="the-bootstrap" class="level2">
 <h2 class="anchored" data-anchor-id="the-bootstrap">The Bootstrap</h2>
 <blockquote class="blockquote">
-<p><strong>Bootstrapping</strong><a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> is <em>any test or metric that uses random sampling with replacement</em>, mimicking the sampling process, and falls under the broader class of <em>resampling methods</em>. Bootstrapping assigns <em>measures of accuracy</em><a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> to sample estimates. This technique allows estimation of the sampling distribution of almost any statistic using random sampling methods.</p>
+<p><strong>Bootstrapping</strong><a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> is <em>any test or metric that uses random sampling with replacement</em>, mimicking the sampling process, and falls under the broader class of <em>resampling methods</em>. Bootstrapping assigns <em>measures of accuracy</em><a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a> to sample estimates. This technique allows estimation of the sampling distribution of almost any statistic using random sampling methods.</p>
 </blockquote>
 <p>It is based on the sample data and having <em>enough</em> computing power. The key idea is that we assume the population is just many copies of the sample; then, we make lots of copies of the sample and then we sample repeatedly from the population. In practice, instead of actually making many copies of the sample and sampling from that, we use a sampling technique that is equivalent, based on <em>sampling with replacement</em>.</p>
 <p>In particular, we will use <strong>non parametric resampling bootstrap</strong>.</p>
@@ -1165,7 +1196,7 @@ Tip
 </section>
 <section id="bootstrap-inference" class="level3">
 <h3 class="anchored" data-anchor-id="bootstrap-inference">Bootstrap Inference</h3>
-<p>Using the <em>standard error</em> derived with the bootstrap samples we can build a test on <span class="math inline">\beta_j^{\tau}</span><a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a>, in the form</p>
+<p>Using the <em>standard error</em> derived with the bootstrap samples we can build a test on <span class="math inline">\beta_j^{\tau}</span><a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a>, in the form</p>
 <p><span id="eq-bootstrapinference"><span class="math display">
 \begin{cases}
 \begin{aligned}
@@ -1200,7 +1231,7 @@ Important
 \end{aligned}
 \tag{25}</span></span></p>
 <p>Note that <em>Model 1</em> reduces to <em>Model 2</em> when <span class="math inline">\beta_{p + 1} = … = \beta_q = 0</span>.</p>
-<p>We are interested in constructing a test to verify the following null hypothesis<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a>:</p>
+<p>We are interested in constructing a test to verify the following null hypothesis<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a>:</p>
 <p><span id="eq-nestedinference"><span class="math display">
 \begin{cases}
 \begin{aligned}
@@ -1248,7 +1279,7 @@ Tip
 <blockquote class="blockquote">
 <p>What are the implications of the alernative hypothesis <span class="math inline">H_1: B^{(p)}_1 \neq B^{(q)}_1</span>?</p>
 </blockquote>
-<p>The main implication of this null hypothesis is that the <em>distribution</em> changes as a function of <span class="math inline">X</span>. We can describe the change in <em>scale</em> and <em>shape</em> using <em>quantile-based</em> measures; we already introduced them for the simple <em>univariate case</em><a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a>, and now we will extend them and compute them as a function of <span class="math inline">\mathbf{X}</span>.</p>
+<p>The main implication of this null hypothesis is that the <em>distribution</em> changes as a function of <span class="math inline">X</span>. We can describe the change in <em>scale</em> and <em>shape</em> using <em>quantile-based</em> measures; we already introduced them for the simple <em>univariate case</em><a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a>, and now we will extend them and compute them as a function of <span class="math inline">\mathbf{X}</span>.</p>
 <p><span id="eq-QSCext"><span class="math display">
 \begin{aligned}
 QSC(p \vert X)
@@ -1310,14 +1341,15 @@ Important
 <li id="fn11"><p>Well, no surprises here.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn12"><p>This is the same <em>loss function</em> used to find the median.s<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn13"><p><span class="math inline">\tau = c(0.25, 0.5, 0.75)</span>.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn14"><p><span class="math inline">(\beta_1^{(p)} - \beta_1^{(q)}) = 0</span>.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn15"><p><a href="#sec-inference">Section&nbsp;3.4</a>.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn16"><p>It works similarly to the well-known <code>lm</code> function.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn17"><p>First introduced by Bradley Efron in the late 70s.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn18"><p>bias, variance, confidence intervals, prediction error, etc.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn19"><p>In the following notation the <span class="math inline">\tau</span> is omitted for readability.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn20"><p>This test amounts to asking the question: “Are the added variables <em>significant</em> in explaining the behaviour of our dependent variable?”<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn21"><p><a href="#sec-quantilebasedssunivariate">Section&nbsp;2.4</a>.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>It works similarly to the well-known <code>lm</code> function.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p><span class="math inline">(\beta_1^{(p)} - \beta_1^{(q)}) = 0</span>.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p><a href="#sec-inference">Section&nbsp;3.5</a>.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>For example, an indication of conditionally identically distributed response variable.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>First introduced by Bradley Efron in the late 70s.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>bias, variance, confidence intervals, prediction error, etc.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>In the following notation the <span class="math inline">\tau</span> is omitted for readability.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>This test amounts to asking the question: “Are the added variables <em>significant</em> in explaining the behaviour of our dependent variable?”<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p><a href="#sec-quantilebasedssunivariate">Section&nbsp;2.4</a>.<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

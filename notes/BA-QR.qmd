@@ -536,22 +536,6 @@ ggplot(
         )
 ```
 
-> What are the implications of different $\beta_1^{(\tau)}$ slopes?
-
-If we take two models for $\tau = p$ and $\tau = q$ and rearrange the two equations, having the same data points $(y_i, x_i)$, we obtain:
-
-$$
-(\epsilon_i^{(p)} - \epsilon_i^{(q)}) = (\beta_0^{(p)} - \beta_0^{(q)}) + (\beta_1^{(p)} - \beta_1^{(q)})x_i
-$${#eq-slopedifferences1}
-
-The difference between the two errors depend on $x_i$. If the two slopes are equal^[$(\beta_1^{(p)} - \beta_1^{(q)}) = 0$.], then the two errors differ only by a constant: hence, the quantile error distribution only differ for a constant. This means that the observations are identically distributed for different values of $X$.
-
-:::{.callout-important}
-QRM can be used to assess whether the assumption of _identically distributed_ observations is valid.
-:::
-
-Note that, however, to formally test the equality of slopes we need a way to make _inference_^[@sec-inference.].
-
 We can estimate the QR with the `quantreg` package, calling the `rq` function^[It works similarly to the well-known `lm` function.].
 
 ```{r}
@@ -700,6 +684,40 @@ rqmultfit_engel %>%
   )
 ```
 
+## Interpreting the Slope Difference
+
+> What are the implications of different $\beta_1^{(\tau)}$ slopes?
+
+If we take two models for $\tau = p$ and $\tau = q$ and rearrange the two equations, having the same data points $(y_i, x_i)$, we obtain:
+
+$$
+(\epsilon_i^{(p)} - \epsilon_i^{(q)}) = (\beta_0^{(p)} - \beta_0^{(q)}) + (\beta_1^{(p)} - \beta_1^{(q)})x_i
+$${#eq-slopedifferences1}
+
+The difference between the two errors depend on $x_i$. If the two slopes are equal^[$(\beta_1^{(p)} - \beta_1^{(q)}) = 0$.], then the two errors differ only by a constant: hence, the quantile error distribution only differ for a constant. This means that the observations are identically distributed for different values of $X$.
+
+:::{.callout-important}
+QRM can be used to assess whether the assumption of _identically distributed_ observations is valid.
+:::
+
+Note that, however, to formally test the equality of slopes we need a way to make _inference_^[@sec-inference.]: if that was the case we would be in a situation in which we have the _same shape_ for the distribution conditional on the different values of the predictor^[For example, an indication of conditionally identically distributed response variable.]. In other words, we need inference because we are interested in testing:
+
+$$
+\begin{cases}
+\begin{aligned}
+H_0: \beta_1^{(\tau_1)} = … = \beta_1^{(\tau_q)} \\
+H_1: \beta_1^{(\tau_1)} \neq … \neq \beta_1^{(\tau_q)} 
+\end{aligned}
+\end{cases}
+$$
+
+To carry out this test we can use `anova` on a `rqs` object:
+
+```{r}
+anova(rqmultfit_engel)
+```
+
+We can see in this case we confidently reject the null hypothesis: the slopes are quite different and we would be inclined to consider that the conditional distribution of `foodexp` changes at different levels of `income`.
 
 ## Multiple Independent variables
 
