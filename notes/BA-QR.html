@@ -97,6 +97,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="BA-QR_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="BA-QR_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="BA-QR_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+<link href="BA-QR_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="BA-QR_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
 <meta name="author" content="solar-san">
 <meta name="image" property="https://raw.githubusercontent.com/solar-san/BA-Project/main/docs/figures/BA-Project_header.png">
 <meta name="description" content="Notes on quantile regression for business analysts. It contains a self-contained introduction tje topic, with R code snippets and the necessary mathematical and statistical notation.">
@@ -146,9 +149,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#quantile-regression" id="toc-quantile-regression" class="nav-link" data-scroll-target="#quantile-regression">Quantile regression</a>
   <ul class="collapse">
   <li><a href="#estimation" id="toc-estimation" class="nav-link" data-scroll-target="#estimation">Estimation</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  <li><a href="#example-engel-food-expenditure-data" id="toc-example-engel-food-expenditure-data" class="nav-link" data-scroll-target="#example-engel-food-expenditure-data">Example: Engel Food Expenditure Data</a></li>
   <li><a href="#multiple-independent-variables" id="toc-multiple-independent-variables" class="nav-link" data-scroll-target="#multiple-independent-variables">Multiple Independent variables</a></li>
-  <li><a href="#inference" id="toc-inference" class="nav-link" data-scroll-target="#inference">Inference</a>
+  <li><a href="#sec-inference" id="toc-sec-inference" class="nav-link" data-scroll-target="#sec-inference">Inference</a>
   <ul class="collapse">
   <li><a href="#iid-case" id="toc-iid-case" class="nav-link" data-scroll-target="#iid-case"><span class="math inline">iid</span> case</a></li>
   <li><a href="#non-iid-case" id="toc-non-iid-case" class="nav-link" data-scroll-target="#non-iid-case">Non-<span class="math inline">iid</span> case</a></li>
@@ -637,8 +640,8 @@ Note
 </div>
 </div>
 </section>
-<section id="example" class="level2">
-<h2 class="anchored" data-anchor-id="example">Example</h2>
+<section id="example-engel-food-expenditure-data" class="level2">
+<h2 class="anchored" data-anchor-id="example-engel-food-expenditure-data">Example: Engel Food Expenditure Data</h2>
 <p>We will use Engel food expenditure data used in Koenker and Bassett(1982). This is a regression dataset consisting of 235 observations on income and expenditure on food for Belgian working class households.</p>
 <div class="cell">
 <details open="">
@@ -666,7 +669,7 @@ Note
 <p><img src="BA-QR_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
-<p>We need the <code>quantreg</code> dataset to perform QRM. The function <code>geom_quantile()</code> can be used to compare the standard linear regression fit and the median fit:</p>
+<p>We need the <code>quantreg</code> dataset to perform the quantile regression analysis. The function <code>geom_quantile()</code> can be used to compare the standard linear regression fit and the median fit:</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -795,7 +798,288 @@ Important
 <p>QRM can be used to assess whether the assumption of <em>identically distributed</em> observations is valid.</p>
 </div>
 </div>
-<p>Note that, however, to formally test the equality of slopes we need a way to make <em>inference</em>.</p>
+<p>Note that, however, to formally test the equality of slopes we need a way to make <em>inference</em><a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a>.</p>
+<p>We can estimate the QR with the <code>quantreg</code> package, calling the <code>rq</code> function<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a>.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>rqfit_engel <span class="ot">&lt;-</span> <span class="fu">rq</span>(</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  foodexp <span class="sc">~</span> income, </span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> engel</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>rqfit_engel <span class="sc">%&gt;%</span> </span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call: rq(formula = foodexp ~ income, data = engel)
+
+tau: [1] 0.5
+
+Coefficients:
+            coefficients lower bd  upper bd 
+(Intercept)  81.48225     53.25915 114.01156
+income        0.56018      0.48702   0.60199</code></pre>
+</div>
+</div>
+<p>We will also use the <code>broom</code> library to tidy the model output.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>rqfit_engel <span class="sc">%&gt;%</span> <span class="fu">tidy</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["term"],"name":[1],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["conf.low"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["conf.high"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["tau"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"(Intercept)","2":"81.4822474","3":"47.0904023","4":"135.1883939","5":"0.5"},{"1":"income","2":"0.5601806","3":"0.4803301","4":"0.6127786","5":"0.5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p><code>tidy</code> summarizes information about the components of a model.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>rqfit_engel <span class="sc">%&gt;%</span> <span class="fu">glance</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["tau"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["logLik"],"name":[2],"type":["logLik"],"align":["right"]},{"label":["AIC"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["BIC"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["df.residual"],"name":[5],"type":["int"],"align":["right"]}],"data":[{"1":"0.5","2":"-1411.63","3":"2827.26","4":"2834.179","5":"233"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p><code>glance</code> accepts a model object and returns a <code>tibble::tibble()</code> with exactly one row of model summaries. The summaries are typically goodness of fit measures, p-values for hypothesis tests on residuals, or model convergence information.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>rqfit_engel <span class="sc">%&gt;%</span> <span class="fu">augment</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["foodexp"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["income"],"name":[2],"type":["dbl"],"align":["right"]},{"label":[".resid"],"name":[3],"type":["dbl"],"align":["right"]},{"label":[".fitted"],"name":[4],"type":["dbl"],"align":["right"]},{"label":[".tau"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"255.8394","2":"420.1577","3":"-6.100697e+01","4":"316.8464","5":"0.5"},{"1":"310.9587","2":"541.4117","3":"-7.381189e+01","4":"384.7706","5":"0.5"},{"1":"485.6800","2":"901.1575","3":"-1.006131e+02","4":"586.2931","5":"0.5"},{"1":"402.9974","2":"639.0802","3":"-3.648521e+01","4":"439.4826","5":"0.5"},{"1":"495.5608","2":"750.8756","3":"-6.547383e+00","4":"502.1082","5":"0.5"},{"1":"633.7978","2":"945.7989","3":"2.249740e+01","4":"611.3004","5":"0.5"},{"1":"630.7566","2":"829.3979","3":"8.466175e+01","4":"546.0948","5":"0.5"},{"1":"700.4409","2":"979.1648","3":"7.044956e+01","4":"629.9913","5":"0.5"},{"1":"830.9586","2":"1309.8789","3":"1.570767e+01","4":"815.2510","5":"0.5"},{"1":"815.3602","2":"1492.3987","3":"-1.021348e+02","4":"917.4950","5":"0.5"},{"1":"338.0014","2":"502.8390","3":"-2.516148e+01","4":"363.1629","5":"0.5"},{"1":"412.3613","2":"616.7168","3":"-1.459369e+01","4":"426.9550","5":"0.5"},{"1":"520.0006","2":"790.9225","3":"-4.541038e+00","4":"524.5417","5":"0.5"},{"1":"452.4015","2":"555.8786","3":"5.952682e+01","4":"392.8747","5":"0.5"},{"1":"512.7201","2":"713.4412","3":"3.158193e+01","4":"481.1381","5":"0.5"},{"1":"658.8395","2":"838.7561","3":"1.075024e+02","4":"551.3371","5":"0.5"},{"1":"392.5995","2":"535.0766","3":"1.137772e+01","4":"381.2218","5":"0.5"},{"1":"443.5586","2":"596.4408","3":"2.796185e+01","4":"415.5968","5":"0.5"},{"1":"640.1164","2":"924.5619","3":"4.071254e+01","4":"599.4038","5":"0.5"},{"1":"333.8394","2":"487.7583","3":"-2.087557e+01","4":"354.7150","5":"0.5"},{"1":"466.9583","2":"692.6397","3":"-2.527237e+00","4":"469.4856","5":"0.5"},{"1":"543.3969","2":"997.8770","3":"-9.707662e+01","4":"640.4735","5":"0.5"},{"1":"317.7198","2":"506.9995","3":"-4.777366e+01","4":"365.4935","5":"0.5"},{"1":"424.3209","2":"654.1587","3":"-2.360834e+01","4":"447.9292","5":"0.5"},{"1":"518.9617","2":"933.9193","3":"-8.568400e+01","4":"604.6457","5":"0.5"},{"1":"338.0014","2":"433.6813","3":"1.357929e+01","4":"324.4221","5":"0.5"},{"1":"419.6412","2":"587.5962","3":"8.998957e+00","4":"410.6422","5":"0.5"},{"1":"476.3200","2":"896.4746","3":"-1.073499e+02","4":"583.6699","5":"0.5"},{"1":"386.3602","2":"454.4782","3":"5.028805e+01","4":"336.0721","5":"0.5"},{"1":"423.2783","2":"584.9989","3":"1.409109e+01","4":"409.1873","5":"0.5"},{"1":"503.3572","2":"800.7990","3":"-2.671711e+01","4":"530.0743","5":"0.5"},{"1":"354.6389","2":"502.4369","3":"-8.298742e+00","4":"362.9376","5":"0.5"},{"1":"497.3182","2":"713.5197","3":"1.613608e+01","4":"481.1821","5":"0.5"},{"1":"588.5195","2":"906.0006","3":"-4.867151e-01","4":"589.0062","5":"0.5"},{"1":"654.5971","2":"880.5969","3":"7.982163e+01","4":"574.7755","5":"0.5"},{"1":"550.7274","2":"796.8289","3":"2.287712e+01","4":"527.8503","5":"0.5"},{"1":"528.3770","2":"854.8791","3":"-3.199189e+01","4":"560.3689","5":"0.5"},{"1":"640.4813","2":"1167.3716","3":"-9.493976e+01","4":"735.4211","5":"0.5"},{"1":"401.3204","2":"523.8000","3":"2.641552e+01","4":"374.9048","5":"0.5"},{"1":"435.9990","2":"670.7792","3":"-2.124068e+01","4":"457.2397","5":"0.5"},{"1":"276.5606","2":"377.0584","3":"-1.614240e+01","4":"292.7030","5":"0.5"},{"1":"588.3488","2":"851.5430","3":"2.984874e+01","4":"558.5001","5":"0.5"},{"1":"664.1978","2":"1121.0937","3":"-4.529933e+01","4":"709.4971","5":"0.5"},{"1":"444.8602","2":"625.5179","3":"1.297494e+01","4":"431.8852","5":"0.5"},{"1":"462.8995","2":"805.5377","3":"-6.982928e+01","4":"532.7288","5":"0.5"},{"1":"377.7792","2":"558.5812","3":"-1.660933e+01","4":"394.3886","5":"0.5"},{"1":"553.1504","2":"884.4005","3":"-2.375576e+01","4":"576.9062","5":"0.5"},{"1":"810.8962","2":"1257.4989","3":"2.498750e+01","4":"785.9087","5":"0.5"},{"1":"1067.9541","2":"2051.1789","3":"-1.625587e+02","4":"1230.5128","5":"0.5"},{"1":"1049.8788","2":"1466.3330","3":"1.469853e+02","4":"902.8935","5":"0.5"},{"1":"522.7012","2":"730.0989","3":"3.223176e+01","4":"490.4694","5":"0.5"},{"1":"572.0807","2":"800.7990","3":"4.200638e+01","4":"530.0743","5":"0.5"},{"1":"907.3969","2":"1245.6964","3":"1.280998e+02","4":"779.2971","5":"0.5"},{"1":"811.5776","2":"1201.0002","3":"5.731838e+01","4":"754.2592","5":"0.5"},{"1":"427.7975","2":"634.4002","3":"-9.063386e+00","4":"436.8609","5":"0.5"},{"1":"649.9985","2":"956.2315","3":"3.285395e+01","4":"617.1445","5":"0.5"},{"1":"860.6002","2":"1148.6010","3":"1.356939e+02","4":"724.9062","5":"0.5"},{"1":"1143.4211","2":"1768.8236","3":"7.107823e+01","4":"1072.3429","5":"0.5"},{"1":"2032.6792","2":"2822.5330","3":"3.700688e+02","4":"1662.6104","5":"0.5"},{"1":"590.6183","2":"922.3548","3":"-7.549159e+00","4":"598.1675","5":"0.5"},{"1":"1570.3911","2":"2293.1920","3":"2.043073e+02","4":"1366.0838","5":"0.5"},{"1":"483.4800","2":"627.4726","3":"5.049983e+01","4":"432.9802","5":"0.5"},{"1":"600.4804","2":"889.9809","3":"2.044816e+01","4":"580.0322","5":"0.5"},{"1":"696.2021","2":"1162.2000","3":"-3.632195e+01","4":"732.5241","5":"0.5"},{"1":"774.7962","2":"1197.0794","3":"2.273336e+01","4":"752.0628","5":"0.5"},{"1":"390.5984","2":"530.7972","3":"1.177392e+01","4":"378.8245","5":"0.5"},{"1":"612.5619","2":"1142.1526","3":"-1.087320e+02","4":"721.2939","5":"0.5"},{"1":"708.7622","2":"1088.0039","3":"1.780129e+01","4":"690.9609","5":"0.5"},{"1":"296.9192","2":"484.6612","3":"-5.606082e+01","4":"352.9800","5":"0.5"},{"1":"1071.4627","2":"1536.0201","3":"1.295319e+02","4":"941.9308","5":"0.5"},{"1":"496.5976","2":"678.8974","3":"3.481022e+01","4":"461.7874","5":"0.5"},{"1":"503.3974","2":"671.8802","3":"4.554099e+01","4":"457.8564","5":"0.5"},{"1":"357.6411","2":"690.4683","3":"-1.106280e+02","4":"468.2691","5":"0.5"},{"1":"430.3376","2":"860.6948","3":"-1.332892e+02","4":"563.6267","5":"0.5"},{"1":"624.6990","2":"873.3095","3":"5.400581e+01","4":"570.6932","5":"0.5"},{"1":"582.5413","2":"894.4598","3":"1.136868e-13","4":"582.5413","5":"0.5"},{"1":"580.2215","2":"1148.6470","3":"-1.447104e+02","4":"724.9320","5":"0.5"},{"1":"543.8807","2":"926.8762","3":"-5.681952e+01","4":"600.7003","5":"0.5"},{"1":"588.6372","2":"839.0414","3":"3.714028e+01","4":"551.4969","5":"0.5"},{"1":"627.9999","2":"829.4974","3":"8.184933e+01","4":"546.1506","5":"0.5"},{"1":"712.1012","2":"1264.0043","3":"-7.745172e+01","4":"789.5529","5":"0.5"},{"1":"968.3949","2":"1937.9771","3":"-1.987044e+02","4":"1167.0994","5":"0.5"},{"1":"482.5816","2":"698.8317","3":"9.627390e+00","4":"472.9542","5":"0.5"},{"1":"593.1694","2":"920.4199","3":"-3.914200e+00","4":"597.0836","5":"0.5"},{"1":"1033.5658","2":"1897.5711","3":"-1.108989e+02","4":"1144.4647","5":"0.5"},{"1":"693.6795","2":"891.6824","3":"1.126941e+02","4":"580.9854","5":"0.5"},{"1":"693.6795","2":"889.6784","3":"1.138167e+02","4":"579.8628","5":"0.5"},{"1":"761.2791","2":"1221.4818","3":"-4.453536e+00","4":"765.7326","5":"0.5"},{"1":"361.3981","2":"544.5991","3":"-2.515804e+01","4":"386.5561","5":"0.5"},{"1":"628.4522","2":"1031.4491","3":"-3.082776e+01","4":"659.2800","5":"0.5"},{"1":"771.4486","2":"1462.9497","3":"-1.295496e+02","4":"900.9982","5":"0.5"},{"1":"757.1187","2":"830.4353","3":"2.104427e+02","4":"546.6759","5":"0.5"},{"1":"821.5970","2":"975.0415","3":"1.939155e+02","4":"627.6815","5":"0.5"},{"1":"1022.3202","2":"1337.9983","3":"1.913173e+02","4":"831.0029","5":"0.5"},{"1":"679.4407","2":"867.6427","3":"1.119219e+02","4":"567.5188","5":"0.5"},{"1":"538.7491","2":"725.7459","3":"5.071811e+01","4":"488.0310","5":"0.5"},{"1":"679.9981","2":"989.0056","3":"4.449414e+01","4":"635.5040","5":"0.5"},{"1":"977.0033","2":"1525.0005","3":"4.124542e+01","4":"935.7579","5":"0.5"},{"1":"561.2015","2":"672.1960","3":"1.031681e+02","4":"458.0334","5":"0.5"},{"1":"728.3997","2":"923.3977","3":"1.296481e+02","4":"598.7517","5":"0.5"},{"1":"372.3186","2":"472.3215","3":"2.625103e+01","4":"346.0676","5":"0.5"},{"1":"361.5210","2":"590.7601","3":"-5.089361e+01","4":"412.4146","5":"0.5"},{"1":"517.9196","2":"940.9218","3":"-9.064873e+01","4":"608.5683","5":"0.5"},{"1":"459.8177","2":"643.3571","3":"1.793925e+01","4":"441.8784","5":"0.5"},{"1":"863.9199","2":"2551.6615","3":"-6.469535e+02","4":"1510.8734","5":"0.5"},{"1":"831.4407","2":"1795.3226","3":"-2.557463e+02","4":"1087.1870","5":"0.5"},{"1":"534.7610","2":"1165.7734","3":"-1.997648e+02","4":"734.5258","5":"0.5"},{"1":"392.0502","2":"815.6212","3":"-1.463271e+02","4":"538.3774","5":"0.5"},{"1":"934.9752","2":"1264.2066","3":"1.453090e+02","4":"789.6662","5":"0.5"},{"1":"813.3081","2":"1095.4056","3":"1.182009e+02","4":"695.1072","5":"0.5"},{"1":"263.7100","2":"447.4479","3":"-6.842384e+01","4":"332.1338","5":"0.5"},{"1":"769.0838","2":"1178.9742","3":"2.716320e+01","4":"741.9207","5":"0.5"},{"1":"630.5863","2":"975.8023","3":"2.478571e+00","4":"628.1077","5":"0.5"},{"1":"645.9874","2":"1017.8522","3":"-5.675853e+00","4":"651.6633","5":"0.5"},{"1":"319.5584","2":"423.8798","3":"6.269010e-01","4":"318.9315","5":"0.5"},{"1":"348.4518","2":"558.7767","3":"-4.604628e+01","4":"394.4981","5":"0.5"},{"1":"614.5068","2":"943.2487","3":"4.634969e+00","4":"609.8718","5":"0.5"},{"1":"662.0096","2":"1348.3002","3":"-1.747643e+02","4":"836.7738","5":"0.5"},{"1":"1504.3708","2":"2340.6174","3":"1.117202e+02","4":"1392.6506","5":"0.5"},{"1":"406.2180","2":"587.1792","3":"-4.190582e+00","4":"410.4086","5":"0.5"},{"1":"692.1689","2":"1540.9741","3":"-2.525370e+02","4":"944.7059","5":"0.5"},{"1":"588.1371","2":"1115.8481","3":"-1.184216e+02","4":"706.5586","5":"0.5"},{"1":"511.2609","2":"1044.6843","3":"-1.554332e+02","4":"666.6941","5":"0.5"},{"1":"700.5600","2":"1389.7929","3":"-1.594572e+02","4":"860.0172","5":"0.5"},{"1":"1301.1451","2":"2497.7860","3":"-1.795483e+02","4":"1480.6934","5":"0.5"},{"1":"879.0660","2":"1585.3809","3":"-9.051580e+01","4":"969.5818","5":"0.5"},{"1":"912.8851","2":"1862.0438","3":"-2.116779e+02","4":"1124.5630","5":"0.5"},{"1":"1509.7812","2":"2008.8546","3":"3.029776e+02","4":"1206.8035","5":"0.5"},{"1":"484.0605","2":"697.3099","3":"1.195883e+01","4":"472.1017","5":"0.5"},{"1":"399.6703","2":"571.2517","3":"-1.816049e+00","4":"401.4864","5":"0.5"},{"1":"444.1001","2":"598.3465","3":"2.743579e+01","4":"416.6643","5":"0.5"},{"1":"248.8101","2":"461.0977","3":"-9.097011e+01","4":"339.7802","5":"0.5"},{"1":"527.8014","2":"977.1107","3":"-1.010393e+02","4":"628.8407","5":"0.5"},{"1":"500.6313","2":"883.9849","3":"-7.604206e+01","4":"576.6734","5":"0.5"},{"1":"436.8107","2":"718.3594","3":"-4.708248e+01","4":"483.8932","5":"0.5"},{"1":"374.7990","2":"543.8971","3":"-1.136376e+01","4":"386.1628","5":"0.5"},{"1":"726.3921","2":"1587.3480","3":"-2.442916e+02","4":"970.6837","5":"0.5"},{"1":"1827.2000","2":"4957.8130","3":"-1.031553e+03","4":"2858.7527","5":"0.5"},{"1":"523.4911","2":"969.6838","3":"-1.011891e+02","4":"624.6802","5":"0.5"},{"1":"334.9998","2":"419.9980","3":"1.824285e+01","4":"316.7570","5":"0.5"},{"1":"473.2009","2":"561.9990","3":"7.689775e+01","4":"396.3031","5":"0.5"},{"1":"581.2029","2":"689.5988","3":"1.134209e+02","4":"467.7821","5":"0.5"},{"1":"929.7540","2":"1398.5203","3":"6.484787e+01","4":"864.9061","5":"0.5"},{"1":"591.1974","2":"820.8168","3":"4.990954e+01","4":"541.2879","5":"0.5"},{"1":"637.5483","2":"875.1716","3":"6.581191e+01","4":"571.7364","5":"0.5"},{"1":"674.9509","2":"1392.4499","3":"-1.865547e+02","4":"861.5056","5":"0.5"},{"1":"776.7589","2":"1256.3174","3":"-8.487910e+00","4":"785.2468","5":"0.5"},{"1":"959.5170","2":"1362.8590","3":"1.145876e+02","4":"844.9294","5":"0.5"},{"1":"1250.9643","2":"1999.2552","3":"4.953820e+01","4":"1201.4261","5":"0.5"},{"1":"737.8201","2":"1209.4730","3":"-2.118542e+01","4":"759.0055","5":"0.5"},{"1":"810.6772","2":"1125.0356","3":"9.897191e+01","4":"711.7053","5":"0.5"},{"1":"983.0009","2":"1827.4010","3":"-1.221559e+02","4":"1105.1567","5":"0.5"},{"1":"708.8968","2":"1014.1540","3":"5.930526e+01","4":"649.5916","5":"0.5"},{"1":"633.1200","2":"880.3944","3":"5.845794e+01","4":"574.6621","5":"0.5"},{"1":"1424.8047","2":"2432.3910","3":"-1.925572e+01","4":"1444.0604","5":"0.5"},{"1":"830.9586","2":"1177.8547","3":"8.966509e+01","4":"741.2935","5":"0.5"},{"1":"925.5795","2":"1222.5939","3":"1.592239e+02","4":"766.3556","5":"0.5"},{"1":"1162.0024","2":"1519.5811","3":"2.292804e+02","4":"932.7220","5":"0.5"},{"1":"383.4580","2":"687.6638","3":"-8.324015e+01","4":"466.6981","5":"0.5"},{"1":"621.1173","2":"953.1192","3":"5.716229e+00","4":"615.4011","5":"0.5"},{"1":"621.1173","2":"953.1192","3":"5.716229e+00","4":"615.4011","5":"0.5"},{"1":"621.1173","2":"953.1192","3":"5.716229e+00","4":"615.4011","5":"0.5"},{"1":"548.6002","2":"939.0418","3":"-5.891497e+01","4":"607.5152","5":"0.5"},{"1":"745.2353","2":"1283.4025","3":"-5.518405e+01","4":"800.4193","5":"0.5"},{"1":"837.8005","2":"1511.5789","3":"-9.043884e+01","4":"928.2393","5":"0.5"},{"1":"795.3402","2":"1342.5821","3":"-3.823040e+01","4":"833.5706","5":"0.5"},{"1":"418.5976","2":"511.7980","3":"5.041604e+01","4":"368.1815","5":"0.5"},{"1":"508.7974","2":"689.7988","3":"4.090332e+01","4":"467.8941","5":"0.5"},{"1":"883.2780","2":"1532.3074","3":"-5.657305e+01","4":"939.8511","5":"0.5"},{"1":"742.5276","2":"1056.0808","3":"6.944938e+01","4":"673.0782","5":"0.5"},{"1":"242.3202","2":"387.3195","3":"-5.613091e+01","4":"298.4511","5":"0.5"},{"1":"242.3202","2":"387.3195","3":"-5.613091e+01","4":"298.4511","5":"0.5"},{"1":"266.0010","2":"410.9987","3":"-4.571473e+01","4":"311.7157","5":"0.5"},{"1":"614.7588","2":"832.7554","3":"6.678316e+01","4":"547.9756","5":"0.5"},{"1":"385.3184","2":"614.9986","3":"-4.067411e+01","4":"425.9925","5":"0.5"},{"1":"515.6200","2":"887.4658","3":"-6.300337e+01","4":"578.6233","5":"0.5"},{"1":"708.4787","2":"1024.8177","3":"5.291352e+01","4":"655.5652","5":"0.5"},{"1":"734.2356","2":"1006.4353","3":"8.896788e+01","4":"645.2678","5":"0.5"},{"1":"433.0010","2":"726.0000","3":"-5.517234e+01","4":"488.1733","5":"0.5"},{"1":"327.4188","2":"494.4174","3":"-3.102646e+01","4":"358.4452","5":"0.5"},{"1":"429.0399","2":"748.6413","3":"-7.181663e+01","4":"500.8566","5":"0.5"},{"1":"619.6408","2":"987.6417","3":"-1.509910e+01","4":"634.7399","5":"0.5"},{"1":"400.7990","2":"788.0961","3":"-1.221594e+02","4":"522.9583","5":"0.5"},{"1":"620.8006","2":"831.7983","3":"7.336115e+01","4":"547.4395","5":"0.5"},{"1":"819.9964","2":"1139.4945","3":"1.001916e+02","4":"719.8049","5":"0.5"},{"1":"360.8780","2":"507.5169","3":"-4.905323e+00","4":"365.7833","5":"0.5"},{"1":"395.7608","2":"576.1972","3":"-8.495920e+00","4":"404.2567","5":"0.5"},{"1":"442.0001","2":"696.5991","3":"-2.970344e+01","4":"471.7035","5":"0.5"},{"1":"404.0384","2":"650.8180","3":"-4.201939e+01","4":"446.0578","5":"0.5"},{"1":"670.7993","2":"949.5802","3":"5.738070e+01","4":"613.4186","5":"0.5"},{"1":"297.5702","2":"497.1193","3":"-6.238865e+01","4":"359.9588","5":"0.5"},{"1":"353.4882","2":"570.1674","3":"-4.739077e+01","4":"400.8789","5":"0.5"},{"1":"383.9376","2":"724.7306","3":"-1.035246e+02","4":"487.4622","5":"0.5"},{"1":"284.8008","2":"408.3399","3":"-2.542553e+01","4":"310.2263","5":"0.5"},{"1":"431.1000","2":"638.6713","3":"-8.153551e+00","4":"439.2535","5":"0.5"},{"1":"801.3518","2":"1225.7890","3":"3.320635e+01","4":"768.1454","5":"0.5"},{"1":"448.4513","2":"715.3701","3":"-3.376739e+01","4":"482.2187","5":"0.5"},{"1":"577.9111","2":"800.4708","3":"4.802067e+01","4":"529.8904","5":"0.5"},{"1":"570.5210","2":"975.5974","3":"-5.747192e+01","4":"627.9929","5":"0.5"},{"1":"865.3205","2":"1613.7565","3":"-1.201567e+02","4":"985.4773","5":"0.5"},{"1":"444.5578","2":"608.5019","3":"2.220460e+01","4":"422.3532","5":"0.5"},{"1":"680.4198","2":"958.6634","3":"6.191300e+01","4":"618.5068","5":"0.5"},{"1":"576.2779","2":"835.9426","3":"2.651684e+01","4":"549.7611","5":"0.5"},{"1":"631.7982","2":"873.7375","3":"6.086517e+01","4":"570.9330","5":"0.5"},{"1":"608.6419","2":"951.4432","3":"-5.820379e+00","4":"614.4622","5":"0.5"},{"1":"300.9999","2":"473.0022","3":"-4.544895e+01","4":"346.4489","5":"0.5"},{"1":"377.9984","2":"601.0030","3":"-4.015405e+01","4":"418.1525","5":"0.5"},{"1":"397.0015","2":"713.9979","3":"-8.444850e+01","4":"481.4500","5":"0.5"},{"1":"588.5195","2":"829.2984","3":"4.248040e+01","4":"546.0391","5":"0.5"},{"1":"681.7616","2":"959.7953","3":"6.262068e+01","4":"619.1409","5":"0.5"},{"1":"807.3603","2":"1212.9613","3":"4.640070e+01","4":"760.9596","5":"0.5"},{"1":"696.8011","2":"958.8743","3":"7.817611e+01","4":"618.6250","5":"0.5"},{"1":"811.1962","2":"1129.4431","3":"9.702191e+01","4":"714.1743","5":"0.5"},{"1":"1305.7201","2":"1943.0419","3":"1.357836e+02","4":"1169.9365","5":"0.5"},{"1":"442.0001","2":"539.6388","3":"5.822265e+01","4":"383.7774","5":"0.5"},{"1":"353.6013","2":"463.5990","3":"1.241989e+01","4":"341.1814","5":"0.5"},{"1":"468.0008","2":"562.6400","3":"7.133856e+01","4":"396.6622","5":"0.5"},{"1":"526.7573","2":"736.7584","3":"3.255738e+01","4":"494.2000","5":"0.5"},{"1":"890.2390","2":"1415.4461","3":"1.585143e+01","4":"874.3876","5":"0.5"},{"1":"1318.8033","2":"2208.7897","3":"2.273737e-13","4":"1318.8033","5":"0.5"},{"1":"331.0005","2":"636.0009","3":"-1.067571e+02","4":"437.7576","5":"0.5"},{"1":"416.4015","2":"759.4010","3":"-9.048241e+01","4":"506.8839","5":"0.5"},{"1":"596.8406","2":"1078.8382","3":"-8.898587e+01","4":"685.8264","5":"0.5"},{"1":"408.4992","2":"499.7510","3":"4.706617e+01","4":"361.4330","5":"0.5"},{"1":"775.0209","2":"1020.0225","3":"1.221419e+02","4":"652.8790","5":"0.5"},{"1":"1138.1620","2":"1595.1611","3":"1.631016e+02","4":"975.0605","5":"0.5"},{"1":"485.5198","2":"776.5958","3":"-3.099634e+01","4":"516.5161","5":"0.5"},{"1":"772.7611","2":"1230.9235","3":"1.739476e+00","4":"771.0217","5":"0.5"},{"1":"993.9630","2":"1807.9520","3":"-1.002988e+02","4":"1094.2618","5":"0.5"},{"1":"305.4390","2":"415.4407","3":"-8.765101e+00","4":"314.2041","5":"0.5"},{"1":"306.5191","2":"440.5174","3":"-2.173246e+01","4":"328.2515","5":"0.5"},{"1":"299.1993","2":"541.2006","3":"-8.545297e+01","4":"384.6523","5":"0.5"},{"1":"468.0008","2":"581.3599","3":"6.085205e+01","4":"407.1488","5":"0.5"},{"1":"522.6019","2":"743.0772","3":"2.486224e+01","4":"497.7397","5":"0.5"},{"1":"750.3202","2":"1057.6767","3":"7.634799e+01","4":"673.9722","5":"0.5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>Augment accepts a model object and a dataset and adds information about each observation in the dataset. Most commonly, this includes predicted values in the <code>.fitted</code> column, residuals in the <code>.resid</code> column, and standard errors for the fitted values in a <code>.se.fit</code> column. New columns always begin with a <code>.</code> prefix to avoid overwriting columns in the original dataset.</p>
+<p>We could also want to estimate a quantile regression model for several quantiles: this can be done with a unique call using the option <code>tau</code>:</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>rqmultfit_engel <span class="ot">&lt;-</span> <span class="fu">rq</span>(</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  foodexp <span class="sc">~</span> income, </span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> engel, </span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">tau =</span> <span class="fu">c</span>(</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.1</span>, </span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.25</span>, </span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.5</span>, </span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.75</span>, </span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.9</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(rqmultfit_engel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>              tau= 0.10  tau= 0.25  tau= 0.50  tau= 0.75  tau= 0.90
+(Intercept) 110.1415742 95.4835396 81.4822474 62.3965855 67.3508721
+income        0.4017658  0.4741032  0.5601806  0.6440141  0.6862995</code></pre>
+</div>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rqmultfit_engel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call: rq(formula = foodexp ~ income, tau = c(0.1, 0.25, 0.5, 0.75, 
+    0.9), data = engel)
+
+tau: [1] 0.1
+
+Coefficients:
+            coefficients lower bd  upper bd 
+(Intercept) 110.14157     79.88753 146.18875
+income        0.40177      0.34210   0.45079
+
+Call: rq(formula = foodexp ~ income, tau = c(0.1, 0.25, 0.5, 0.75, 
+    0.9), data = engel)
+
+tau: [1] 0.25
+
+Coefficients:
+            coefficients lower bd  upper bd 
+(Intercept)  95.48354     73.78608 120.09847
+income        0.47410      0.42033   0.49433
+
+Call: rq(formula = foodexp ~ income, tau = c(0.1, 0.25, 0.5, 0.75, 
+    0.9), data = engel)
+
+tau: [1] 0.5
+
+Coefficients:
+            coefficients lower bd  upper bd 
+(Intercept)  81.48225     53.25915 114.01156
+income        0.56018      0.48702   0.60199
+
+Call: rq(formula = foodexp ~ income, tau = c(0.1, 0.25, 0.5, 0.75, 
+    0.9), data = engel)
+
+tau: [1] 0.75
+
+Coefficients:
+            coefficients lower bd  upper bd 
+(Intercept)  62.39659     32.74488 107.31362
+income        0.64401      0.58016   0.69041
+
+Call: rq(formula = foodexp ~ income, tau = c(0.1, 0.25, 0.5, 0.75, 
+    0.9), data = engel)
+
+tau: [1] 0.9
+
+Coefficients:
+            coefficients lower bd  upper bd 
+(Intercept)  67.35087     37.11802 103.17399
+income        0.68630      0.64937   0.74223</code></pre>
+</div>
+</div>
+<p>To plot these different models:</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>aug1 <span class="ot">&lt;-</span> rqmultfit_engel <span class="sc">%&gt;%</span> </span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">augment</span>()</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(aug1) <span class="sc">+</span> </span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> income,</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> foodexp</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">"gray40"</span>,</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> engel</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> income, </span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span>.fitted, </span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> .tau</span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(</span>
+<span id="cb53-20"><a href="#cb53-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"div"</span>,</span>
+<span id="cb53-21"><a href="#cb53-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">palette =</span> <span class="st">"Dark2"</span>,</span>
+<span id="cb53-22"><a href="#cb53-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">aesthetics =</span> <span class="st">"colour"</span></span>
+<span id="cb53-23"><a href="#cb53-23" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="BA-QR_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<p>We could also plot the slope estimate as a function of <span class="math inline">\tau</span>:</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>rqmultfit_engel <span class="sc">%&gt;%</span> </span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>    term <span class="sc">==</span> <span class="st">"income"</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>    tau, </span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>    estimate</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> tau, </span>
+<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> estimate</span>
+<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb54-18"><a href="#cb54-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb54-19"><a href="#cb54-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Slope Estimate as a Function of the Quantile"</span></span>
+<span id="cb54-20"><a href="#cb54-20" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="BA-QR_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<p>Note that the usual <code>R</code> methods are available, such as <code>predict</code> (to derive predicted values) and <code>residuals</code> (to compute the residuals).</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>rqmultfit_engel <span class="sc">%&gt;%</span> </span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>         [,1]     [,2]     [,3]     [,4]     [,5]
+[1,] 278.9465 294.6816 316.8464 332.9841 355.7048
+[2,] 327.6623 352.1686 384.7706 411.0734 438.9214
+[3,] 472.1958 522.7252 586.2931 642.7547 685.8148
+[4,] 366.9021 398.4735 439.4826 473.9733 505.9513
+[5,] 411.8177 451.4761 502.1082 545.9711 582.6764
+[6,] 490.1312 543.8898 611.3004 671.5045 716.4522</code></pre>
+</div>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>rqmultfit_engel <span class="sc">%&gt;%</span> </span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">residuals</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>     tau= 0.10  tau= 0.25   tau= 0.50  tau= 0.75  tau= 0.90
+[1,] -23.10711 -38.842205  -61.006967  -77.14463  -99.86542
+[2,] -16.70359 -41.209900  -73.811889 -100.11471 -127.96278
+[3,]  13.48423 -37.045167 -100.613114 -157.07472 -200.13475
+[4,]  36.09523   4.523829  -36.485207  -70.97593 -102.95395
+[5,]  83.74309  44.084702   -6.547383  -50.41032  -87.11564
+[6,] 143.66662  89.907968   22.497401  -37.70665  -82.65437</code></pre>
+</div>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>rqmultfit_engel <span class="sc">%&gt;%</span> </span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">augment</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> income, </span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> .resid</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(</span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">yintercept =</span> <span class="dv">0</span>,</span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"grey80"</span>,</span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">"dashed"</span></span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(</span>
+<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span>.tau,</span>
+<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">nrow =</span> <span class="dv">3</span>,</span>
+<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">2</span></span>
+<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Residual Plot for Different Quantiles"</span></span>
+<span id="cb59-22"><a href="#cb59-22" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="BA-QR_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
 </section>
 <section id="multiple-independent-variables" class="level2">
 <h2 class="anchored" data-anchor-id="multiple-independent-variables">Multiple Independent variables</h2>
@@ -818,8 +1102,8 @@ Tip
 </div>
 <p>Again, we need a way to assess the significance of each added variable: in other words, a way to make <em>inference</em>.</p>
 </section>
-<section id="inference" class="level2">
-<h2 class="anchored" data-anchor-id="inference">Inference</h2>
+<section id="sec-inference" class="level2">
+<h2 class="anchored" data-anchor-id="sec-inference">Inference</h2>
 <section id="iid-case" class="level3">
 <h3 class="anchored" data-anchor-id="iid-case"><span class="math inline">iid</span> case</h3>
 <blockquote class="blockquote">
@@ -849,7 +1133,7 @@ Tip
 <section id="the-bootstrap" class="level2">
 <h2 class="anchored" data-anchor-id="the-bootstrap">The Bootstrap</h2>
 <blockquote class="blockquote">
-<p><strong>Bootstrapping</strong><a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> is <em>any test or metric that uses random sampling with replacement</em>, mimicking the sampling process, and falls under the broader class of <em>resampling methods</em>. Bootstrapping assigns <em>measures of accuracy</em><a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> to sample estimates. This technique allows estimation of the sampling distribution of almost any statistic using random sampling methods.</p>
+<p><strong>Bootstrapping</strong><a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> is <em>any test or metric that uses random sampling with replacement</em>, mimicking the sampling process, and falls under the broader class of <em>resampling methods</em>. Bootstrapping assigns <em>measures of accuracy</em><a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> to sample estimates. This technique allows estimation of the sampling distribution of almost any statistic using random sampling methods.</p>
 </blockquote>
 <p>It is based on the sample data and having <em>enough</em> computing power. The key idea is that we assume the population is just many copies of the sample; then, we make lots of copies of the sample and then we sample repeatedly from the population. In practice, instead of actually making many copies of the sample and sampling from that, we use a sampling technique that is equivalent, based on <em>sampling with replacement</em>.</p>
 <p>In particular, we will use <strong>non parametric resampling bootstrap</strong>.</p>
@@ -881,7 +1165,7 @@ Tip
 </section>
 <section id="bootstrap-inference" class="level3">
 <h3 class="anchored" data-anchor-id="bootstrap-inference">Bootstrap Inference</h3>
-<p>Using the <em>standard error</em> derived with the bootstrap samples we can build a test on <span class="math inline">\beta_j^{\tau}</span><a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a>, in the form</p>
+<p>Using the <em>standard error</em> derived with the bootstrap samples we can build a test on <span class="math inline">\beta_j^{\tau}</span><a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a>, in the form</p>
 <p><span id="eq-bootstrapinference"><span class="math display">
 \begin{cases}
 \begin{aligned}
@@ -908,7 +1192,7 @@ Important
 </div>
 </div>
 <p>Inference on single coefficient is often useful; however, we wish to test other hypothesis and also a to test <em>set</em> of hypothesis.</p>
-<p>For a QR model for a single quantile τ we can have two different <em>nested model</em> structures; for <span class="math inline">q \geq p</span>:</p>
+<p>For a QR model for a single quantile <span class="math inline">\tau</span> we can have two different <em>nested model</em> structures; for <span class="math inline">q \geq p</span>:</p>
 <p><span id="eq-nestedmodels"><span class="math display">
 \begin{aligned}
 \mathrm{Model \ 0}: \qquad Q_{\tau} (Y \vert X_1, …, X_q) = \beta_0^{\tau} + \beta_1^{\tau} X_1 + … + \beta_q^{\tau} \\
@@ -916,7 +1200,7 @@ Important
 \end{aligned}
 \tag{25}</span></span></p>
 <p>Note that <em>Model 1</em> reduces to <em>Model 2</em> when <span class="math inline">\beta_{p + 1} = … = \beta_q = 0</span>.</p>
-<p>We are interested in constructing a test to verify the following null hypothesis<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a>:</p>
+<p>We are interested in constructing a test to verify the following null hypothesis<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a>:</p>
 <p><span id="eq-nestedinference"><span class="math display">
 \begin{cases}
 \begin{aligned}
@@ -964,7 +1248,7 @@ Tip
 <blockquote class="blockquote">
 <p>What are the implications of the alernative hypothesis <span class="math inline">H_1: B^{(p)}_1 \neq B^{(q)}_1</span>?</p>
 </blockquote>
-<p>The main implication of this null hypothesis is that the <em>distribution</em> changes as a function of <span class="math inline">X</span>. We can describe the change in <em>scale</em> and <em>shape</em> using <em>quantile-based</em> measures; we already introduced them for the simple <em>univariate case</em><a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a>, and now we will extend them and compute them as a function of <span class="math inline">\mathbf{X}</span>.</p>
+<p>The main implication of this null hypothesis is that the <em>distribution</em> changes as a function of <span class="math inline">X</span>. We can describe the change in <em>scale</em> and <em>shape</em> using <em>quantile-based</em> measures; we already introduced them for the simple <em>univariate case</em><a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a>, and now we will extend them and compute them as a function of <span class="math inline">\mathbf{X}</span>.</p>
 <p><span id="eq-QSCext"><span class="math display">
 \begin{aligned}
 QSC(p \vert X)
@@ -1027,11 +1311,13 @@ Important
 <li id="fn12"><p>This is the same <em>loss function</em> used to find the median.s<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn13"><p><span class="math inline">\tau = c(0.25, 0.5, 0.75)</span>.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn14"><p><span class="math inline">(\beta_1^{(p)} - \beta_1^{(q)}) = 0</span>.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn15"><p>First introduced by Bradley Efron in the late 70s.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn16"><p>bias, variance, confidence intervals, prediction error, etc.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn17"><p>In the following notation the <span class="math inline">\tau</span> is omitted for readability.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn18"><p>This test amounts to asking the question: “Are the added variables <em>significant</em> in explaining the behaviour of our dependent variable?”<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn19"><p><a href="#sec-quantilebasedssunivariate">Section&nbsp;2.4</a>.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p><a href="#sec-inference">Section&nbsp;3.4</a>.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>It works similarly to the well-known <code>lm</code> function.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>First introduced by Bradley Efron in the late 70s.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>bias, variance, confidence intervals, prediction error, etc.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>In the following notation the <span class="math inline">\tau</span> is omitted for readability.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>This test amounts to asking the question: “Are the added variables <em>significant</em> in explaining the behaviour of our dependent variable?”<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p><a href="#sec-quantilebasedssunivariate">Section&nbsp;2.4</a>.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

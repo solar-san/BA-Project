@@ -11,6 +11,7 @@ format:
     fig-align: center
     fig-width: 10
     fig-height: 8
+    df-print: paged
     html-math-method: katex
     code-overflow: scroll
     code-copy: hover
@@ -58,6 +59,7 @@ pathmaker <- function(filename, data_path = "/Users/themagician/Documents/DABS/A
 lib_list <- list(
   "tidyverse",
   "quantreg",
+  "broom",
   "ggthemes",
   "patchwork"
 )
@@ -425,7 +427,7 @@ $${#eq-QRMloss2}
 Minimisation is achieved with _linear programming_ methods. The solution _might be not unique_.
 :::
 
-## Example
+## Example: Engel Food Expenditure Data
 
 We will use Engel food expenditure data used in Koenker and Bassett(1982). This is a regression dataset consisting of 235 observations on income and expenditure on food for Belgian working class households.
 
@@ -449,7 +451,7 @@ ggplot(
     )
 ```
 
-We need the `quantreg` dataset to perform QRM. The function `geom_quantile()` can be used to compare the standard linear regression fit and the median fit:
+We need the `quantreg` dataset to perform the quantile regression analysis. The function `geom_quantile()` can be used to compare the standard linear regression fit and the median fit:
 
 ```{r}
 ggplot(
@@ -548,7 +550,156 @@ The difference between the two errors depend on $x_i$. If the two slopes are equ
 QRM can be used to assess whether the assumption of _identically distributed_ observations is valid.
 :::
 
-Note that, however, to formally test the equality of slopes we need a way to make _inference_.
+Note that, however, to formally test the equality of slopes we need a way to make _inference_^[@sec-inference.].
+
+We can estimate the QR with the `quantreg` package, calling the `rq` function^[It works similarly to the well-known `lm` function.].
+
+```{r}
+rqfit_engel <- rq(
+  foodexp ~ income, 
+  data = engel
+  )
+```
+
+```{r}
+rqfit_engel %>% 
+  summary()
+```
+
+We will also use the `broom` library to tidy the model output.
+
+```{r}
+rqfit_engel %>% tidy()
+```
+
+`tidy` summarizes information about the components of a model.
+
+```{r}
+rqfit_engel %>% glance()
+```
+
+`glance` accepts a model object and returns a `tibble::tibble()` with exactly one row of model summaries. The summaries are typically goodness of fit measures, p-values for hypothesis tests on residuals, or model convergence information.
+
+```{r}
+rqfit_engel %>% augment()
+```
+
+Augment accepts a model object and a dataset and adds information about each observation in the dataset. Most commonly, this includes predicted values in the `.fitted` column, residuals in the `.resid` column, and standard errors for the fitted values in a `.se.fit` column. New columns always begin with a `.` prefix to avoid overwriting columns in the original dataset.
+
+We could also want to estimate a quantile regression model for several quantiles: this can be done with a unique call using the option `tau`:
+
+```{r}
+rqmultfit_engel <- rq(
+  foodexp ~ income, 
+  data = engel, 
+  tau = c(
+    0.1, 
+    0.25, 
+    0.5, 
+    0.75, 
+    0.9
+    )
+  )
+coef(rqmultfit_engel)
+```
+
+```{r}
+summary(rqmultfit_engel)
+```
+
+To plot these different models:
+
+```{r}
+aug1 <- rqmultfit_engel %>% 
+  augment()
+ggplot(aug1) + 
+  geom_point(
+    aes(
+      x = income,
+      y = foodexp
+    ),
+    col = "gray40",
+    data = engel
+  ) +
+  geom_line(
+    aes(
+      x = income, 
+      y =.fitted, 
+      col = .tau
+      )
+    ) +
+  scale_color_brewer(
+    type = "div",
+    palette = "Dark2",
+    aesthetics = "colour"
+  )
+```
+
+We could also plot the slope estimate as a function of $\tau$:
+
+```{r}
+#| fig-width: 10
+#| fig-height: 6
+rqmultfit_engel %>% 
+  tidy() %>% 
+  filter(
+    term == "income"
+    ) %>% 
+  select(
+    tau, 
+    estimate
+    ) %>% 
+  ggplot(
+    aes(
+      x = tau, 
+      y = estimate
+      )
+    ) +
+  geom_point() + 
+  geom_line() +
+  labs(
+    title = "Slope Estimate as a Function of the Quantile"
+    )
+```
+
+Note that the usual `R` methods are available, such as `predict` (to derive predicted values) and `residuals` (to compute the residuals).
+
+```{r}
+rqmultfit_engel %>% 
+  predict() %>% 
+  head()
+```
+
+```{r}
+rqmultfit_engel %>% 
+  residuals() %>% 
+  head()
+```
+```{r}
+rqmultfit_engel %>% 
+  augment() %>% 
+  ggplot() + 
+  geom_point(
+    aes(
+      x = income, 
+      y = .resid
+      )
+    ) +
+  geom_hline(
+    yintercept = 0,
+    color = "grey80",
+    linetype = "dashed"
+  ) +
+  facet_wrap(
+    ~.tau,
+    nrow = 3,
+    ncol = 2
+    ) +
+  labs(
+    title = "Residual Plot for Different Quantiles"
+  )
+```
+
 
 ## Multiple Independent variables
 
@@ -564,7 +715,7 @@ The coefficients $\mathbf{\beta}^{(\tau)}$ can be interpreted as the effect of $
 
 Again, we need a way to assess the significance of each added variable: in other words, a way to make _inference_. 
 
-## Inference
+## Inference {#sec-inference}
 
 ### $iid$ case
 
@@ -655,8 +806,7 @@ We estimate $se(\beta_j)$ with the bootstrap or with some theoretical derivation
 
 Inference on single coefficient is often useful; however, we wish to test other hypothesis and also a to test _set_ of hypothesis.
 
-For a QR model for a single quantile τ we can have two different _nested model_
-structures; for $q \geq p$:
+For a QR model for a single quantile $\tau$ we can have two different _nested model_ structures; for $q \geq p$:
 
 $$
 \begin{aligned}
