@@ -249,7 +249,7 @@ Each point contributes to a certain value and we can represent a _loss function_
 
 A function is non decreasing if $h(b) \geq h(a)$ if $b>a$^[The basic example is a _linear transformation_, but this property also applies to _logarithms_.]. This property implies that $Q(p, h(Y)) = h(Q(p, Y))$^[For example, $Q(p, a + bY) = a + bQ(p, Y)$.]. 
 
-## Quantile-based Summary Statistics
+## Quantile-based Summary Statistics {#sec-quantilebasedssunivariate}
 
 Quantiles allow to describe the _scale_ and _shape_ of distributions.
 
@@ -591,8 +591,8 @@ We are interested in the following hypothesis:
 $$
 \begin{cases}
 \begin{aligned}
-H_0: B_{p} = B_{q} \\
-H_1: B_{p} \neq B_{q}
+H_0: B^{(p)}_1 = B^{(q)}_1 \\
+H_1: B^{(p)}_1 \neq B^{(q)}_1
 \end{aligned}
 \end{cases}
 $${#eq-slopetest}
@@ -604,3 +604,33 @@ we should test for _more_ that two quantiles; formal testing gives _evidence_ of
 :::
 
 # More Intepretation of the Quantile Regression
+
+> What are the implications of the alernative hypothesis $H_1: B^{(p)}_1 \neq B^{(q)}_1$?
+
+The main implication of this null hypothesis is that the _distribution_ changes as a function of $X$. We can describe the change in _scale_ and _shape_ using _quantile-based_ measures; we already introduced them for the simple _univariate case_^[@sec-quantilebasedssunivariate.], and now we will extend them and compute them as a function of $\mathbf{X}$.
+
+$$
+\begin{aligned}
+QSC(p \vert X)
+&= Q(1 - p \vert X) - Q(p \vert X) = \\ 
+&= (\beta{(1 - p)}_0 - \beta^{(1 - p)}_1 X) - (\beta{(p)}_0 - \beta^{(p)}_1 X) = \\
+&=  (\beta{(1 - p)}_0 - \beta^{(p)}_0) + (\beta^{(1 - p)}_1 - \beta^{(p)}_1) X
+\end{aligned}
+$${#eq-QSCext}
+
+:::{.callout-important}
+If the scale is the same $\beta^{(1 - p)}_1 = \beta^{(p)}_1$; hence, $QSC(p \vert X)$ reduces to a constant.
+:::
+
+$$
+\begin{aligned}
+QSK(p \vert X)
+&= \frac{Q(1-p \vert X) - Q(.5 \vert X)}{Q(.5 \vert X) - Q(p \vert X)} - 1 =\\
+&= \frac{\beta^{(1 - p)}_0 + \beta^{(1 - p)}_1 X - \beta^{(.5)}_0 - \beta^{(.5)}_1 X}{\beta^{(.5)}_0 - \beta^{(.5)}_1 X -\beta^{(p)}_0 + \beta^{(p)}_1 X  } -1 = \\
+&= \frac{ (\beta^{(1 - p)}_0 - \beta^{(.5)}_0) + (\beta^{(1 - p)}_1 - \beta^{(.5)}_1) X}{ (\beta^{(.5)}_0 - \beta^{(p)}_0) + (\beta^{(.5)}_1 - \beta^{(p)}_1) X} -1
+\end{aligned}
+$${#eq-QSKext}
+
+:::{.callout-important}
+Under _symmetry_, $(\beta^{(1 - p)}_1 - \beta^{(.5)}_1) = (\beta^{(.5)}_1 - \beta^{(p)}_1)$ and $(\beta^{(1 - p)}_0 - \beta^{(.5)}_0) = (\beta^{(.5)}_0 - \beta^{(p)}_0)$; this implies that $QSK(p \vert X)$ reduces to 0.
+:::

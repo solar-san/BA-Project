@@ -137,7 +137,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#sample-quantiles-and-sampling-distribution" id="toc-sample-quantiles-and-sampling-distribution" class="nav-link" data-scroll-target="#sample-quantiles-and-sampling-distribution">Sample Quantiles and Sampling Distribution</a></li>
   <li><a href="#quantiles-as-a-minimization-problem" id="toc-quantiles-as-a-minimization-problem" class="nav-link" data-scroll-target="#quantiles-as-a-minimization-problem">Quantiles as a Minimization Problem</a></li>
   <li><a href="#advantages-of-quantiles" id="toc-advantages-of-quantiles" class="nav-link" data-scroll-target="#advantages-of-quantiles">Advantages of quantiles</a></li>
-  <li><a href="#quantile-based-summary-statistics" id="toc-quantile-based-summary-statistics" class="nav-link" data-scroll-target="#quantile-based-summary-statistics">Quantile-based Summary Statistics</a></li>
+  <li><a href="#sec-quantilebasedssunivariate" id="toc-sec-quantilebasedssunivariate" class="nav-link" data-scroll-target="#sec-quantilebasedssunivariate">Quantile-based Summary Statistics</a></li>
   </ul></li>
   <li><a href="#quantile-regression" id="toc-quantile-regression" class="nav-link" data-scroll-target="#quantile-regression">Quantile regression</a>
   <ul class="collapse">
@@ -397,8 +397,8 @@ p \ \vert Y - c \vert \qquad \mathrm{for} \ Y &amp;\geq c
 </ul>
 <p>A function is non decreasing if <span class="math inline">h(b) \geq h(a)</span> if <span class="math inline">b&gt;a</span><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. This property implies that <span class="math inline">Q(p, h(Y)) = h(Q(p, Y))</span><a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>.</p>
 </section>
-<section id="quantile-based-summary-statistics" class="level2">
-<h2 class="anchored" data-anchor-id="quantile-based-summary-statistics">Quantile-based Summary Statistics</h2>
+<section id="sec-quantilebasedssunivariate" class="level2">
+<h2 class="anchored" data-anchor-id="sec-quantilebasedssunivariate">Quantile-based Summary Statistics</h2>
 <p>Quantiles allow to describe the <em>scale</em> and <em>shape</em> of distributions.</p>
 <p>Scale can be summarised with a <em>quantile-based scale</em> measure (<strong>QSC</strong>) at a selected <span class="math inline">p</span>:</p>
 <p><span id="eq-QSC"><span class="math display">
@@ -762,8 +762,8 @@ H_1: B_{p + 1} = … = \beta_q \neq 0
 <p><span id="eq-slopetest"><span class="math display">
 \begin{cases}
 \begin{aligned}
-H_0: B_{p} = B_{q} \\
-H_1: B_{p} \neq B_{q}
+H_0: B^{(p)}_1 = B^{(q)}_1 \\
+H_1: B^{(p)}_1 \neq B^{(q)}_1
 \end{aligned}
 \end{cases}
 \tag{28}</span></span></p>
@@ -786,6 +786,52 @@ Tip
 </section>
 <section id="more-intepretation-of-the-quantile-regression" class="level1">
 <h1>More Intepretation of the Quantile Regression</h1>
+<blockquote class="blockquote">
+<p>What are the implications of the alernative hypothesis <span class="math inline">H_1: B^{(p)}_1 \neq B^{(q)}_1</span>?</p>
+</blockquote>
+<p>The main implication of this null hypothesis is that the <em>distribution</em> changes as a function of <span class="math inline">X</span>. We can describe the change in <em>scale</em> and <em>shape</em> using <em>quantile-based</em> measures; we already introduced them for the simple <em>univariate case</em><a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a>, and now we will extend them and compute them as a function of <span class="math inline">\mathbf{X}</span>.</p>
+<p><span id="eq-QSCext"><span class="math display">
+\begin{aligned}
+QSC(p \vert X)
+&amp;= Q(1 - p \vert X) - Q(p \vert X) = \\
+&amp;= (\beta{(1 - p)}_0 - \beta^{(1 - p)}_1 X) - (\beta{(p)}_0 - \beta^{(p)}_1 X) = \\
+&amp;=  (\beta{(1 - p)}_0 - \beta^{(p)}_0) + (\beta^{(1 - p)}_1 - \beta^{(p)}_1) X
+\end{aligned}
+\tag{29}</span></span></p>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If the scale is the same <span class="math inline">\beta^{(1 - p)}_1 = \beta^{(p)}_1</span>; hence, <span class="math inline">QSC(p \vert X)</span> reduces to a constant.</p>
+</div>
+</div>
+<p><span id="eq-QSKext"><span class="math display">
+\begin{aligned}
+QSK(p \vert X)
+&amp;= \frac{Q(1-p \vert X) - Q(.5 \vert X)}{Q(.5 \vert X) - Q(p \vert X)} - 1 =\\
+&amp;= \frac{\beta^{(1 - p)}_0 + \beta^{(1 - p)}_1 X - \beta^{(.5)}_0 - \beta^{(.5)}_1 X}{\beta^{(.5)}_0 - \beta^{(.5)}_1 X -\beta^{(p)}_0 + \beta^{(p)}_1 X  } -1 = \\
+&amp;= \frac{ (\beta^{(1 - p)}_0 - \beta^{(.5)}_0) + (\beta^{(1 - p)}_1 - \beta^{(.5)}_1) X}{ (\beta^{(.5)}_0 - \beta^{(p)}_0) + (\beta^{(.5)}_1 - \beta^{(p)}_1) X} -1
+\end{aligned}
+\tag{30}</span></span></p>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Under <em>symmetry</em>, <span class="math inline">(\beta^{(1 - p)}_1 - \beta^{(.5)}_1) = (\beta^{(.5)}_1 - \beta^{(p)}_1)</span> and <span class="math inline">(\beta^{(1 - p)}_0 - \beta^{(.5)}_0) = (\beta^{(.5)}_0 - \beta^{(p)}_0)</span>; this implies that <span class="math inline">QSK(p \vert X)</span> reduces to 0.</p>
+</div>
+</div>
 </section>
 
 
@@ -807,6 +853,7 @@ Tip
 <li id="fn13"><p>bias, variance, confidence intervals, prediction error, etc.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn14"><p>In the following notation the <span class="math inline">\tau</span> is omitted for readability.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn15"><p>This test amounts to asking the question: “Are the added variables <em>significant</em> in explaining the behaviour of our dependent variable?”<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p><a href="#sec-quantilebasedssunivariate">Section&nbsp;2.4</a>.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
