@@ -731,7 +731,181 @@ $${#eq-multiQRM}
 The coefficients $\mathbf{\beta}^{(\tau)}$ can be interpreted as the effect of $x$ on the quantile once the effect of other variables is also taken into account.
 :::
 
-Again, we need a way to assess the significance of each added variable: in other words, a way to make _inference_. 
+Again, we need a way to assess the significance of each added variable: in other words, a way to make _inference_^[See @sec-inference.].
+
+### Example: Munich Rent data
+
+```{r}
+rents <- readr::read_table(
+  pathmaker(
+    "data/rent99.raw"
+  ),
+  col_types = cols(
+    rent = col_double(),
+    rentsqm = col_double(),
+    area = col_double(),
+    yearc = col_double(),
+    location = col_factor(),
+    bath = col_factor(),
+    kitchen = col_factor(),
+    cheating = col_logical(),
+    district = col_factor()
+  )
+)
+```
+
+```{r}
+rents %>% 
+  str
+```
+
+To begin, we will set `area` and `yearc` as predictors:
+
+```{r}
+p1 <- ggplot(
+  rents
+  ) + 
+  geom_point(
+    aes(
+      area, 
+      rent
+      ),
+    alpha = .7,
+    col = "grey20"
+    ) +
+  labs(
+    title = "Rent by Area"
+  )
+
+p2 <- ggplot(
+  rents
+  ) + 
+  geom_point(
+    aes(
+      yearc, 
+      rent
+      ),
+    alpha = .7,
+    col = "grey20"
+    ) +
+  labs(
+    title = "Rent by Construction Year"
+  )
+
+p1 / p2
+```
+
+We will fit a multivariate quantile regression with both variables:
+
+```{r}
+rqfitmunich <- rq(
+  rent ~ area + yearc,
+  data = rents, 
+  tau = c(
+    0.1,
+    .5,
+    .9
+    )
+  )
+rqfitmunich %>% 
+  tidy()
+```
+
+```{r}
+#| fig-height: 12
+p1 <- rqfitmunich %>% 
+  augment(
+    newdata = tibble(
+      area = seq(
+        0,
+        160
+        ), 
+      yearc = 1990
+      )
+    ) %>% 
+  ggplot() +
+  geom_point(
+    data = rents, 
+    aes(
+      area, 
+      rent
+      ),
+    alpha = .7,
+    col ="grey80"
+    ) + 
+  geom_line(
+    aes(
+      area, 
+      .fitted, 
+      col =.tau
+      )
+  ) +
+  scale_color_brewer(
+    type = "div",
+    palette = "Dark2"
+  ) +
+  labs(
+    title = "Multivariate Quantile Regression: Rents by Area \n for different Deciles"
+  )
+p2 <- rqfitmunich %>% 
+  augment(
+    newdata = tibble(
+      area = 80, 
+      yearc = seq(
+        1918,
+        1997
+        )
+      )
+    ) %>% 
+  ggplot() +
+  geom_point(
+    data = rents, 
+    aes(
+      yearc, 
+      rent
+      ),
+    col ="grey"
+    ) + 
+  geom_line(
+    aes(
+      yearc, 
+      .fitted, 
+      col =.tau
+      )
+    ) +
+  scale_color_brewer(
+    type = "div",
+    palette = "Dark2"
+  ) +
+  labs(
+    title = "Multivariate Quantile Regression: Rents by Year \n for different Deciles"
+  ) 
+p1 / p2
+```
+
+We should always take a look at the residuals:
+
+```{r}
+#| fig-height: 12
+rqfitmunich %>% 
+  augment() %>% 
+  ggplot() +  
+  geom_point(
+    aes(
+      yearc, 
+      .resid
+      )
+    ) +
+  geom_hline(
+    yintercept = 0,
+    col = "grey60",
+    linetype = "dashed"
+  ) +
+  facet_grid(
+    rows = vars(.tau)
+    )
+```
+
 
 ## Inference {#sec-inference}
 
@@ -874,6 +1048,142 @@ Again, this test can be performed via ANOVA, based on the asymptotic normality.
 we should test for _more_ that two quantiles; formal testing gives _evidence_ of varying slopes.
 :::
 
+## Inference & Bootstrap Examples
+
+We will compare different models; they will _polynomial_ variations of the same regression.
+
+```{r}
+rqfit2munich <- rq(
+  rent ~ area + yearc + I(area^2) + I(yearc^2),
+  data = rents, 
+  tau = c(
+    0.1, 
+    0.25, 
+    .5, 
+    .75, 
+    .9
+    )
+  )
+summary(
+  rqfit2munich, 
+  se="boot"
+  )
+```
+
+The option `se = "boot"` computes the standard errors using the _bootstrap_. To compare the fitness of available models, we can use the ANOVA test:
+
+The `se="boot"` option will compute the standard error estimates using the bootstrap.
+
+To compare the different model, we can use the ANOVA test:
+
+```{r}
+anova(
+  rq(
+    rent ~ area + yearc + I(area^2) + I(yearc^2),
+    data = rents,
+    tau = c(
+      0.1
+      )
+    ),
+  rq(
+    rent ~ area + yearc + I(yearc^2),
+    data = rents, 
+    tau = c(
+      0.1
+      )
+    )
+  )
+```
+
+
+```{r}
+anova(
+  rq(
+    rent ~ area + yearc +I(area^2) + I(yearc^2),
+    data = rents, 
+    tau = c(
+      0.9
+      )
+    ),
+  rq(
+    rent ~ area + yearc,
+    data = rents, 
+    tau = c(
+      0.9
+      )
+    )
+  )
+```
+
+Feeding the `anova` function with different $\tau$ for the same model will conduct a joint test for the equality of slopes:
+
+```{r}
+anova(rqfit2munich)
+```
+
+We can visualize the _predicted quantiles_ by looking at the effect of `area` on `rent` for different fixed values of `yearc`. 
+We wish to show this in a _faceted_ plot, so we will make use of the `expand_grid` function from the `tidyr` package.
+
+```{r}
+rqfit2munich %>% 
+  augment(
+    newdata = expand_grid(
+      area = seq(
+        20,
+        140
+        ), 
+      yearc = c(
+        1918,
+        1995
+        )
+      )
+    ) %>% 
+  ggplot() +
+  geom_line(
+    aes(
+      area,
+      .fitted,
+      group = .tau
+      )
+    ) +
+  facet_grid(
+    ~yearc
+    ) +
+    labs(
+        title = "Predicted Quantiles for Area"
+    )
+```
+
+```{r}
+rqfit2munich %>% 
+  augment(
+    newdata = expand_grid(
+      area = c(
+        20,
+        140
+        ),
+      yearc = seq(
+        1918,
+        1995
+        )
+      )
+    ) %>% 
+  ggplot() +
+  geom_line(
+    aes(
+      yearc, 
+      .fitted, 
+      group = .tau
+      )
+    ) +
+  facet_grid(
+    ~area
+    ) +
+    labs(
+        title = "Predicted Quantiles for Construction Year"
+    )
+```
+
 # More Intepretation of the Quantile Regression
 
 > What are the implications of the alernative hypothesis $H_1: B^{(p)}_1 \neq B^{(q)}_1$?
@@ -905,3 +1215,12 @@ $${#eq-QSKext}
 :::{.callout-important}
 Under _symmetry_, $(\beta^{(1 - p)}_1 - \beta^{(.5)}_1) = (\beta^{(.5)}_1 - \beta^{(p)}_1)$ and $(\beta^{(1 - p)}_0 - \beta^{(.5)}_0) = (\beta^{(.5)}_0 - \beta^{(p)}_0)$; this implies that $QSK(p \vert X)$ reduces to 0.
 :::
+
+## Example: Changes in the Distribution Properties
+
+Once we have the predicted values for different quantiles we can also plot some measure of _scale_ and _shape_ as a function of some explanatory variable to assess whether this is changing.
+
+```{r}
+
+```
+
