@@ -1218,9 +1218,91 @@ Under _symmetry_, $(\beta^{(1 - p)}_1 - \beta^{(.5)}_1) = (\beta^{(.5)}_1 - \bet
 
 ## Example: Changes in the Distribution Properties
 
-Once we have the predicted values for different quantiles we can also plot some measure of _scale_ and _shape_ as a function of some explanatory variable to assess whether this is changing.
+> Once we have the predicted values for different quantiles we can also plot some measure of _scale_ and _shape_ as a function of some explanatory variable to assess whether this is changing: we compute $QSC(0.25)$ and $QSK(0.9)$ for _fixed values_ of `yearc` and allowing `area` to vary:
 
 ```{r}
+qs <- rqfit2munich %>% 
+  augment(
+    newdata = expand_grid(
+      area = seq(
+        20,
+        140
+        ),
+      yearc = c(
+        1995
+        )
+      )
+    ) %>% 
+  pivot_wider(
+    names_from  =.tau, 
+    values_from = .fitted
+    ) %>% 
+  mutate(
+    QSC025 = `0.75` - `0.25`,
+    QSK010 = (`0.9` - `0.5`)/(`0.5` - `0.1`) - 1
+  )
+```
 
+```{r}
+ggplot(qs) + 
+  geom_line(
+    aes(
+      area, 
+      QSC025
+      )
+    )
+```
+
+```{r}
+ggplot(qs) + 
+  geom_line(
+    aes(
+      area, 
+      QSK010
+      )
+    )
+```
+
+We will do now the same keeping a fixed value for `area` and allowing `yearc` to vary.
+
+```{r}
+qs <- rqfit2munich %>% 
+  augment(
+    newdata = expand_grid(
+      area = c(80),
+      yearc = seq(
+        1918, 
+        1995
+        )
+      )
+    ) %>% 
+  pivot_wider(
+    names_from  =.tau, 
+    values_from = .fitted
+    ) %>% 
+  mutate(
+    QSC025 = `0.75` - `0.25`, 
+    QSK010 = (`0.9` - `0.5`)/(`0.5` - `0.1`) - 1
+    )
+```
+
+```{r}
+ggplot(qs) + 
+  geom_line(
+    aes(
+      yearc, 
+      QSC025
+      )
+    )
+```
+
+```{r}
+ggplot(qs) + 
+  geom_line(
+    aes(
+      yearc, 
+      QSK010
+      )
+    )
 ```
 
