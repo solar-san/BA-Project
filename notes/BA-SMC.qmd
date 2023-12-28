@@ -96,8 +96,3 @@ It has three main components:
 
 > What is the role of Monte Carlo simulation in Business Analytics?
 
-Uncertainty is what makes decision-making difficult (in business, government, personal lives, etc).
-It can not be avoided, but it can be quantified and taken into account.
-We discuss methods which are based on computer-based Monte Carlo simulation to quantify, visualize, and assess uncertainty to evaluate its impact on decision-making.
-The name Monte Carlo is related to the Monte Carlo casino in Monaco where randomness is king. These are also referred to as Risk Analysis or Static Simulation models. We do not discuss dynamic simulation models and discrete event simulation.
-We do discuss instead the use of simulation-based approaches to quantify statistical uncertainty (e.g. variance) and to better understand how some estimation methods work.

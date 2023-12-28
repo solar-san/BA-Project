@@ -1048,6 +1048,131 @@ Again, this test can be performed via ANOVA, based on the asymptotic normality.
 we should test for _more_ that two quantiles; formal testing gives _evidence_ of varying slopes.
 :::
 
+### Examples: Bootstrap
+
+> This first application of the bootstrap is characterized by a situation in which a well-established theory exists to quantify the variability of our estimation: _the estimation of the mean_.
+
+We will keep using the Munich rent dataset and restrict ourselves on the houses with _premium kitchens_, and focus on variables `area` and `rentsqm`:
+
+```{r}
+rents_kp <- rents[rents$kitchen ==1, ]
+```
+
+```{r}
+#| fig-height: 12
+p1 <- ggplot(
+  data = rents_kp
+  ) + 
+  geom_histogram(
+    aes(
+      area
+      )
+    ) 
+p2 <- ggplot(
+  data = rents_kp
+  ) + 
+  geom_histogram(
+    aes(
+      rentsqm
+      )
+    ) 
+
+p1 / p2
+```
+
+We can compute the mean for each of the variables and compute confidence intervals based on the Central Limit Theorem approximation for the mean:
+
+```{r}
+rents_kp %>% 
+  summarise(
+    mean_area = mean(area),
+    se_area = sd(area)/(sqrt(length(area))),
+    mean_rentsqm = mean(rentsqm),
+    se_rentsqm = sd(rentsqm)/(sqrt(length(rentsqm)))
+  )
+```
+
+```{r}
+rents_kp %>% 
+  reframe(
+    CLT_CI_area = mean(area) + qt(c(.025,.975), nrow(rents_kp)-1)*sd(area)/sqrt(nrow(rents_kp)),
+    CLT_CI_rentsqm = mean(rentsqm) + qt(c(.025,.975), nrow(rents_kp)-1)*sd(rentsqm)/sqrt(nrow(rents_kp))
+  )
+```
+We can create our bootstrapped sample with the following code:
+
+```{r}
+set.seed(19)
+boot1 <- rents_kp %>% 
+  pull(
+    area
+    ) %>% 
+  sample(
+    size = length(.),
+    replace = TRUE
+    )
+```
+
+The mean and standard deviation of our bootstrapped sample are:
+
+```{r}
+tibble(
+  area =  boot1
+  ) %>% 
+  summarise(
+    mean_area = mean(area),
+    se_area = sd(area)/(sqrt(length(area)))
+   )
+```
+
+We can iterate the procedure to obtain a _distribution_ of means:
+
+```{r}
+nboot <- 1000
+boots <- rep(NA, length = nboot)
+for(i in 1:nboot){
+  booti <- rents_kp %>% pull(area) %>% sample(size = length(.), 
+                                              replace = TRUE)
+  boots[i] <- mean(booti)
+}
+
+ggplot() +
+  geom_histogram(
+    aes(
+      x = boots
+    ),
+    color = "grey40"
+  ) + 
+  geom_vline(
+    xintercept = mean(boots),
+    color = 'limegreen',
+    show.legend = T
+  ) +
+  geom_vline(
+    xintercept = mean(
+      rents_kp$area,
+      color = 'royalblue3',
+      show.legend = T
+    )
+  ) +
+  labs(
+    title = "Bootstrapped distribution for the mean Area"
+  )
+```
+
+Moreover, we can compute _bootstrapped confidence intervals_:
+
+```{r}
+tibble(
+  area =  boot1
+  ) %>% 
+  reframe(
+    bootstrapped_CI = mean(rents_kp$area) + qnorm(c(.04, .96)) * sd(boots)
+   )
+
+```
+
+
 ## Inference & Bootstrap Examples
 
 We will compare different models; they will _polynomial_ variations of the same regression.
