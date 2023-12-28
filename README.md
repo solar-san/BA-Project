@@ -17,7 +17,7 @@ The course introduces the concept of Business Analytics and discusses various mo
    - Understand seasonality and trends, and techniques such as moving averages and exponential smoothing.
    - Implementation using the `R` software with a focus on reproducible research.
 
-2. **Quantile Regression** (Work in Progress)
+2. [**Quantile Regression**](https://solar-san.github.io/BA-Project/BA-QR.html)
    - Introduce quantile regression as a powerful modeling approach.
    - Understand its applications in predictive analytics.
    - Practical implementation using `R`, with a strong focus on reproducibility and visualization.
