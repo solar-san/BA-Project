@@ -102,9 +102,43 @@ The main reason for adoptin a simulation-based approach is __uncertainty__: it i
 
 While a closed-form solution is sometimes available for a large set of problems, provided that some quantities are known. This is often not the case. For example, _profits_ are a function of _revenues_ and _costs_: if the two latter quantites are known, then we can easily compute the _profits_; but revenues and costs are typically _not_ known precisely, although it is possible to make some _probabilistic assessment_ on the range of possible values.
 
-We use the Monte Carlo simulation approach to assess _properties_ of the solution to the problem under study when the inputs of the system might vary in a _stochastic_ manner: this is a key method for _decision making_ and _risk analysis._
-
-These methods can also be employed to quantify _uncertainty_ in _estimation_ procedures.
-They can be used in situations in which mathematical derivations can be cumbersome, such as with _integrals_ and other _optimization_ procedures. Moreover, they can be also be very useful to explore the workings and check the properties of statistical machine learning estimation procedures.
+The Monte Carlo simulation method is employed to evaluate the _properties of solutions_ in scenarios where system inputs exhibit _stochastic_ variations, proving crucial for _decision-making_ and _risk analysis_. Additionally, it serves as a valuable tool for quantifying uncertainty in _estimation_ procedures, particularly in situations where mathematical derivations, integrals, and optimization procedures may be intricate. This approach is also instrumental in exploring and validating the properties of statistical machine learning estimation procedures.
 
 # Decision-making and Uncertainty
+
+> Decision making is a fundamental and unavoidable aspect of business intelligence and analytics. Ideally, we wish decision to be logically sound and justifiable. Hence, a decision-making _procedure_ or _model_ is required.
+
+The following procedure is based on a simple princile: defining _clearly_ the decision problem.
+
+1. Translate the _decision_ problem into a _conceptual_ model.
+2. Convert the _conceptual_ model into a _mathematical_ model that can be handled using mathematical reasoning.
+3. Once the mathematical model is defined we can use it to assess whether the outcome is _robust_ to changes in the assumptions.
+
+## Example: A Decision Model for Profit
+
+> This model is tasked with computing the profit of a small company.
+
+The simplest function that computes profits is `Profit = revenue - cost`. We can expand this mapping by considering that:
+
+- _Revenues_ depend on the quantity that is sold and on the unit price.
+- _Costs_ depend on the quantity that is produced, on the unit cost and on the fixed
+costs.
+
+These considerations lead to the following model:
+
+$$
+\mathrm{Profit} = p \times min\{D, Q\} - (F + cQ) 
+$${#eq-profitmodel}
+
+- $p$ is the _unit price_.
+- $Q$ is the _quantity produced_.
+- $F$ is the _fixed cost_.
+- $c$ is the _unit cost_.
+- $D$ is the _demand_^[While the demand might be higher than the quantity produced, the company might sell only up to the latter.].
+
+Profit is therefore a function of the inputs: $\mathrm{Profit} = f(p, c, D, Q, F)$. This model can be easily automated with a spreadsheet or a script, to analyse different scenario and compute the estimated profits.
+
+# Monte Carlo methods
+
+> In many cases we are _uncertain_ about some of the inputs in our calculations, altough we can assume that the input will follow a given distribution of values. This assumptions can be modeled mathematically using _stochastic variables_, instead of deterministic inputs and outputs.
+

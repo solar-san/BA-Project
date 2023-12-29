@@ -44,6 +44,22 @@ ul.task-list li input[type="checkbox"] {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&amp;family=Fira+Code&amp;display=swap" rel="stylesheet">
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
 </head>
 
@@ -56,7 +72,11 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#sec-intro" id="toc-sec-intro" class="nav-link active" data-scroll-target="#sec-intro">Introduction</a></li>
-  <li><a href="#decision-making-and-uncertainty" id="toc-decision-making-and-uncertainty" class="nav-link" data-scroll-target="#decision-making-and-uncertainty">Decision-making and Uncertainty</a></li>
+  <li><a href="#decision-making-and-uncertainty" id="toc-decision-making-and-uncertainty" class="nav-link" data-scroll-target="#decision-making-and-uncertainty">Decision-making and Uncertainty</a>
+  <ul class="collapse">
+  <li><a href="#example-a-decision-model-for-profit" id="toc-example-a-decision-model-for-profit" class="nav-link" data-scroll-target="#example-a-decision-model-for-profit">Example: A Decision Model for Profit</a></li>
+  </ul></li>
+  <li><a href="#monte-carlo-methods" id="toc-monte-carlo-methods" class="nav-link" data-scroll-target="#monte-carlo-methods">Monte Carlo methods</a></li>
   </ul>
 </nav>
 </div>
@@ -114,11 +134,45 @@ ul.task-list li input[type="checkbox"] {
 <p><em>Monte Carlo</em><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <em>simulation</em> is a computer-based method to quantify, visualize, and assess uncertainty to evaluate its impact on decision-making. This class of methods is also known as <em>Risk Analysis</em> or <em>Static Simulation</em> models.</p>
 </blockquote>
 <p>While a closed-form solution is sometimes available for a large set of problems, provided that some quantities are known. This is often not the case. For example, <em>profits</em> are a function of <em>revenues</em> and <em>costs</em>: if the two latter quantites are known, then we can easily compute the <em>profits</em>; but revenues and costs are typically <em>not</em> known precisely, although it is possible to make some <em>probabilistic assessment</em> on the range of possible values.</p>
-<p>We use the Monte Carlo simulation approach to assess <em>properties</em> of the solution to the problem under study when the inputs of the system might vary in a <em>stochastic</em> manner: this is a key method for <em>decision making</em> and <em>risk analysis.</em></p>
-<p>These methods can also be employed to quantify <em>uncertainty</em> in <em>estimation</em> procedures. They can be used in situations in which mathematical derivations can be cumbersome, such as with <em>integrals</em> and other <em>optimization</em> procedures. Moreover, they can be also be very useful to explore the workings and check the properties of statistical machine learning estimation procedures.</p>
+<p>The Monte Carlo simulation method is employed to evaluate the <em>properties of solutions</em> in scenarios where system inputs exhibit <em>stochastic</em> variations, proving crucial for <em>decision-making</em> and <em>risk analysis</em>. Additionally, it serves as a valuable tool for quantifying uncertainty in <em>estimation</em> procedures, particularly in situations where mathematical derivations, integrals, and optimization procedures may be intricate. This approach is also instrumental in exploring and validating the properties of statistical machine learning estimation procedures.</p>
 </section>
 <section id="decision-making-and-uncertainty" class="level1">
 <h1>Decision-making and Uncertainty</h1>
+<blockquote class="blockquote">
+<p>Decision making is a fundamental and unavoidable aspect of business intelligence and analytics. Ideally, we wish decision to be logically sound and justifiable. Hence, a decision-making <em>procedure</em> or <em>model</em> is required.</p>
+</blockquote>
+<p>The following procedure is based on a simple princile: defining <em>clearly</em> the decision problem.</p>
+<ol type="1">
+<li>Translate the <em>decision</em> problem into a <em>conceptual</em> model.</li>
+<li>Convert the <em>conceptual</em> model into a <em>mathematical</em> model that can be handled using mathematical reasoning.</li>
+<li>Once the mathematical model is defined we can use it to assess whether the outcome is <em>robust</em> to changes in the assumptions.</li>
+</ol>
+<section id="example-a-decision-model-for-profit" class="level2">
+<h2 class="anchored" data-anchor-id="example-a-decision-model-for-profit">Example: A Decision Model for Profit</h2>
+<blockquote class="blockquote">
+<p>This model is tasked with computing the profit of a small company.</p>
+</blockquote>
+<p>The simplest function that computes profits is <code>Profit = revenue - cost</code>. We can expand this mapping by considering that:</p>
+<ul>
+<li><em>Revenues</em> depend on the quantity that is sold and on the unit price.</li>
+<li><em>Costs</em> depend on the quantity that is produced, on the unit cost and on the fixed costs.</li>
+</ul>
+<p>These considerations lead to the following model:</p>
+<p><span id="eq-profitmodel"><span class="math display">
+\mathrm{Profit} = p \times min\{D, Q\} - (F + cQ)
+\tag{1}</span></span></p>
+<ul>
+<li><span class="math inline">p</span> is the <em>unit price</em>.</li>
+<li><span class="math inline">Q</span> is the <em>quantity produced</em>.</li>
+<li><span class="math inline">F</span> is the <em>fixed cost</em>.</li>
+<li><span class="math inline">c</span> is the <em>unit cost</em>.</li>
+<li><span class="math inline">D</span> is the <em>demand</em><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</li>
+</ul>
+<p>Profit is therefore a function of the inputs: <span class="math inline">\mathrm{Profit} = f(p, c, D, Q, F)</span>. This model can be easily automated with a spreadsheet or a script, to analyse different scenario and compute the estimated profits.</p>
+</section>
+</section>
+<section id="monte-carlo-methods" class="level1">
+<h1>Monte Carlo methods</h1>
 </section>
 
 
@@ -127,6 +181,7 @@ ul.task-list li input[type="checkbox"] {
 <ol>
 <li id="fn1"><p>Any predictive or prescriptive model is based on some steps of <em>descriptive analytics</em>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>The term <em>Monte Carlo</em> refers to a range of methods in which <em>statistical sampling</em> is employed to approximate solutions to quantitative problems; the name Monte Carlo is related to the Monte Carlo <em>casino</em> in Monaco where randomness is king.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>While the demand might be higher than the quantity produced, the company might sell only up to the latter.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
