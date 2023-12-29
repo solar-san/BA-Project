@@ -102,7 +102,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="BA-QR_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
 <meta name="author" content="solar-san">
 <meta name="image" property="https://raw.githubusercontent.com/solar-san/BA-Project/main/docs/figures/BA-Project_header.png">
-<meta name="description" content="Notes on quantile regression for business analysts. It contains a self-contained introduction the topic, with R code snippets and the necessary mathematical and statistical notation.">
+<meta name="description" content="Notes on quantile regression for business analysts. It contains a self-contained introduction to the topic, with R code snippets and the necessary mathematical and statistical notation.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&amp;family=Fira+Code&amp;display=swap" rel="stylesheet">
@@ -197,7 +197,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">December 28, 2023</p>
+      <p class="date-modified">December 29, 2023</p>
     </div>
   </div>
     
@@ -245,11 +245,11 @@ Y_i = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_p x_{p i + \epsilo
 <p>The main consequence of having homoskedastic and normal errors are:</p>
 <ul>
 <li>Symmetry.</li>
-<li>If the mean and scaled are known, we can assume that we know the whole distribution. Therefore, knowing <em>how the mean changes</em> explains <em>all the changes in the distribution</em>.</li>
+<li>If the mean and scale are known, we can assume that we know the whole distribution. Therefore, knowing <em>how the mean changes</em> explains <em>all the changes in the distribution</em>.</li>
 </ul>
 <p>However, this is often not the case.</p>
 <blockquote class="blockquote">
-<p>This dataset contains information from the 2001 panel of the <em>Survey of Income and Program Participation</em> (SIPP). The dataset contains information on several American households and on the household annual income in 2001.</p>
+<p>This dataset contains information from the 2001 panel of the <em>Survey of Income and Program Participation</em> (SIPP). The dataset contains information on several American households and the household’s annual income in 2001.</p>
 </blockquote>
 <div class="cell">
 <details open="">
@@ -304,9 +304,9 @@ dbl (6): age, ed, hkids, cinc, lcinc, hid
 </div>
 </div>
 <div class="{callout.important}">
-<p>Many variables are <em>not</em> symmetric. Moreover, we are often not only interested in the <em>mean</em>, but in understanding <em>extremes</em>. Since linear regression model cannot give the full description of the distribution and everything is described by its mean, we need an alternative Framework.</p>
+<p>Many variables are <em>not</em> symmetric. Moreover, we are often not only interested in the <em>mean</em>, but in understanding <em>extremes</em>. Since the linear regression model cannot give the full description of the distribution and everything is described by its mean, we need an alternative Framework.</p>
 </div>
-<p>We do not need to forget that linear regression is appropriate for several applications and comes with many practical and theoretical reason to explain its widespread adoption. For example, it is computationally feasible and easy to implement and can be adapted to handle heteroskedasticity and robustness. Moreover, it can be <em>generalized</em> to handle the non-gaussian case and even non-linearity<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
+<p>We do not need to forget that linear regression is appropriate for several applications and comes with many practical and theoretical reasons to explain its widespread adoption. For example, it is computationally feasible and easy to implement and can be adapted to handle heteroskedasticity and robustness. Moreover, it can be <em>generalized</em> to handle the non-gaussian case and even non-linearity<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
 </section>
 <section id="quantiles" class="level1">
 <h1>Quantiles</h1>
@@ -314,7 +314,7 @@ dbl (6): age, ed, hkids, cinc, lcinc, hid
 <p><span id="eq-quantile"><span class="math display">
 Q(p) = \mathrm{inf} \{ x: P(X \leq x) \geq p \}
 \tag{3}</span></span></p>
-<p>This is strictly related to the <em>cumulative distribution function</em>. The quantile of order <span class="math inline">\alpha</span> can also be interpred as that point in the distribution for which you have a probability <span class="math inline">\alpha</span> of observing a value less than that quantile<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
+<p>This is strictly related to the <em>cumulative distribution function</em>. The quantile of order <span class="math inline">\alpha</span> can also be interpreted as that point in the distribution for which you have a probability <span class="math inline">\alpha</span> of observing a value less than that quantile<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
 <p>We can compute a set of quantiles to help prove the point. Note that the mean of the distribution is 47.0563867.</p>
 <div class="cell">
 <details open="">
@@ -328,7 +328,7 @@ Q(p) = \mathrm{inf} \{ x: P(X \leq x) \geq p \}
 </div>
 </div>
 <p>There is a noticeable positive difference between <em>median</em> and <em>mean</em><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>, indicating a right-skewed distribution. Computing such differences helps in understanding the <em>shape</em> of our distribution.</p>
-<p>Moreover, the difference between the 75th and the 50th quantile is larger than the difference between the 50th and the 25th percentile: this is an indication of an <em>asymmetry</em> in the distribution. The same goes when comparing the the more extreme tails (e.g.&nbsp;the 10th and 90th quantile):</p>
+<p>Moreover, the difference between the 75th and the 50th quantile is larger than the difference between the 50th and the 25th percentile: this is an indication of an <em>asymmetry</em> in the distribution. The same goes when comparing the more extreme tails (e.g.&nbsp;the 10th and 90th quantile):</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -387,10 +387,10 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>If we wish to make inference we need to account for uncertainty.</p>
+<p>If we wish to make inferences we need to account for uncertainty.</p>
 </div>
 </div>
-<p>The quantiles can be <em>estimated</em> by inverting the <em>ECDF</em>: this amounts to finding <span class="math inline">Q(p)</span> for a given <span class="math inline">p</span> and, even if the function is <em>discrete</em>, we can extrapolate between the jumps. However, we need to take into account the sampling distribution to make any inference about the characteristic of interest and their distribution shape in the population we are sampling from.</p>
+<p>The quantiles can be <em>estimated</em> by inverting the <em>ECDF</em>: this amounts to finding <span class="math inline">Q(p)</span> for a given <span class="math inline">p</span> and, even if the function is <em>discrete</em>, we can extrapolate between the jumps. However, we need to take into account the sampling distribution to make any inference about the characteristics of interest and their distribution shape in the population we are sampling from.</p>
 <p>Asymptotic results shows that, for an <em>identically and independently distributed</em> (<span class="math inline">iid</span>) sample, being <span class="math inline">f(x)</span> the <em>probability density function</em> and <span class="math inline">Q(p)</span> the <em>quantile function</em>:</p>
 <p><span id="eq-quantileasymptotic"><span class="math display">
 \hat Q \stackrel{\mathrm{approx}}{\sim} N \left ( Q(p), \sqrt{\frac{(1- p)p}{n} \frac{1}{f(Q(p))^2}} \right )
@@ -429,11 +429,11 @@ p \ \vert Y - c \vert \qquad \mathrm{for} \ Y &amp;\geq c
 <li>The mean, standard deviantion, and skewness are <em>not robust</em>: they are highly sensitive to <em>outliers</em>.</li>
 <li>Quantiles are <em>equivariant</em> to non-decreasing transformation.</li>
 </ul>
-<p>A function is non decreasing if <span class="math inline">h(b) \geq h(a)</span> if <span class="math inline">b&gt;a</span><a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. This property implies that <span class="math inline">Q(p, h(Y)) = h(Q(p, Y))</span><a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>.</p>
+<p>A function is non-decreasing if <span class="math inline">h(b) \geq h(a)</span> if <span class="math inline">b&gt;a</span><a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. This property implies that <span class="math inline">Q(p, h(Y)) = h(Q(p, Y))</span><a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>.</p>
 </section>
 <section id="sec-quantilebasedssunivariate" class="level2">
 <h2 class="anchored" data-anchor-id="sec-quantilebasedssunivariate">Quantile-based Summary Statistics</h2>
-<p>Quantiles allow to describe the <em>scale</em> and <em>shape</em> of distributions.</p>
+<p>Quantiles allow us to describe the <em>scale</em> and <em>shape</em> of distributions.</p>
 <p>Scale can be summarised with a <em>quantile-based scale</em> measure (<strong>QSC</strong>) at a selected <span class="math inline">p</span>:</p>
 <p><span id="eq-QSC"><span class="math display">
 QSC(p) = Q(1 - p) - Q(p) \ \mathrm{for} \ p &lt; 0.5
@@ -645,13 +645,13 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Minimisation is achieved with <em>linear programming</em> methods. The solution <em>might be not unique</em>.</p>
+<p>Minimization is achieved with <em>linear programming</em> methods. The solution <em>might be not unique</em>.</p>
 </div>
 </div>
 </section>
 <section id="example-engel-food-expenditure-data" class="level2">
 <h2 class="anchored" data-anchor-id="example-engel-food-expenditure-data">Example: Engel Food Expenditure Data</h2>
-<p>We will use Engel food expenditure data used in Koenker and Bassett(1982). This is a regression dataset consisting of 235 observations on income and expenditure on food for Belgian working class households.</p>
+<p>We will use Engel’s food expenditure data used in Koenker and Bassett(1982). This is a regression dataset consisting of 235 observations on income and expenditure on food for Belgian working-class households.</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -758,7 +758,7 @@ Smoothing formula not specified. Using: y ~ x</code></pre>
 </div>
 </div>
 <blockquote class="blockquote">
-<p>With this approach we can clearly see that expenditure on food is <em>not</em> the same in the different quantiles.</p>
+<p>With this approach we can see that expenditure on food is <em>not</em> the same in the different quantiles.</p>
 </blockquote>
 <p>By default <code>geom_quantile</code> shows the quartile fits<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>.</p>
 <div class="cell">
@@ -1077,7 +1077,7 @@ income        0.68630      0.64937   0.74223</code></pre>
 <p><span id="eq-slopedifferences1"><span class="math display">
 (\epsilon_i^{(p)} - \epsilon_i^{(q)}) = (\beta_0^{(p)} - \beta_0^{(q)}) + (\beta_1^{(p)} - \beta_1^{(q)})x_i
 \tag{17}</span></span></p>
-<p>The difference between the two errors depend on <span class="math inline">x_i</span>. If the two slopes are equal<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a>, then the two errors differ only by a constant: hence, the quantile error distribution only differ for a constant. This means that the observations are identically distributed for different values of <span class="math inline">X</span>.</p>
+<p>The difference between the two errors depends on <span class="math inline">x_i</span>. If the two slopes are equal<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a>, then the two errors differ only by a constant: hence, the quantile error distribution only differs for a constant. This means that the observations are identically distributed for different values of <span class="math inline">X</span>.</p>
 <div class="callout-important callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1122,7 +1122,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </section>
 <section id="multiple-independent-variables" class="level2">
 <h2 class="anchored" data-anchor-id="multiple-independent-variables">Multiple Independent variables</h2>
-<p>We can extend the model and obtain a <em>multivariate</em> quantle regression. In the (compact) matrix notation we have:</p>
+<p>We can extend the model and obtain a <em>multivariate</em> quantile regression. In the (compact) matrix notation we have:</p>
 <p><span id="eq-multiQRM"><span class="math display">
 Q_{\tau} = (Y \vert \mathbf{X}) = \mathbf{X} \mathbf{\beta}^{(\tau)} + \epsilon_i^{\tau}
 \tag{18}</span></span></p>
@@ -1370,7 +1370,7 @@ Tip
 <blockquote class="blockquote">
 <p>Does the addition of a variable <span class="math inline">x_j</span> <em>improve</em> the goodness of fit?</p>
 </blockquote>
-<p>There are two approaches to conduct inference in the context of quantile regression:</p>
+<p>There are two approaches to conducting inference in the context of quantile regression:</p>
 <ol type="1">
 <li>With lots of mathematics we can derive some asymptotic results for <span class="math inline">\beta^{(\tau)}</span>.</li>
 <li>Another option is to use <em>simulation based inference</em>, such as <strong>the bootstrap</strong>.</li>
@@ -1388,16 +1388,16 @@ Tip
 <section id="non-iid-case" class="level3">
 <h3 class="anchored" data-anchor-id="non-iid-case">Non-<span class="math inline">iid</span> case</h3>
 <p>The form of <span class="math inline">\mathbf{\Sigma}</span> for the non-identically distributed case is fairly complex.</p>
-<p>In general, the mathematics is difficult and it is not always possible to derive asymptotic variances analytically. Hence, a simulation-based method such as the <strong>bootstrap</strong> is required.</p>
+<p>In general, the required mathematics is difficult and it is not always possible to derive asymptotic variances analytically. Hence, a simulation-based method such as the <strong>bootstrap</strong> is required.</p>
 </section>
 </section>
 <section id="the-bootstrap" class="level2">
 <h2 class="anchored" data-anchor-id="the-bootstrap">The Bootstrap</h2>
 <blockquote class="blockquote">
-<p><strong>Bootstrapping</strong><a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a> is <em>any test or metric that uses random sampling with replacement</em>, mimicking the sampling process, and falls under the broader class of <em>resampling methods</em>. Bootstrapping assigns <em>measures of accuracy</em><a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a> to sample estimates. This technique allows estimation of the sampling distribution of almost any statistic using random sampling methods.</p>
+<p><strong>Bootstrapping</strong><a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a> is <em>any test or metric that uses random sampling with replacement</em>, mimicking the sampling process, and falls under the broader class of <em>resampling methods</em>. Bootstrapping assigns <em>measures of accuracy</em><a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a> to sample estimates. This technique allows the estimation of the sampling distribution of almost any statistic using random sampling methods.</p>
 </blockquote>
-<p>It is based on the sample data and having <em>enough</em> computing power. The key idea is that we assume the population is just many copies of the sample; then, we make lots of copies of the sample and then we sample repeatedly from the population. In practice, instead of actually making many copies of the sample and sampling from that, we use a sampling technique that is equivalent, based on <em>sampling with replacement</em>.</p>
-<p>In particular, we will use <strong>non parametric resampling bootstrap</strong>.</p>
+<p>It is based on the sample data and having <em>enough</em> computing power. The key idea is that we assume the population is just many copies of the sample; then, we make lots of copies of the sample and then we sample repeatedly from the population. In practice, instead of making many copies of the sample and sampling from that, we use a sampling technique that is equivalent, based on <em>sampling with replacement</em>.</p>
+<p>In particular, we will use <strong>nonparametric resampling bootstrap</strong>.</p>
 <ul>
 <li>We sample <em>with replacement</em> from the original sample.</li>
 <li>Each sample selected is called a <em>bootstrap sample</em>.</li>
@@ -1452,7 +1452,7 @@ Important
 <p>We estimate <span class="math inline">se(\beta_j)</span> with the bootstrap or with some theoretical derivation: hence, we need to compare the test statistic against a <span class="math inline">T</span> distribution with <span class="math inline">n − (p + 1)</span> degrees of freedom.</p>
 </div>
 </div>
-<p>Inference on single coefficient is often useful; however, we wish to test other hypothesis and also a to test <em>set</em> of hypothesis.</p>
+<p>Inference on a single coefficient is often useful; however, we wish to test other hypotheses and also a to test <em>set</em> of hypotheses.</p>
 <p>For a QR model for a single quantile <span class="math inline">\tau</span> we can have two different <em>nested model</em> structures; for <span class="math inline">q \geq p</span>:</p>
 <p><span id="eq-nestedmodels"><span class="math display">
 \begin{aligned}
@@ -1498,12 +1498,16 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>we should test for <em>more</em> that two quantiles; formal testing gives <em>evidence</em> of varying slopes.</p>
+<p>we should test for <em>more</em> than two quantiles; formal testing gives <em>evidence</em> of varying slopes.</p>
 </div>
 </div>
 </section>
 <section id="examples-bootstrap" class="level3">
 <h3 class="anchored" data-anchor-id="examples-bootstrap">Examples: Bootstrap</h3>
+<blockquote class="blockquote">
+<p>This first application of the bootstrap is characterized by a situation in which a well-established theory exists to quantify the variability of our estimation: <em>the estimation of the mean</em>.</p>
+</blockquote>
+<p>We will keep using the Munich rent dataset restrict ourselves to the houses with <em>premium kitchens</em>, and focus on variables <code>area</code> and <code>rentsqm</code>:</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -1540,6 +1544,143 @@ Tip
 <p><img src="BA-QR_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
+<p>We can compute the mean for each of the variables and compute confidence intervals based on the Central Limit Theorem approximation for the mean:</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>rents_kp <span class="sc">%&gt;%</span> </span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_area =</span> <span class="fu">mean</span>(area),</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">se_area =</span> <span class="fu">sd</span>(area)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="fu">length</span>(area))),</span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_rentsqm =</span> <span class="fu">mean</span>(rentsqm),</span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">se_rentsqm =</span> <span class="fu">sd</span>(rentsqm)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="fu">length</span>(rentsqm)))</span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["mean_area"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["se_area"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mean_rentsqm"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["se_rentsqm"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"72.14504","2":"1.863899","3":"8.538188","4":"0.190618"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>rents_kp <span class="sc">%&gt;%</span> </span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">CLT_CI_area =</span> <span class="fu">mean</span>(area) <span class="sc">+</span> <span class="fu">qt</span>(<span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>), <span class="fu">nrow</span>(rents_kp)<span class="sc">-</span><span class="dv">1</span>)<span class="sc">*</span><span class="fu">sd</span>(area)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">nrow</span>(rents_kp)),</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">CLT_CI_rentsqm =</span> <span class="fu">mean</span>(rentsqm) <span class="sc">+</span> <span class="fu">qt</span>(<span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>), <span class="fu">nrow</span>(rents_kp)<span class="sc">-</span><span class="dv">1</span>)<span class="sc">*</span><span class="fu">sd</span>(rentsqm)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">nrow</span>(rents_kp))</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["CLT_CI_area"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["CLT_CI_rentsqm"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"68.45754","2":"8.161073"},{"1":"75.83254","2":"8.915302"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>We can create our bootstrapped sample with the following code:</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">19</span>)</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>boot1 <span class="ot">&lt;-</span> rents_kp <span class="sc">%&gt;%</span> </span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>    area</span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample</span>(</span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fu">length</span>(.),</span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">replace =</span> <span class="cn">TRUE</span></span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The mean and standard deviation of our bootstrapped sample are:</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">area =</span>  boot1</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_area =</span> <span class="fu">mean</span>(area),</span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">se_area =</span> <span class="fu">sd</span>(area)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="fu">length</span>(area)))</span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["mean_area"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["se_area"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"71.28244","2":"1.63154"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>We can iterate the procedure to obtain a <em>distribution</em> of means:</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>nboot <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>boots <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="at">length =</span> nboot)</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nboot){</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>  booti <span class="ot">&lt;-</span> rents_kp <span class="sc">%&gt;%</span> <span class="fu">pull</span>(area) <span class="sc">%&gt;%</span> <span class="fu">sample</span>(<span class="at">size =</span> <span class="fu">length</span>(.), </span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>  boots[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(booti)</span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> boots</span>
+<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb76-14"><a href="#cb76-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"grey40"</span></span>
+<span id="cb76-15"><a href="#cb76-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb76-16"><a href="#cb76-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(</span>
+<span id="cb76-17"><a href="#cb76-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">xintercept =</span> <span class="fu">mean</span>(boots),</span>
+<span id="cb76-18"><a href="#cb76-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">'limegreen'</span>,</span>
+<span id="cb76-19"><a href="#cb76-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">show.legend =</span> T</span>
+<span id="cb76-20"><a href="#cb76-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb76-21"><a href="#cb76-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(</span>
+<span id="cb76-22"><a href="#cb76-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">xintercept =</span> <span class="fu">mean</span>(</span>
+<span id="cb76-23"><a href="#cb76-23" aria-hidden="true" tabindex="-1"></a>      rents_kp<span class="sc">$</span>area,</span>
+<span id="cb76-24"><a href="#cb76-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">'royalblue3'</span>,</span>
+<span id="cb76-25"><a href="#cb76-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">show.legend =</span> T</span>
+<span id="cb76-26"><a href="#cb76-26" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb76-27"><a href="#cb76-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb76-28"><a href="#cb76-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb76-29"><a href="#cb76-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Bootstrapped distribution for the mean Area"</span></span>
+<span id="cb76-30"><a href="#cb76-30" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="BA-QR_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<p>Moreover, we can compute <em>bootstrapped confidence intervals</em>:</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">area =</span>  boot1</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(</span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">bootstrapped_CI =</span> <span class="fu">mean</span>(rents_kp<span class="sc">$</span>area) <span class="sc">+</span> <span class="fu">qnorm</span>(<span class="fu">c</span>(.<span class="dv">04</span>, .<span class="dv">96</span>)) <span class="sc">*</span> <span class="fu">sd</span>(boots)</span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["bootstrapped_CI"],"name":[1],"type":["dbl"],"align":["right"]}],"data":[{"1":"68.89321"},{"1":"75.39687"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="inference-bootstrap-examples" class="level2">
@@ -1548,21 +1689,21 @@ Tip
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>rqfit2munich <span class="ot">&lt;-</span> <span class="fu">rq</span>(</span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  rent <span class="sc">~</span> area <span class="sc">+</span> yearc <span class="sc">+</span> <span class="fu">I</span>(area<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(yearc<span class="sc">^</span><span class="dv">2</span>),</span>
-<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> rents, </span>
-<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">tau =</span> <span class="fu">c</span>(</span>
-<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.1</span>, </span>
-<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.25</span>, </span>
-<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>    .<span class="dv">5</span>, </span>
-<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>    .<span class="dv">75</span>, </span>
-<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a>    .<span class="dv">9</span></span>
-<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(</span>
-<span id="cb72-13"><a href="#cb72-13" aria-hidden="true" tabindex="-1"></a>  rqfit2munich, </span>
-<span id="cb72-14"><a href="#cb72-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">se=</span><span class="st">"boot"</span></span>
-<span id="cb72-15"><a href="#cb72-15" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>rqfit2munich <span class="ot">&lt;-</span> <span class="fu">rq</span>(</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  rent <span class="sc">~</span> area <span class="sc">+</span> yearc <span class="sc">+</span> <span class="fu">I</span>(area<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(yearc<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> rents, </span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">tau =</span> <span class="fu">c</span>(</span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.1</span>, </span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.25</span>, </span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>    .<span class="dv">5</span>, </span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>    .<span class="dv">75</span>, </span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a>    .<span class="dv">9</span></span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb79-11"><a href="#cb79-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(</span>
+<span id="cb79-13"><a href="#cb79-13" aria-hidden="true" tabindex="-1"></a>  rqfit2munich, </span>
+<span id="cb79-14"><a href="#cb79-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">se=</span><span class="st">"boot"</span></span>
+<span id="cb79-15"><a href="#cb79-15" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -1573,11 +1714,11 @@ tau: [1] 0.1
 
 Coefficients:
             Value       Std. Error  t value     Pr(&gt;|t|)   
-(Intercept) 85494.66597 28665.40224     2.98250     0.00288
-area            2.25021     0.64717     3.47700     0.00051
-yearc         -90.05313    29.36989    -3.06617     0.00219
-I(area^2)       0.00501     0.00518     0.96739     0.33343
-I(yearc^2)      0.02372     0.00752     3.15344     0.00163
+(Intercept) 85494.66597 33057.42301     2.58625     0.00975
+area            2.25021     0.72013     3.12473     0.00180
+yearc         -90.05313    33.87062    -2.65874     0.00788
+I(area^2)       0.00501     0.00573     0.87356     0.38243
+I(yearc^2)      0.02372     0.00868     2.73437     0.00629
 
 Call: rq(formula = rent ~ area + yearc + I(area^2) + I(yearc^2), tau = c(0.1, 
     0.25, 0.5, 0.75, 0.9), data = rents)
@@ -1586,11 +1727,11 @@ tau: [1] 0.25
 
 Coefficients:
             Value        Std. Error   t value      Pr(&gt;|t|)    
-(Intercept) 140289.03522  23053.68256      6.08532      0.00000
-area             3.89787      0.48108      8.10239      0.00000
-yearc         -146.49186     23.68273     -6.18560      0.00000
-I(area^2)       -0.00143      0.00353     -0.40605      0.68473
-I(yearc^2)       0.03825      0.00608      6.28964      0.00000
+(Intercept) 140289.03522  23490.09827      5.97226      0.00000
+area             3.89787      0.52603      7.41002      0.00000
+yearc         -146.49186     24.10454     -6.07736      0.00000
+I(area^2)       -0.00143      0.00406     -0.35363      0.72364
+I(yearc^2)       0.03825      0.00618      6.18642      0.00000
 
 Call: rq(formula = rent ~ area + yearc + I(area^2) + I(yearc^2), tau = c(0.1, 
     0.25, 0.5, 0.75, 0.9), data = rents)
@@ -1599,11 +1740,11 @@ tau: [1] 0.5
 
 Coefficients:
             Value        Std. Error   t value      Pr(&gt;|t|)    
-(Intercept) 254129.26393  30595.97488      8.30597      0.00000
-area             3.97520      0.58889      6.75034      0.00000
-yearc         -263.02511     31.26764     -8.41205      0.00000
-I(area^2)        0.00537      0.00456      1.17860      0.23865
-I(yearc^2)       0.06808      0.00799      8.52120      0.00000
+(Intercept) 254129.26393  28306.45771      8.97778      0.00000
+area             3.97520      0.65476      6.07120      0.00000
+yearc         -263.02511     28.91852     -9.09539      0.00000
+I(area^2)        0.00537      0.00508      1.05733      0.29044
+I(yearc^2)       0.06808      0.00739      9.21729      0.00000
 
 Call: rq(formula = rent ~ area + yearc + I(area^2) + I(yearc^2), tau = c(0.1, 
     0.25, 0.5, 0.75, 0.9), data = rents)
@@ -1612,11 +1753,11 @@ tau: [1] 0.75
 
 Coefficients:
             Value        Std. Error   t value      Pr(&gt;|t|)    
-(Intercept) 276975.85622  31620.04729      8.75950      0.00000
-area             4.77638      0.84035      5.68378      0.00000
-yearc         -285.38020     32.31616     -8.83088      0.00000
-I(area^2)        0.01012      0.00675      1.49871      0.13405
-I(yearc^2)       0.07354      0.00826      8.90609      0.00000
+(Intercept) 276975.85622  30407.24439      9.10888      0.00000
+area             4.77638      0.81394      5.86819      0.00000
+yearc         -285.38020     31.09338     -9.17816      0.00000
+I(area^2)        0.01012      0.00676      1.49637      0.13466
+I(yearc^2)       0.07354      0.00795      9.25130      0.00000
 
 Call: rq(formula = rent ~ area + yearc + I(area^2) + I(yearc^2), tau = c(0.1, 
     0.25, 0.5, 0.75, 0.9), data = rents)
@@ -1625,35 +1766,35 @@ tau: [1] 0.9
 
 Coefficients:
             Value        Std. Error   t value      Pr(&gt;|t|)    
-(Intercept) 283939.08515  38056.73114      7.46094      0.00000
-area             5.34324      0.80246      6.65859      0.00000
-yearc         -292.08831     38.92153     -7.50454      0.00000
-I(area^2)        0.01746      0.00664      2.63105      0.00855
-I(yearc^2)       0.07516      0.00995      7.55270      0.00000</code></pre>
+(Intercept) 283939.08515  35179.32572      8.07119      0.00000
+area             5.34324      0.73363      7.28325      0.00000
+yearc         -292.08831     35.98726     -8.11644      0.00000
+I(area^2)        0.01746      0.00598      2.91789      0.00355
+I(yearc^2)       0.07516      0.00920      8.16605      0.00000</code></pre>
 </div>
 </div>
 <p>The option <code>se = "boot"</code> computes the standard errors using the <em>bootstrap</em>. To compare the fitness of available models, we can use the ANOVA test:</p>
 <p>The <code>se="boot"</code> option will compute the standard error estimates using the bootstrap.</p>
-<p>To compare the different model, we can use the ANOVA test:</p>
+<p>To compare the different models, we can use the ANOVA test:</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(</span>
-<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rq</span>(</span>
-<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>    rent <span class="sc">~</span> area <span class="sc">+</span> yearc <span class="sc">+</span> <span class="fu">I</span>(area<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(yearc<span class="sc">^</span><span class="dv">2</span>),</span>
-<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> rents,</span>
-<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">tau =</span> <span class="fu">c</span>(</span>
-<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.1</span></span>
-<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rq</span>(</span>
-<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a>    rent <span class="sc">~</span> area <span class="sc">+</span> yearc <span class="sc">+</span> <span class="fu">I</span>(yearc<span class="sc">^</span><span class="dv">2</span>),</span>
-<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> rents, </span>
-<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">tau =</span> <span class="fu">c</span>(</span>
-<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.1</span></span>
-<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb74-15"><a href="#cb74-15" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb74-16"><a href="#cb74-16" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rq</span>(</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>    rent <span class="sc">~</span> area <span class="sc">+</span> yearc <span class="sc">+</span> <span class="fu">I</span>(area<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(yearc<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> rents,</span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">tau =</span> <span class="fu">c</span>(</span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.1</span></span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rq</span>(</span>
+<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>    rent <span class="sc">~</span> area <span class="sc">+</span> yearc <span class="sc">+</span> <span class="fu">I</span>(yearc<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> rents, </span>
+<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">tau =</span> <span class="fu">c</span>(</span>
+<span id="cb81-13"><a href="#cb81-13" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.1</span></span>
+<span id="cb81-14"><a href="#cb81-14" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb81-15"><a href="#cb81-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb81-16"><a href="#cb81-16" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Quantile Regression Analysis of Deviance Table
@@ -1667,22 +1808,22 @@ Model 2: rent ~ area + yearc + I(yearc^2)
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(</span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rq</span>(</span>
-<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>    rent <span class="sc">~</span> area <span class="sc">+</span> yearc <span class="sc">+</span><span class="fu">I</span>(area<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(yearc<span class="sc">^</span><span class="dv">2</span>),</span>
-<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> rents, </span>
-<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">tau =</span> <span class="fu">c</span>(</span>
-<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.9</span></span>
-<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rq</span>(</span>
-<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a>    rent <span class="sc">~</span> area <span class="sc">+</span> yearc,</span>
-<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> rents, </span>
-<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">tau =</span> <span class="fu">c</span>(</span>
-<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.9</span></span>
-<span id="cb76-14"><a href="#cb76-14" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb76-15"><a href="#cb76-15" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb76-16"><a href="#cb76-16" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rq</span>(</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>    rent <span class="sc">~</span> area <span class="sc">+</span> yearc <span class="sc">+</span><span class="fu">I</span>(area<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(yearc<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> rents, </span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">tau =</span> <span class="fu">c</span>(</span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.9</span></span>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rq</span>(</span>
+<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a>    rent <span class="sc">~</span> area <span class="sc">+</span> yearc,</span>
+<span id="cb83-11"><a href="#cb83-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> rents, </span>
+<span id="cb83-12"><a href="#cb83-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">tau =</span> <span class="fu">c</span>(</span>
+<span id="cb83-13"><a href="#cb83-13" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.9</span></span>
+<span id="cb83-14"><a href="#cb83-14" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb83-15"><a href="#cb83-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb83-16"><a href="#cb83-16" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Quantile Regression Analysis of Deviance Table
@@ -1699,7 +1840,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(rqfit2munich)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(rqfit2munich)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Quantile Regression Analysis of Deviance Table
@@ -1717,71 +1858,71 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>rqfit2munich <span class="sc">%&gt;%</span> </span>
-<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">augment</span>(</span>
-<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">newdata =</span> <span class="fu">expand_grid</span>(</span>
-<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">area =</span> <span class="fu">seq</span>(</span>
-<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a>        <span class="dv">20</span>,</span>
-<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a>        <span class="dv">140</span></span>
-<span id="cb80-7"><a href="#cb80-7" aria-hidden="true" tabindex="-1"></a>        ), </span>
-<span id="cb80-8"><a href="#cb80-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">yearc =</span> <span class="fu">c</span>(</span>
-<span id="cb80-9"><a href="#cb80-9" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1918</span>,</span>
-<span id="cb80-10"><a href="#cb80-10" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1995</span></span>
-<span id="cb80-11"><a href="#cb80-11" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb80-12"><a href="#cb80-12" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb80-13"><a href="#cb80-13" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
-<span id="cb80-14"><a href="#cb80-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb80-15"><a href="#cb80-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb80-16"><a href="#cb80-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb80-17"><a href="#cb80-17" aria-hidden="true" tabindex="-1"></a>      area,</span>
-<span id="cb80-18"><a href="#cb80-18" aria-hidden="true" tabindex="-1"></a>      .fitted,</span>
-<span id="cb80-19"><a href="#cb80-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">group =</span> .tau</span>
-<span id="cb80-20"><a href="#cb80-20" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb80-21"><a href="#cb80-21" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb80-22"><a href="#cb80-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(</span>
-<span id="cb80-23"><a href="#cb80-23" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span>yearc</span>
-<span id="cb80-24"><a href="#cb80-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb80-25"><a href="#cb80-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb80-26"><a href="#cb80-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Predicted Quantiles for Area"</span></span>
-<span id="cb80-27"><a href="#cb80-27" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>rqfit2munich <span class="sc">%&gt;%</span> </span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">augment</span>(</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">newdata =</span> <span class="fu">expand_grid</span>(</span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">area =</span> <span class="fu">seq</span>(</span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>        <span class="dv">20</span>,</span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>        <span class="dv">140</span></span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>        ), </span>
+<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">yearc =</span> <span class="fu">c</span>(</span>
+<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1918</span>,</span>
+<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1995</span></span>
+<span id="cb87-11"><a href="#cb87-11" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb87-12"><a href="#cb87-12" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb87-13"><a href="#cb87-13" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb87-14"><a href="#cb87-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb87-15"><a href="#cb87-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb87-16"><a href="#cb87-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb87-17"><a href="#cb87-17" aria-hidden="true" tabindex="-1"></a>      area,</span>
+<span id="cb87-18"><a href="#cb87-18" aria-hidden="true" tabindex="-1"></a>      .fitted,</span>
+<span id="cb87-19"><a href="#cb87-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">group =</span> .tau</span>
+<span id="cb87-20"><a href="#cb87-20" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb87-21"><a href="#cb87-21" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb87-22"><a href="#cb87-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(</span>
+<span id="cb87-23"><a href="#cb87-23" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span>yearc</span>
+<span id="cb87-24"><a href="#cb87-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb87-25"><a href="#cb87-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb87-26"><a href="#cb87-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Predicted Quantiles for Area"</span></span>
+<span id="cb87-27"><a href="#cb87-27" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-QR_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-QR_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>rqfit2munich <span class="sc">%&gt;%</span> </span>
-<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">augment</span>(</span>
-<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">newdata =</span> <span class="fu">expand_grid</span>(</span>
-<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">area =</span> <span class="fu">c</span>(</span>
-<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>        <span class="dv">20</span>,</span>
-<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>        <span class="dv">140</span></span>
-<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">yearc =</span> <span class="fu">seq</span>(</span>
-<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1918</span>,</span>
-<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1995</span></span>
-<span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb81-13"><a href="#cb81-13" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
-<span id="cb81-14"><a href="#cb81-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb81-15"><a href="#cb81-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb81-16"><a href="#cb81-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb81-17"><a href="#cb81-17" aria-hidden="true" tabindex="-1"></a>      yearc, </span>
-<span id="cb81-18"><a href="#cb81-18" aria-hidden="true" tabindex="-1"></a>      .fitted, </span>
-<span id="cb81-19"><a href="#cb81-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">group =</span> .tau</span>
-<span id="cb81-20"><a href="#cb81-20" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb81-21"><a href="#cb81-21" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb81-22"><a href="#cb81-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(</span>
-<span id="cb81-23"><a href="#cb81-23" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span>area</span>
-<span id="cb81-24"><a href="#cb81-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb81-25"><a href="#cb81-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb81-26"><a href="#cb81-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Predicted Quantiles for Construction Year"</span></span>
-<span id="cb81-27"><a href="#cb81-27" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>rqfit2munich <span class="sc">%&gt;%</span> </span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">augment</span>(</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">newdata =</span> <span class="fu">expand_grid</span>(</span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">area =</span> <span class="fu">c</span>(</span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>        <span class="dv">20</span>,</span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>        <span class="dv">140</span></span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">yearc =</span> <span class="fu">seq</span>(</span>
+<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1918</span>,</span>
+<span id="cb88-10"><a href="#cb88-10" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1995</span></span>
+<span id="cb88-11"><a href="#cb88-11" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb88-12"><a href="#cb88-12" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb88-13"><a href="#cb88-13" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb88-14"><a href="#cb88-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb88-15"><a href="#cb88-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb88-16"><a href="#cb88-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb88-17"><a href="#cb88-17" aria-hidden="true" tabindex="-1"></a>      yearc, </span>
+<span id="cb88-18"><a href="#cb88-18" aria-hidden="true" tabindex="-1"></a>      .fitted, </span>
+<span id="cb88-19"><a href="#cb88-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">group =</span> .tau</span>
+<span id="cb88-20"><a href="#cb88-20" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb88-21"><a href="#cb88-21" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb88-22"><a href="#cb88-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(</span>
+<span id="cb88-23"><a href="#cb88-23" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span>area</span>
+<span id="cb88-24"><a href="#cb88-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb88-25"><a href="#cb88-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb88-26"><a href="#cb88-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Predicted Quantiles for Construction Year"</span></span>
+<span id="cb88-27"><a href="#cb88-27" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-QR_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-QR_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -1842,110 +1983,110 @@ Important
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>qs <span class="ot">&lt;-</span> rqfit2munich <span class="sc">%&gt;%</span> </span>
-<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">augment</span>(</span>
-<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">newdata =</span> <span class="fu">expand_grid</span>(</span>
-<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">area =</span> <span class="fu">seq</span>(</span>
-<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a>        <span class="dv">20</span>,</span>
-<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a>        <span class="dv">140</span></span>
-<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb82-8"><a href="#cb82-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">yearc =</span> <span class="fu">c</span>(</span>
-<span id="cb82-9"><a href="#cb82-9" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1995</span></span>
-<span id="cb82-10"><a href="#cb82-10" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb82-11"><a href="#cb82-11" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb82-12"><a href="#cb82-12" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
-<span id="cb82-13"><a href="#cb82-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
-<span id="cb82-14"><a href="#cb82-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from  =</span>.tau, </span>
-<span id="cb82-15"><a href="#cb82-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> .fitted</span>
-<span id="cb82-16"><a href="#cb82-16" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
-<span id="cb82-17"><a href="#cb82-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb82-18"><a href="#cb82-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">QSC025 =</span> <span class="st">`</span><span class="at">0.75</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">0.25</span><span class="st">`</span>,</span>
-<span id="cb82-19"><a href="#cb82-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">QSK010 =</span> (<span class="st">`</span><span class="at">0.9</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">0.5</span><span class="st">`</span>)<span class="sc">/</span>(<span class="st">`</span><span class="at">0.5</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">0.1</span><span class="st">`</span>) <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb82-20"><a href="#cb82-20" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>qs <span class="ot">&lt;-</span> rqfit2munich <span class="sc">%&gt;%</span> </span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">augment</span>(</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">newdata =</span> <span class="fu">expand_grid</span>(</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">area =</span> <span class="fu">seq</span>(</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>        <span class="dv">20</span>,</span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>        <span class="dv">140</span></span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">yearc =</span> <span class="fu">c</span>(</span>
+<span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1995</span></span>
+<span id="cb89-10"><a href="#cb89-10" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb89-11"><a href="#cb89-11" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb89-12"><a href="#cb89-12" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb89-13"><a href="#cb89-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb89-14"><a href="#cb89-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from  =</span>.tau, </span>
+<span id="cb89-15"><a href="#cb89-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> .fitted</span>
+<span id="cb89-16"><a href="#cb89-16" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb89-17"><a href="#cb89-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb89-18"><a href="#cb89-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">QSC025 =</span> <span class="st">`</span><span class="at">0.75</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">0.25</span><span class="st">`</span>,</span>
+<span id="cb89-19"><a href="#cb89-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">QSK010 =</span> (<span class="st">`</span><span class="at">0.9</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">0.5</span><span class="st">`</span>)<span class="sc">/</span>(<span class="st">`</span><span class="at">0.5</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">0.1</span><span class="st">`</span>) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb89-20"><a href="#cb89-20" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(qs) <span class="sc">+</span> </span>
-<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>      area, </span>
-<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>      QSC025</span>
-<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(qs) <span class="sc">+</span> </span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>      area, </span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>      QSC025</span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-QR_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-QR_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(qs) <span class="sc">+</span> </span>
-<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a>      area, </span>
-<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a>      QSK010</span>
-<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb84-7"><a href="#cb84-7" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(qs) <span class="sc">+</span> </span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>      area, </span>
+<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>      QSK010</span>
+<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-QR_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-QR_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <p>We will do now the same keeping a fixed value for <code>area</code> and allowing <code>yearc</code> to vary.</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>qs <span class="ot">&lt;-</span> rqfit2munich <span class="sc">%&gt;%</span> </span>
-<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">augment</span>(</span>
-<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">newdata =</span> <span class="fu">expand_grid</span>(</span>
-<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">area =</span> <span class="fu">c</span>(<span class="dv">80</span>),</span>
-<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">yearc =</span> <span class="fu">seq</span>(</span>
-<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1918</span>, </span>
-<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1995</span></span>
-<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb85-9"><a href="#cb85-9" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb85-10"><a href="#cb85-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
-<span id="cb85-11"><a href="#cb85-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
-<span id="cb85-12"><a href="#cb85-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from  =</span>.tau, </span>
-<span id="cb85-13"><a href="#cb85-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> .fitted</span>
-<span id="cb85-14"><a href="#cb85-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
-<span id="cb85-15"><a href="#cb85-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb85-16"><a href="#cb85-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">QSC025 =</span> <span class="st">`</span><span class="at">0.75</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">0.25</span><span class="st">`</span>, </span>
-<span id="cb85-17"><a href="#cb85-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">QSK010 =</span> (<span class="st">`</span><span class="at">0.9</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">0.5</span><span class="st">`</span>)<span class="sc">/</span>(<span class="st">`</span><span class="at">0.5</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">0.1</span><span class="st">`</span>) <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb85-18"><a href="#cb85-18" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>qs <span class="ot">&lt;-</span> rqfit2munich <span class="sc">%&gt;%</span> </span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">augment</span>(</span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">newdata =</span> <span class="fu">expand_grid</span>(</span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">area =</span> <span class="fu">c</span>(<span class="dv">80</span>),</span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">yearc =</span> <span class="fu">seq</span>(</span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1918</span>, </span>
+<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1995</span></span>
+<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb92-10"><a href="#cb92-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb92-11"><a href="#cb92-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb92-12"><a href="#cb92-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from  =</span>.tau, </span>
+<span id="cb92-13"><a href="#cb92-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> .fitted</span>
+<span id="cb92-14"><a href="#cb92-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb92-15"><a href="#cb92-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb92-16"><a href="#cb92-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">QSC025 =</span> <span class="st">`</span><span class="at">0.75</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">0.25</span><span class="st">`</span>, </span>
+<span id="cb92-17"><a href="#cb92-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">QSK010 =</span> (<span class="st">`</span><span class="at">0.9</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">0.5</span><span class="st">`</span>)<span class="sc">/</span>(<span class="st">`</span><span class="at">0.5</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">0.1</span><span class="st">`</span>) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb92-18"><a href="#cb92-18" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(qs) <span class="sc">+</span> </span>
-<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>      yearc, </span>
-<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a>      QSC025</span>
-<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(qs) <span class="sc">+</span> </span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>      yearc, </span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>      QSC025</span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-QR_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-QR_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(qs) <span class="sc">+</span> </span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>      yearc, </span>
-<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>      QSK010</span>
-<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(qs) <span class="sc">+</span> </span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>      yearc, </span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>      QSK010</span>
+<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="BA-QR_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid" width="960"></p>
+<p><img src="BA-QR_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 </section>
@@ -1971,12 +2112,12 @@ Important
 <li id="fn14"><p>It works similarly to the well-known <code>lm</code> function.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn15"><p><span class="math inline">(\beta_1^{(p)} - \beta_1^{(q)}) = 0</span>.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn16"><p><a href="#sec-inference">Section&nbsp;3.5</a>.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn17"><p>For example, an indication of conditionally identically distributed response variable.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>For example, an indication that we are observing a conditionally identically distributed response variable.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn18"><p>See <a href="#sec-inference">Section&nbsp;3.5</a>.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn19"><p>First introduced by Bradley Efron in the late 70s.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn20"><p>bias, variance, confidence intervals, prediction error, etc.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn21"><p>In the following notation the <span class="math inline">\tau</span> is omitted for readability.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn22"><p>This test amounts to asking the question: “Are the added variables <em>significant</em> in explaining the behaviour of our dependent variable?”<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p>This test amounts to asking the question: “Are the added variables <em>significant</em> in explaining the behavior of our dependent variable?”<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn23"><p><a href="#sec-quantilebasedssunivariate">Section&nbsp;2.4</a>.<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>

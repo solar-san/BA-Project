@@ -26,7 +26,7 @@ format:
       <meta name="image" property="https://raw.githubusercontent.com/solar-san/BA-Project/main/docs/figures/BA-Project_header.png">
       <meta 
       name="description"
-      content="Notes on quantile regression for business analysts. It contains a self-contained introduction the topic, with R code snippets and the necessary mathematical and statistical notation.">
+      content="Notes on quantile regression for business analysts. It contains a self-contained introduction to the topic, with R code snippets and the necessary mathematical and statistical notation.">
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Fira+Code&display=swap" rel="stylesheet">
@@ -120,19 +120,22 @@ $${#eq-condlinreg}
 The main consequence of having homoskedastic and normal errors are:
 
 - Symmetry.
-- If the mean and scaled are known, we can assume that we know the whole distribution. Therefore, knowing _how the mean changes_ explains _all the changes in the distribution_.
+- If the mean and scale are known, we can assume that we know the whole distribution. Therefore, knowing _how the mean changes_ explains _all the changes in the distribution_.
 
 However, this is often not the case. 
 
-> This dataset contains information from the 2001 panel of the _Survey of Income and Program Participation_ (SIPP). The dataset contains information on several American households and on the household annual income in 2001.
+> This dataset contains information from the 2001 panel of the _Survey of Income and Program Participation_ (SIPP). The dataset contains information on several American households and the household's annual income in 2001.
 
-```{r}
+```{r load incomex}
 incomeEx <- readr::read_csv(
     pathmaker(
         "data/incomeSurvey.csv"
       )
     )
 incomeEx$income <- incomeEx$cinc/1000
+```
+
+```{r plotting incomex}
 ggplot(
   incomeEx
   ) +
@@ -158,10 +161,10 @@ ggplot(
 ```
 
 :::{callout.important}
-Many variables are _not_ symmetric. Moreover, we are often not only interested in the _mean_, but in understanding _extremes_. Since linear regression model cannot give the full description of the distribution and everything is described by its mean, we need an alternative Framework.
+Many variables are _not_ symmetric. Moreover, we are often not only interested in the _mean_, but in understanding _extremes_. Since the linear regression model cannot give the full description of the distribution and everything is described by its mean, we need an alternative Framework.
 :::
 
-We do not need to forget that linear regression is appropriate for several applications and comes with many practical and theoretical reason to explain its widespread adoption. For example, it is computationally feasible and easy to implement and can be adapted to handle heteroskedasticity and robustness. Moreover, it can be _generalized_ to handle the non-gaussian case and even non-linearity^[Generalized Linear Models.].
+We do not need to forget that linear regression is appropriate for several applications and comes with many practical and theoretical reasons to explain its widespread adoption. For example, it is computationally feasible and easy to implement and can be adapted to handle heteroskedasticity and robustness. Moreover, it can be _generalized_ to handle the non-gaussian case and even non-linearity^[Generalized Linear Models.].
 
 # Quantiles 
 
@@ -171,20 +174,20 @@ $$
 Q(p) = \mathrm{inf} \{ x: P(X \leq x) \geq p \}
 $${#eq-quantile}
 
-This is strictly related to the _cumulative distribution function_. The quantile of order $\alpha$ can also be interpred as that point in the distribution for which you have a probability $\alpha$ of observing a value less than that quantile^[In other words, it determines a specific point in the distribution. For example, the _median_ is the quantile of order 0.5: you have a $50%$ probability of observing a value lower than the median.].
+This is strictly related to the _cumulative distribution function_. The quantile of order $\alpha$ can also be interpreted as that point in the distribution for which you have a probability $\alpha$ of observing a value less than that quantile^[In other words, it determines a specific point in the distribution. For example, the _median_ is the quantile of order 0.5: you have a $50%$ probability of observing a value lower than the median.].
 
 We can compute a set of quantiles to help prove the point. Note that the mean of the distribution is `r mean(incomeEx$income)`.
 
-```{r}
+```{r computing quantiles}
 pquant <- quantile(incomeEx %>% pull(income), c(0.1,0.25,0.5,0.75,0.9))
 pquant
 ```
 
 There is a noticeable positive difference between _median_ and _mean_^[The mean of this distribution is `r mean(incomeEx %>% pull(income))`.], indicating a right-skewed distribution. Computing such differences helps in understanding the _shape_ of our distribution.
 
-Moreover, the difference between the 75th and the 50th quantile is larger than the difference between the 50th and the 25th percentile: this is an indication of an _asymmetry_ in the distribution. The same goes when comparing the the more extreme tails (e.g. the 10th and 90th quantile): 
+Moreover, the difference between the 75th and the 50th quantile is larger than the difference between the 50th and the 25th percentile: this is an indication of an _asymmetry_ in the distribution. The same goes when comparing the more extreme tails (e.g. the 10th and 90th quantile): 
 
-```{r}
+```{r computing quantile differences}
 #Difference between the 75th and 50th and the 50th and 25th quartiles:
 pquant[4]- pquant[3]; pquant[3] - pquant[2]  
 #Difference between the 90th and 50th and the 50th and 10th quartiles:
@@ -206,10 +209,10 @@ $${#eq-ECDF}
 ## Sample Quantiles and Sampling Distribution
 
 :::{.callout-warning}
-If we wish to make inference we need to account for uncertainty.
+If we wish to make inferences we need to account for uncertainty.
 :::
 
-The quantiles can be _estimated_ by inverting the _ECDF_: this amounts to finding $Q(p)$ for a given $p$ and, even if the function is _discrete_, we can extrapolate between the jumps. However, we need to take into account the sampling distribution to make any inference about the characteristic of interest and their distribution shape in the population we are sampling from.
+The quantiles can be _estimated_ by inverting the _ECDF_: this amounts to finding $Q(p)$ for a given $p$ and, even if the function is _discrete_, we can extrapolate between the jumps. However, we need to take into account the sampling distribution to make any inference about the characteristics of interest and their distribution shape in the population we are sampling from.
 
 Asymptotic results shows that, for an _identically and independently distributed_ ($iid$) sample, being $f(x)$ the _probability density function_ and $Q(p)$ the _quantile function_:
 
@@ -258,11 +261,11 @@ Each point contributes to a certain value and we can represent a _loss function_
 - The mean, standard deviantion, and skewness are _not robust_: they are highly sensitive to _outliers_.
 - Quantiles are _equivariant_ to non-decreasing transformation.
 
-A function is non decreasing if $h(b) \geq h(a)$ if $b>a$^[The basic example is a _linear transformation_, but this property also applies to _logarithms_.]. This property implies that $Q(p, h(Y)) = h(Q(p, Y))$^[For example, $Q(p, a + bY) = a + bQ(p, Y)$.]. 
+A function is non-decreasing if $h(b) \geq h(a)$ if $b>a$^[The basic example is a _linear transformation_, but this property also applies to _logarithms_.]. This property implies that $Q(p, h(Y)) = h(Q(p, Y))$^[For example, $Q(p, a + bY) = a + bQ(p, Y)$.]. 
 
 ## Quantile-based Summary Statistics {#sec-quantilebasedssunivariate}
 
-Quantiles allow to describe the _scale_ and _shape_ of distributions.
+Quantiles allow us to describe the _scale_ and _shape_ of distributions.
 
 Scale can be summarised with a _quantile-based scale_ measure (__QSC__) at a selected $p$:
 
@@ -424,12 +427,12 @@ $${#eq-QRMloss2}
 
 
 :::{.callout-note}
-Minimisation is achieved with _linear programming_ methods. The solution _might be not unique_.
+Minimization is achieved with _linear programming_ methods. The solution _might be not unique_.
 :::
 
 ## Example: Engel Food Expenditure Data
 
-We will use Engel food expenditure data used in Koenker and Bassett(1982). This is a regression dataset consisting of 235 observations on income and expenditure on food for Belgian working class households.
+We will use Engel's food expenditure data used in Koenker and Bassett(1982). This is a regression dataset consisting of 235 observations on income and expenditure on food for Belgian working-class households.
 
 ```{r}
 data(engel)
@@ -515,7 +518,7 @@ ggplot(
     )
 ```
   
-> With this approach we can clearly see that expenditure on food is _not_ the same in the different quantiles.
+> With this approach we can see that expenditure on food is _not_ the same in the different quantiles.
 
 By default `geom_quantile` shows the quartile fits^[$\tau = c(0.25, 0.5, 0.75)$.].
 
@@ -694,13 +697,13 @@ $$
 (\epsilon_i^{(p)} - \epsilon_i^{(q)}) = (\beta_0^{(p)} - \beta_0^{(q)}) + (\beta_1^{(p)} - \beta_1^{(q)})x_i
 $${#eq-slopedifferences1}
 
-The difference between the two errors depend on $x_i$. If the two slopes are equal^[$(\beta_1^{(p)} - \beta_1^{(q)}) = 0$.], then the two errors differ only by a constant: hence, the quantile error distribution only differ for a constant. This means that the observations are identically distributed for different values of $X$.
+The difference between the two errors depends on $x_i$. If the two slopes are equal^[$(\beta_1^{(p)} - \beta_1^{(q)}) = 0$.], then the two errors differ only by a constant: hence, the quantile error distribution only differs for a constant. This means that the observations are identically distributed for different values of $X$.
 
 :::{.callout-important}
 QRM can be used to assess whether the assumption of _identically distributed_ observations is valid.
 :::
 
-Note that, however, to formally test the equality of slopes we need a way to make _inference_^[@sec-inference.]: if that was the case we would be in a situation in which we have the _same shape_ for the distribution conditional on the different values of the predictor^[For example, an indication of conditionally identically distributed response variable.]. In other words, we need inference because we are interested in testing:
+Note that, however, to formally test the equality of slopes we need a way to make _inference_^[@sec-inference.]: if that was the case we would be in a situation in which we have the _same shape_ for the distribution conditional on the different values of the predictor^[For example, an indication that we are observing a conditionally identically distributed response variable.]. In other words, we need inference because we are interested in testing:
 
 $$
 \begin{cases}
@@ -721,7 +724,7 @@ We can see in this case we confidently reject the null hypothesis: the slopes ar
 
 ## Multiple Independent variables
 
-We can extend the model and obtain a _multivariate_ quantle regression. In the (compact) matrix notation we have:
+We can extend the model and obtain a _multivariate_ quantile regression. In the (compact) matrix notation we have:
 
 $$
 Q_{\tau} = (Y \vert \mathbf{X}) = \mathbf{X} \mathbf{\beta}^{(\tau)} + \epsilon_i^{\tau}
@@ -913,7 +916,7 @@ rqfitmunich %>%
 
 > Does the addition of a variable $x_j$ _improve_ the goodness of fit?
 
-There are two approaches to conduct inference in the context of quantile regression:
+There are two approaches to conducting inference in the context of quantile regression:
 
 1. With lots of mathematics we can derive some asymptotic results for $\beta^{(\tau)}$.
 2. Another option is to use _simulation based inference_, such as __the bootstrap__.
@@ -936,15 +939,15 @@ The term $f_{\epsilon (\tau)}$ is the _pdf_ of the error term $\epsilon (\tau)$ 
 
 The form of $\mathbf{\Sigma}$ for the non-identically distributed case is fairly complex.
 
-In general, the mathematics is difficult and it is not always possible to derive asymptotic variances analytically. Hence, a simulation-based method such as the __bootstrap__ is required.
+In general, the required mathematics is difficult and it is not always possible to derive asymptotic variances analytically. Hence, a simulation-based method such as the __bootstrap__ is required.
 
 ## The Bootstrap
 
-> __Bootstrapping__^[First introduced by Bradley Efron in the late 70s.] is _any test or metric that uses random sampling with replacement_, mimicking the sampling process, and falls under the broader class of _resampling methods_. Bootstrapping assigns _measures of accuracy_^[bias, variance, confidence intervals, prediction error, etc.] to sample estimates. This technique allows estimation of the sampling distribution of almost any statistic using random sampling methods.
+> __Bootstrapping__^[First introduced by Bradley Efron in the late 70s.] is _any test or metric that uses random sampling with replacement_, mimicking the sampling process, and falls under the broader class of _resampling methods_. Bootstrapping assigns _measures of accuracy_^[bias, variance, confidence intervals, prediction error, etc.] to sample estimates. This technique allows the estimation of the sampling distribution of almost any statistic using random sampling methods.
 
-It is based on the sample data and having _enough_ computing power. The key idea is that we assume the population is just many copies of the sample; then, we make lots of copies of the sample and then we sample repeatedly from the population. In practice, instead of actually making many copies of the sample and sampling from that, we use a sampling technique that is equivalent, based on _sampling with replacement_.
+It is based on the sample data and having _enough_ computing power. The key idea is that we assume the population is just many copies of the sample; then, we make lots of copies of the sample and then we sample repeatedly from the population. In practice, instead of making many copies of the sample and sampling from that, we use a sampling technique that is equivalent, based on _sampling with replacement_.
 
-In particular, we will use __non parametric resampling bootstrap__.
+In particular, we will use __nonparametric resampling bootstrap__.
 
 - We sample _with replacement_ from the original sample.
 - Each sample selected is called a _bootstrap sample_.
@@ -996,7 +999,7 @@ $${#eq-teststatistic}
 We estimate $se(\beta_j)$ with the bootstrap or with some theoretical derivation: hence, we need to compare the test statistic against a $T$ distribution with $n − (p + 1)$ degrees of freedom.
 :::
 
-Inference on single coefficient is often useful; however, we wish to test other hypothesis and also a to test _set_ of hypothesis.
+Inference on a single coefficient is often useful; however, we wish to test other hypotheses and also a to test _set_ of hypotheses.
 
 For a QR model for a single quantile $\tau$ we can have two different _nested model_ structures; for $q \geq p$:
 
@@ -1009,7 +1012,7 @@ $${#eq-nestedmodels}
 
 Note that _Model 1_ reduces to _Model 2_ when $\beta_{p + 1} = … = \beta_q = 0$. 
 
-We are interested in constructing a test to verify the following null hypothesis^[This test amounts to asking the question: "Are the added variables _significant_ in explaining the behaviour of our dependent variable?"]:
+We are interested in constructing a test to verify the following null hypothesis^[This test amounts to asking the question: "Are the added variables _significant_ in explaining the behavior of our dependent variable?"]:
 
 $$
 \begin{cases}
@@ -1045,14 +1048,14 @@ $${#eq-slopetest}
 Again, this test can be performed via ANOVA, based on the asymptotic normality.
 
 :::{.callout-tip}
-we should test for _more_ that two quantiles; formal testing gives _evidence_ of varying slopes.
+we should test for _more_ than two quantiles; formal testing gives _evidence_ of varying slopes.
 :::
 
 ### Examples: Bootstrap
 
 > This first application of the bootstrap is characterized by a situation in which a well-established theory exists to quantify the variability of our estimation: _the estimation of the mean_.
 
-We will keep using the Munich rent dataset and restrict ourselves on the houses with _premium kitchens_, and focus on variables `area` and `rentsqm`:
+We will keep using the Munich rent dataset restrict ourselves to the houses with _premium kitchens_, and focus on variables `area` and `rentsqm`:
 
 ```{r}
 rents_kp <- rents[rents$kitchen ==1, ]
@@ -1199,7 +1202,7 @@ The option `se = "boot"` computes the standard errors using the _bootstrap_. To 
 
 The `se="boot"` option will compute the standard error estimates using the bootstrap.
 
-To compare the different model, we can use the ANOVA test:
+To compare the different models, we can use the ANOVA test:
 
 ```{r}
 anova(

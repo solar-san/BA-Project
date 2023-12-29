@@ -4,6 +4,16 @@
             "language": "quarto",
             "scheme": "file",
             "pattern": "notes/BA-Notes.qmd"
+        },
+        {
+            "language": "quarto",
+            "scheme": "file",
+            "pattern": "notes/BA-TSF.qmd"
+        },
+        {
+            "language": "quarto",
+            "scheme": "file",
+            "pattern": "notes/BA-QR.qmd"
         }
     ]
 }
