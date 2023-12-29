@@ -74,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#sec-intro" id="toc-sec-intro" class="nav-link active" data-scroll-target="#sec-intro">Introduction</a></li>
   <li><a href="#decision-making-and-uncertainty" id="toc-decision-making-and-uncertainty" class="nav-link" data-scroll-target="#decision-making-and-uncertainty">Decision-making and Uncertainty</a>
   <ul class="collapse">
-  <li><a href="#example-a-decision-model-for-profit" id="toc-example-a-decision-model-for-profit" class="nav-link" data-scroll-target="#example-a-decision-model-for-profit">Example: A Decision Model for Profit</a></li>
+  <li><a href="#sec-profitex1" id="toc-sec-profitex1" class="nav-link" data-scroll-target="#sec-profitex1">Example: A Decision Model for Profit</a></li>
   </ul></li>
   <li><a href="#monte-carlo-methods" id="toc-monte-carlo-methods" class="nav-link" data-scroll-target="#monte-carlo-methods">Monte Carlo methods</a></li>
   </ul>
@@ -147,8 +147,8 @@ ul.task-list li input[type="checkbox"] {
 <li>Convert the <em>conceptual</em> model into a <em>mathematical</em> model that can be handled using mathematical reasoning.</li>
 <li>Once the mathematical model is defined we can use it to assess whether the outcome is <em>robust</em> to changes in the assumptions.</li>
 </ol>
-<section id="example-a-decision-model-for-profit" class="level2">
-<h2 class="anchored" data-anchor-id="example-a-decision-model-for-profit">Example: A Decision Model for Profit</h2>
+<section id="sec-profitex1" class="level2">
+<h2 class="anchored" data-anchor-id="sec-profitex1">Example: A Decision Model for Profit</h2>
 <blockquote class="blockquote">
 <p>This model is tasked with computing the profit of a small company.</p>
 </blockquote>
@@ -173,6 +173,17 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="monte-carlo-methods" class="level1">
 <h1>Monte Carlo methods</h1>
+<blockquote class="blockquote">
+<p>In many cases we are <em>uncertain</em> about some of the inputs in our calculations, altough we can assume that the input will follow a given distribution of values. This assumptions can be modeled mathematically using <em>stochastic variables</em>, instead of deterministic inputs and outputs.</p>
+</blockquote>
+<p>How does this work in general?</p>
+<p>We can assume that we have an <em>indipendently and identically distributed</em> sample <span class="math inline">(X_1, …, X_r)</span> with a <em>known distribution</em>. What we wish to compute is <span class="math inline">\mathbb{E}[g(X_1, …, X_r)]</span>, the expected value of a function of our set of stochastic variables.</p>
+<p>We can build a new variable <span class="math inline">Y = g((X_1, …, X_r)</span>, such that <span class="math inline">\mu = \mathbb{E}[Y]</span>: for the <em>Law of Large Numbers</em>, we know that the sample mean of a sample of <span class="math inline">n</span> <span class="math inline">iid</span> random variables <em>converges to</em> <span class="math inline">\mu</span> for <span class="math inline">n \to \infty</span>.</p>
+<p>In the example from <a href="#sec-profitex1">Section&nbsp;2.1</a>, we have:</p>
+<p><span id="eq-profitstochastic"><span class="math display">
+Y = g(c, p, D, Q, F) = p \times min \{D, Q\} - (F + cQ)
+\tag{2}</span></span></p>
+<p>If we repeatedly sample <span class="math inline">c</span>, which is our <span class="math inline">X_1</span> for this particular model, we can derive a distribution of <span class="math inline">\mathrm{Profit}</span> and determine its mean under the uncertain condition of varying unit cost prices. Moreover, we can get other descriptive statistics to get a sense of the variability and other aspects of the resulting distribution<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
 </section>
 
 
@@ -182,6 +193,7 @@ ul.task-list li input[type="checkbox"] {
 <li id="fn1"><p>Any predictive or prescriptive model is based on some steps of <em>descriptive analytics</em>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>The term <em>Monte Carlo</em> refers to a range of methods in which <em>statistical sampling</em> is employed to approximate solutions to quantitative problems; the name Monte Carlo is related to the Monte Carlo <em>casino</em> in Monaco where randomness is king.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>While the demand might be higher than the quantity produced, the company might sell only up to the latter.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Beware that the choice of the functiong <span class="math inline">g()</span> and the joint/marginal distributions of <span class="math inline">X_1, …, X_r</span> is <em>fundamental</em> in determining the result and <em>should</em> always be a justifiable assumption.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
