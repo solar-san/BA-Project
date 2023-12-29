@@ -76,7 +76,14 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#sec-profitex1" id="toc-sec-profitex1" class="nav-link" data-scroll-target="#sec-profitex1">Example: A Decision Model for Profit</a></li>
   </ul></li>
-  <li><a href="#monte-carlo-methods" id="toc-monte-carlo-methods" class="nav-link" data-scroll-target="#monte-carlo-methods">Monte Carlo methods</a></li>
+  <li><a href="#monte-carlo-methods" id="toc-monte-carlo-methods" class="nav-link" data-scroll-target="#monte-carlo-methods">Monte Carlo methods</a>
+  <ul class="collapse">
+  <li><a href="#using-past-information-distribution-fitting" id="toc-using-past-information-distribution-fitting" class="nav-link" data-scroll-target="#using-past-information-distribution-fitting">Using Past information: Distribution Fitting</a></li>
+  <li><a href="#representing-variability-distribution-fitting" id="toc-representing-variability-distribution-fitting" class="nav-link" data-scroll-target="#representing-variability-distribution-fitting">Representing Variability: Distribution Fitting</a>
+  <ul class="collapse">
+  <li><a href="#the-normal-distribution" id="toc-the-normal-distribution" class="nav-link" data-scroll-target="#the-normal-distribution">The Normal Distribution</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -184,6 +191,50 @@ ul.task-list li input[type="checkbox"] {
 Y = g(c, p, D, Q, F) = p \times min \{D, Q\} - (F + cQ)
 \tag{2}</span></span></p>
 <p>If we repeatedly sample <span class="math inline">c</span>, which is our <span class="math inline">X_1</span> for this particular model, we can derive a distribution of <span class="math inline">\mathrm{Profit}</span> and determine its mean under the uncertain condition of varying unit cost prices. Moreover, we can get other descriptive statistics to get a sense of the variability and other aspects of the resulting distribution<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<section id="using-past-information-distribution-fitting" class="level2">
+<h2 class="anchored" data-anchor-id="using-past-information-distribution-fitting">Using Past information: Distribution Fitting</h2>
+<blockquote class="blockquote">
+<p>Not necessarily we have to assume a distribution for <span class="math inline">X_1, …, X_r</span>: we might have <em>past information</em> on at least one input variable.</p>
+</blockquote>
+<p>Provided that this information is <em>reliable</em> and <em>relevant</em>, we should use it:</p>
+<ol type="1">
+<li>We can sample from the past observation, if they cover all possible ranges.</li>
+<li>We can <em>fit a distribution</em> to the past observation and sample from the fitted distribution.</li>
+</ol>
+<p>The second option uses the <em>method of moment estimation</em> (MME), which is easy to implement, has a low computational cost, and yields estimates that are <em>consistent</em><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. It is also called <em>moment matchin estimation</em> because it aims to match the distribution and sample mean and variance<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
+<p>The variability can be represented by choosing a distribution: for example, if <span class="math inline">c \sim N(\mu, \sigma^2)</span>, then <span class="math inline">\mathbb{E}[c] = \mu</span> and <span class="math inline">\mathbb{V}(c) = \sigma^2</span>.</p>
+<p>The sample version of mean and variance are:</p>
+<p><span class="math display">
+\bar{y} = \frac{1}{n} \sum_{i = 1}^n y_i \qquad
+\mathrm{and} \qquad s^2 = \frac{1}{n} \sum_{i = 1}^n(y_i - \bar{y})^2
+</span></p>
+<p>We will use this well-known formula to estimate <span class="math inline">\hat \mu</span> and <span class="math inline">\hat \sigma</span>.</p>
+</section>
+<section id="representing-variability-distribution-fitting" class="level2">
+<h2 class="anchored" data-anchor-id="representing-variability-distribution-fitting">Representing Variability: Distribution Fitting</h2>
+<blockquote class="blockquote">
+<p>The estimated distribution can be used as the parent distribution from which we can generate sample values.</p>
+</blockquote>
+<p>We can use several different distributions; in general, distributions are characterized by one or more parameter <span class="math inline">\theta</span>.</p>
+<p>Certain distributions are prevalent and well-suited for describing specific phenomena in various sub-fields. The following paragraphs contain a selection of common and uncommon probability distributions that can be used to represent the uncertainty associated to the input of a Monte Carlo simulation.</p>
+<div class="callout-caution callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Danger
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When selecting a distribution for a Monte Carlo experiment, the shape and range of potential values must be carefully considered. Transforming vague information and expert knowledge into a usable distribution function for Monte Carlo experiments is a complex task, constituting an active area of research.</p>
+</div>
+</div>
+<section id="the-normal-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="the-normal-distribution">The Normal Distribution</h3>
+<p>The normal distribution is just one of many distributions one can use to represent variability for a input in a Monte Carlo experiment. Its main advantages is that it is fully parametrized by a <em>location</em> and a <em>scale</em> parameters, <span class="math inline">\mu</span> and <span class="math inline">\sigma</span>.</p>
+</section>
+</section>
 </section>
 
 
@@ -193,7 +244,9 @@ Y = g(c, p, D, Q, F) = p \times min \{D, Q\} - (F + cQ)
 <li id="fn1"><p>Any predictive or prescriptive model is based on some steps of <em>descriptive analytics</em>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>The term <em>Monte Carlo</em> refers to a range of methods in which <em>statistical sampling</em> is employed to approximate solutions to quantitative problems; the name Monte Carlo is related to the Monte Carlo <em>casino</em> in Monaco where randomness is king.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>While the demand might be higher than the quantity produced, the company might sell only up to the latter.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Beware that the choice of the functiong <span class="math inline">g()</span> and the joint/marginal distributions of <span class="math inline">X_1, …, X_r</span> is <em>fundamental</em> in determining the result and <em>should</em> always be a justifiable assumption.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Beware that the choice of the functiong <span class="math inline">g()</span> and the joint/marginal distributions of <span class="math inline">X_1, …, X_r</span> is <em>fundamental</em> in determining the result and <em>should</em> always be based on justifiable assumptions.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>They converge to the value of the parameter they are designed to estimate for <span class="math inline">n \to \infty</span>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>The so-called first and second <em>moments</em> of a distribution.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

@@ -156,10 +156,44 @@ $${#eq-profitstochastic}
 
 If we repeatedly sample $c$, which is our $X_1$ for this particular model, we can derive a distribution of $\mathrm{Profit}$ and determine its mean under the uncertain condition of varying unit cost prices. Moreover, we can get other descriptive statistics to get a sense of the variability and other aspects of the resulting distribution^[Beware that the choice of the functiong $g()$ and the joint/marginal distributions of $X_1, …, X_r$ is _fundamental_ in determining the result and _should_ always be based on justifiable assumptions.].
 
-## Using Past information
+## Using Past information: Distribution Fitting
 
+> Not necessarily we have to assume a distribution for $X_1, …, X_r$: we might have _past information_ on at least one input variable.
 
+Provided that this information is _reliable_ and _relevant_, we should use it:
 
+1. We can sample from the past observation, if they cover all possible ranges.
+2. We can _fit a distribution_ to the past observation and sample from the fitted distribution.
+
+The second option uses the _method of moment estimation_ (MME), which is easy to implement, has a low computational cost, and yields estimates that are _consistent_^[They converge to the value of the parameter they are designed to estimate for $n \to \infty$.]. It is also called _moment matchin estimation_ because it aims to match the distribution and sample mean and variance^[The so-called first and second _moments_ of a distribution.].
+
+The variability can be represented by choosing a distribution: for example, if $c \sim N(\mu, \sigma^2)$, then $\mathbb{E}[c] = \mu$ and $\mathbb{V}(c) = \sigma^2$.
+
+The sample version of mean and variance are:
+
+$$
+\bar{y} = \frac{1}{n} \sum_{i = 1}^n y_i \qquad 
+\mathrm{and} \qquad s^2 = \frac{1}{n} \sum_{i = 1}^n(y_i - \bar{y})^2
+$$
+
+We will use this well-known formula to estimate $\hat \mu$ and $\hat \sigma$.
+
+## Representing Variability: Distribution Fitting
+
+> The estimated distribution can be used as the parent distribution from which we can generate sample values.
+
+We can use several different distributions; in general, distributions are characterized by one or more parameter $\theta$.
+
+Certain distributions are prevalent and well-suited for describing specific phenomena in various sub-fields. The following paragraphs contain a selection of common and uncommon probability distributions that can be used to represent the uncertainty associated to the input of a Monte Carlo simulation.
+
+:::{.callout-caution}
+When selecting a distribution for a Monte Carlo experiment, the shape and range of potential values must be carefully considered. 
+Transforming vague information and expert knowledge into a usable distribution function for Monte Carlo experiments is a complex task, constituting an active area of research.
+:::
+
+### The Normal Distribution
+
+The normal distribution is just one of many distributions one can use to represent variability for a input in a Monte Carlo experiment. Its main advantages is that it is fully parametrized by a _location_ and a _scale_ parameters, $\mu$ and $\sigma$. 
 
 
 
