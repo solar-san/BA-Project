@@ -56,6 +56,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#sec-intro" id="toc-sec-intro" class="nav-link active" data-scroll-target="#sec-intro">Introduction</a></li>
+  <li><a href="#decision-making-and-uncertainty" id="toc-decision-making-and-uncertainty" class="nav-link" data-scroll-target="#decision-making-and-uncertainty">Decision-making and Uncertainty</a></li>
   </ul>
 </nav>
 </div>
@@ -81,7 +82,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">December 28, 2023</p>
+      <p class="date-modified">December 29, 2023</p>
     </div>
   </div>
     
@@ -108,7 +109,16 @@ ul.task-list li input[type="checkbox"] {
 <blockquote class="blockquote">
 <p>What is the role of Monte Carlo simulation in Business Analytics?</p>
 </blockquote>
-<p>Uncertainty is what makes decision-making difficult (in business, government, personal lives, etc). It can not be avoided, but it can be quantified and taken into account. We discuss methods which are based on computer-based Monte Carlo simulation to quantify, visualize, and assess uncertainty to evaluate its impact on decision-making. The name Monte Carlo is related to the Monte Carlo casino in Monaco where randomness is king. These are also referred to as Risk Analysis or Static Simulation models. We do not discuss dynamic simulation models and discrete event simulation. We do discuss instead the use of simulation-based approaches to quantify statistical uncertainty (e.g.&nbsp;variance) and to better understand how some estimation methods work.</p>
+<p>The main reason for adoptin a simulation-based approach is <strong>uncertainty</strong>: it is what makes decision-making difficult, hence we need tools to <em>quantify</em> and <em>account for</em> uncertainty. Simulation-based approaches are a set of estimation methods used to quantify statistical uncertainty.</p>
+<blockquote class="blockquote">
+<p><em>Monte Carlo</em><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <em>simulation</em> is a computer-based method to quantify, visualize, and assess uncertainty to evaluate its impact on decision-making. This class of methods is also known as <em>Risk Analysis</em> or <em>Static Simulation</em> models.</p>
+</blockquote>
+<p>While a closed-form solution is sometimes available for a large set of problems, provided that some quantities are known. This is often not the case. For example, <em>profits</em> are a function of <em>revenues</em> and <em>costs</em>: if the two latter quantites are known, then we can easily compute the <em>profits</em>; but revenues and costs are typically <em>not</em> known precisely, although it is possible to make some <em>probabilistic assessment</em> on the range of possible values.</p>
+<p>We use the Monte Carlo simulation approach to assess <em>properties</em> of the solution to the problem under study when the inputs of the system might vary in a <em>stochastic</em> manner: this is a key method for <em>decision making</em> and <em>risk analysis.</em></p>
+<p>These methods can also be employed to quantify <em>uncertainty</em> in <em>estimation</em> procedures. They can be used in situations in which mathematical derivations can be cumbersome, such as with <em>integrals</em> and other <em>optimization</em> procedures. Moreover, they can be also be very useful to explore the workings and check the properties of statistical machine learning estimation procedures.</p>
+</section>
+<section id="decision-making-and-uncertainty" class="level1">
+<h1>Decision-making and Uncertainty</h1>
 </section>
 
 
@@ -116,6 +126,7 @@ ul.task-list li input[type="checkbox"] {
 
 <ol>
 <li id="fn1"><p>Any predictive or prescriptive model is based on some steps of <em>descriptive analytics</em>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The term <em>Monte Carlo</em> refers to a range of methods in which <em>statistical sampling</em> is employed to approximate solutions to quantitative problems; the name Monte Carlo is related to the Monte Carlo <em>casino</em> in Monaco where randomness is king.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

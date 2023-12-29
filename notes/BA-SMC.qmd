@@ -96,3 +96,15 @@ It has three main components:
 
 > What is the role of Monte Carlo simulation in Business Analytics?
 
+The main reason for adoptin a simulation-based approach is __uncertainty__: it is what makes decision-making difficult, hence we need tools to _quantify_ and _account for_ uncertainty. Simulation-based approaches are a set of estimation methods used to quantify statistical uncertainty.
+
+> _Monte Carlo_^[The term _Monte Carlo_ refers to a range of methods in which _statistical sampling_ is employed to approximate solutions to quantitative problems; the name Monte Carlo is related to the Monte Carlo _casino_ in Monaco where randomness is king.] _simulation_ is a computer-based method to quantify, visualize, and assess uncertainty to evaluate its impact on decision-making. This class of methods is also known as _Risk Analysis_ or _Static Simulation_ models.
+
+While a closed-form solution is sometimes available for a large set of problems, provided that some quantities are known. This is often not the case. For example, _profits_ are a function of _revenues_ and _costs_: if the two latter quantites are known, then we can easily compute the _profits_; but revenues and costs are typically _not_ known precisely, although it is possible to make some _probabilistic assessment_ on the range of possible values.
+
+We use the Monte Carlo simulation approach to assess _properties_ of the solution to the problem under study when the inputs of the system might vary in a _stochastic_ manner: this is a key method for _decision making_ and _risk analysis._
+
+These methods can also be employed to quantify _uncertainty_ in _estimation_ procedures.
+They can be used in situations in which mathematical derivations can be cumbersome, such as with _integrals_ and other _optimization_ procedures. Moreover, they can be also be very useful to explore the workings and check the properties of statistical machine learning estimation procedures.
+
+# Decision-making and Uncertainty
