@@ -11,7 +11,7 @@ format:
     fig-align: center
     fig-width: 10
     fig-height: 8
-    df-print: paged
+    df-print: kable
     html-math-method: katex
     code-overflow: scroll
     code-copy: hover
@@ -568,7 +568,9 @@ rqfit_engel %>% glance()
 `glance` accepts a model object and returns a `tibble::tibble()` with exactly one row of model summaries. The summaries are typically goodness of fit measures, p-values for hypothesis tests on residuals, or model convergence information.
 
 ```{r}
-rqfit_engel %>% augment()
+rqfit_engel %>% 
+  augment() %>% 
+  head()
 ```
 
 Augment accepts a model object and a dataset and adds information about each observation in the dataset. Most commonly, this includes predicted values in the `.fitted` column, residuals in the `.resid` column, and standard errors for the fitted values in a `.se.fit` column. New columns always begin with a `.` prefix to avoid overwriting columns in the original dataset.
@@ -663,6 +665,7 @@ rqmultfit_engel %>%
   head()
 ```
 ```{r}
+#| fig-height: 12
 rqmultfit_engel %>% 
   augment() %>% 
   ggplot() + 
@@ -1051,7 +1054,7 @@ Again, this test can be performed via ANOVA, based on the asymptotic normality.
 we should test for _more_ than two quantiles; formal testing gives _evidence_ of varying slopes.
 :::
 
-### Examples: Bootstrap
+### Example: Bootstrap
 
 > This first application of the bootstrap is characterized by a situation in which a well-established theory exists to quantify the variability of our estimation: _the estimation of the mean_.
 
@@ -1069,7 +1072,8 @@ p1 <- ggplot(
   geom_histogram(
     aes(
       area
-      )
+      ),
+    col = "gray40"
     ) 
 p2 <- ggplot(
   data = rents_kp
@@ -1077,7 +1081,8 @@ p2 <- ggplot(
   geom_histogram(
     aes(
       rentsqm
-      )
+      ),
+    col = "gray40"
     ) 
 
 p1 / p2
@@ -1175,8 +1180,125 @@ tibble(
 
 ```
 
+### Example: Bootstrap for Quantile Regression
 
-## Inference & Bootstrap Examples
+To compute _bootstrapped standard errors_, based on resampling, we need to pass the argument `se = "boot"` to the `summary` function. `R` specifies the number of bootstrap replications.
+
+```{r}
+set.seed(19)
+rent_median <- rq(
+  rent ~ area, 
+  data = rents_kp
+  )
+summary(
+  rent_median, 
+  se = "boot", 
+  R = 1201
+  )
+```
+
+```{r}
+ggplot(
+  rents_kp, 
+  aes(
+    area, 
+    rent
+    )
+  ) + 
+  geom_point(
+    col = "grey40"
+  ) +
+  geom_quantile(
+    quantiles  = 0.5, 
+    col = "limegreen"
+    )
+```
+
+The following code computes the bootstrapped confidence intervals and standard errors _stepwise_: this will help in understanding the logic behind this resampling method.
+
+1. We need to initialize an empty matrix in which we will store the bootstrapped _intercept_ and _slope_ values.
+
+```{r}
+set.seed(19)
+
+nboot <- 5201 
+boots <- matrix(
+  NA, 
+  nrow = nboot, 
+  ncol = 2
+  )
+```
+
+2. Then, we can loop the sampling procedure and store the fitted coefficients in the initialized array.
+
+```{r}
+#| warning: false
+for(j in 1:nboot){
+  tdat <- rents_kp[
+    sample(
+      seq(
+        1, 
+        nrow(
+          rents_kp
+          )
+        ), 
+      replace = TRUE, 
+      size = nrow(
+        rents_kp
+        )
+      ), ]
+  trqfit <- rq(
+    rent ~ area, 
+    data = tdat
+    )
+  tcoef <- coef(trqfit)
+  boots[j, ] <- tcoef
+}
+colnames(boots) <- c("Intercept","Slope")
+boots <- as_tibble(boots)  
+```
+
+3. To conclude, we can compute the bootstrapped summary statistics.
+
+```{r}
+boots %>% 
+  summarise(
+    mean_int = mean(Intercept), 
+    se_int = sd(Intercept),
+    mean_slope = mean(Slope), 
+    se_slope = sd(Slope),
+    lower_slope = coef(rent_median)[2]+qt(.02, df=129) * se_slope,
+    upper_slope = coef(rent_median)[2]+qt(.98, df=129) * se_slope
+    )
+```
+
+```{r}
+#| fig-height: 12
+p1 <- ggplot(boots) + 
+  geom_histogram(
+    aes(
+      Slope
+      ),
+    col = "gray40"
+    ) +
+  labs(
+    title = "Slopes Distribution"
+  )
+p2 <- ggplot(boots) + 
+  geom_histogram(
+    aes(
+      Intercept
+      ),
+    col = "gray40"
+    ) +
+  labs(
+    title = "Intercepts Distribution"
+  )
+
+p1 / p2 + plot_annotation(title = "Bootstrapped Coefficients")
+```
+
+## Example: Inference & Bootstrap 
 
 We will compare different models; they will _polynomial_ variations of the same regression.
 
