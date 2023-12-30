@@ -14,6 +14,11 @@
             "language": "quarto",
             "scheme": "file",
             "pattern": "notes/BA-QR.qmd"
+        },
+        {
+            "language": "quarto",
+            "scheme": "file",
+            "pattern": "notes/BA-SMC.qmd"
         }
     ]
 }
