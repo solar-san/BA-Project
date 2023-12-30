@@ -250,7 +250,8 @@ ggplot(
     ) + 
   labs(
     title = "Normal Density",
-    y = "Density"
+    y = "Density",
+    color = ""
     ) +
   scale_color_brewer(
     type = "div",
@@ -324,7 +325,8 @@ ggplot(
     ) + 
   labs(
     title = "Gamma Density",
-    y = "Density"
+    y = "Density",
+    color = ""
     ) +
   scale_color_brewer(
     type = "div",
@@ -389,7 +391,8 @@ ggplot(
     ) + 
   labs(
     title = "LogNormal Density",
-    y = "Density"
+    y = "Density",
+    color = ""
     ) +
   scale_color_brewer(
     type = "div",
@@ -459,7 +462,8 @@ ggplot(
     ) + 
   labs(
     title = "Gamma Density",
-    y = "Density"
+    y = "Density",
+    color = ""
     ) +
   scale_color_brewer(
     type = "div",
@@ -555,7 +559,8 @@ ggplot(
     ) + 
   labs(
     title = "Generalized Beta Density",
-    y = "Density"
+    y = "Density",
+    color = ""
     ) +
   scale_color_brewer(
     type = "div",
@@ -626,7 +631,8 @@ ggplot(
     ) + 
   labs(
     title = "Triangular Density",
-    y = "Density"
+    y = "Density",
+    color = ""
     ) +
   scale_color_brewer(
     type = "div",
@@ -699,7 +705,8 @@ ggplot(
     ) + 
   labs(
     title = "Triangular Density",
-    y = "Density"
+    y = "Density",
+    color = ""
     ) +
   scale_color_brewer(
     type = "div",
