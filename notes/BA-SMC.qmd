@@ -174,7 +174,7 @@ The sample version of mean and variance are:
 $$
 \bar{y} = \frac{1}{n} \sum_{i = 1}^n y_i \qquad 
 \mathrm{and} \qquad s^2 = \frac{1}{n} \sum_{i = 1}^n(y_i - \bar{y})^2
-$$
+$${#eq-MMEnormal}
 
 We will use this well-known formula to estimate $\hat \mu$ and $\hat \sigma$.
 
@@ -195,7 +195,544 @@ Transforming vague information and expert knowledge into a usable distribution f
 
 The normal distribution is just one of many distributions one can use to represent variability for a input in a Monte Carlo experiment. Its main advantages is that it is fully parametrized by a _location_ and a _scale_ parameters, $\mu$ and $\sigma$. 
 
+- $Y \sim N(\mu, \sigma^2)$.
+- $\mathbb{E}(Y) = \mu$.
+- $\mathbb{V}(Y) = \sigma^2$.
+- Defined in $(-\infty, \infty)$.
 
+```{r}
+ggplot(
+  data = data.frame(
+    x = c(
+      -5, 
+      20
+      )
+    ), 
+  aes(
+    x
+    )
+  ) +
+  stat_function(
+     aes(
+      color = "N(5,2)"
+      ),
+    fun = dnorm, 
+    n = 101, 
+    args = list(
+      mean = 5, 
+      sd = 2
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+    aes(
+      color = "N(12,2)"
+      ),
+    fun = dnorm, 
+    n = 101, 
+    args = list(
+      mean = 12, 
+      sd = 2
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+     aes(
+      color = "N(8,4)"
+      ),
+    fun = dnorm, 
+    n = 101, 
+    args = list(
+      mean = 8, 
+      sd = 4
+      ),
+    show.legend = T
+    ) + 
+  labs(
+    title = "Normal Density",
+    y = "Density"
+    ) +
+  scale_color_brewer(
+    type = "div",
+    palette = "Dark2"
+  )
+```
 
+### The Gamma Distribution
 
+- $Y \sim \Gamma(\alpha, \beta)$.
+- Shape parameter: $\alpha > 0$.
+- Rate parameter: $\beta > 0$.
+- $\mathbb{E} = \alpha / \beta$.
+- $\mathbb{V} = \alpha / \beta^2$.
+- Defined in $(0, \infty)$.
 
+To derive the MME we use the fact that:
+
+$$
+\alpha = \frac{\mathbb{E}(Y)^2}{\mathbb{V}(Y)} \qquad \mathrm{and}
+\qquad \beta = \frac{\mathbb{E}(Y)}{\mathbb{V}(Y)}
+$${#eq-MMEgamma}
+
+```{r}
+ggplot(
+  data = data.frame(
+    x = c(
+      0, 
+      8
+      )
+    ), 
+  aes(
+    x
+    )
+  ) +
+  stat_function(
+     aes(
+      color = "Gamma(2,1)"
+      ),
+    fun = dgamma, 
+    n = 101, 
+    args = list(
+      shape = 2, 
+      rate = 1
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+    aes(
+      color = "Gamma(1,1)"
+      ),
+    fun = dgamma, 
+    n = 101, 
+    args = list(
+      shape = 1, 
+      rate = 1
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+     aes(
+      color = "Gamma(8,5)"
+      ),
+    fun = dgamma, 
+    n = 101, 
+    args = list(
+      shape = 8, 
+      rate = 5
+      ),
+    show.legend = T
+    ) + 
+  labs(
+    title = "Gamma Density",
+    y = "Density"
+    ) +
+  scale_color_brewer(
+    type = "div",
+    palette = "Dark2"
+  )
+```
+
+### The Log-Normal Distribution
+
+- Given $X \sim N(\mu, \sigma^2)$, then $Y = e^{X} \sim LN(\mu, \sigma^2)$.
+- $\mathbb{E} = e^{\mu + \frac {\sigma^2}{2}}$.
+- $\mathbb{V} = [e^{\sigma^2} - 1]e^{2 \mu + \sigma^2}$.
+- Defined in $(0, \infty)$.
+
+```{r}
+ggplot(
+  data = data.frame(
+    x = c(
+      0, 
+      8
+      )
+    ), 
+  aes(
+    x
+    )
+  ) +
+  stat_function(
+     aes(
+      color = "LN(1.8,0.9)"
+      ),
+    fun = dlnorm, 
+    n = 101, 
+    args = list(
+      meanlog = 1.8, 
+      sdlog = 0.9
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+    aes(
+      color = "LN(2.5,1.9)"
+      ),
+    fun = dlnorm, 
+    n = 101, 
+    args = list(
+      meanlog = 2.5, 
+      sdlog = 1.9
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+     aes(
+      color = "LN(2.2,1.4)"
+      ),
+    fun = dlnorm, 
+    n = 101, 
+    args = list(
+      meanlog = 2.2, 
+      sdlog = 1.4
+      ),
+    show.legend = T
+    ) + 
+  labs(
+    title = "LogNormal Density",
+    y = "Density"
+    ) +
+  scale_color_brewer(
+    type = "div",
+    palette = "Dark2"
+  )
+```
+
+### The Uniform Distribution
+
+- $Y \sim Unif(a, b)$.
+- $a \in (-\infty, \infty)$.
+- $b \in (a, \infty)$.
+- Defined in $[a, b]$.
+
+$$
+\mathbb{E}(Y) = \frac{a + b}{2} \qquad \mathrm{and} \qquad 
+\mathbb{V}(Y) = \frac{(b - a)^2}{12}
+$${#eq-MMEgamma}
+
+```{r}
+ggplot(
+  data = data.frame(
+    x = c(
+      -2, 
+      5
+      )
+    ), 
+  aes(
+    x
+    )
+  ) +
+  stat_function(
+     aes(
+      color = "U(0,1)"
+      ),
+    fun = dunif, 
+    n = 101, 
+    args = list(
+      min = 0, 
+      max = 1
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+    aes(
+      color = "U(0,2)"
+      ),
+    fun = dunif, 
+    n = 101, 
+    args = list(
+      min = 0, 
+      max = 2
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+     aes(
+      color = "U(-1.5,4)"
+      ),
+    fun = dunif, 
+    n = 101, 
+    args = list(
+      min = -1.5, 
+      max = 4
+      ),
+    show.legend = T
+    ) + 
+  labs(
+    title = "Gamma Density",
+    y = "Density"
+    ) +
+  scale_color_brewer(
+    type = "div",
+    palette = "Dark2"
+  )
+```
+
+### The Beta Distribution
+
+- $Y \sim Beta(\alpha, \beta)$.
+- Shape parameters: $\alpha > 0$, $\beta > 0$.
+- $Y$ takes values in $[0, 1]$, but it can be generalized to take values in any range $[a, b]$.
+
+$$
+\mathbb{E}(Y) = \frac{\alpha}{\alpha + \beta} \qquad \mathrm{and} 
+\qquad \mathbb{V}(Y) = \frac{\alpha \beta}{(\alpha + \beta)^2(\alpha + \beta + 1)}
+$${#eq-beta}
+
+We can also have a 4-parameters $Beta$ distribution: $B = Y (b - a) + a$. Then: $B \sim GBeta(\alpha, \beta, a, b)$.
+
+$$
+\mathbb{E}(B) = \frac{\alpha b + \beta a}{\alpha + \beta} \qquad \mathrm{and} 
+\qquad \mathbb{V}(B) = \frac{\alpha \beta (b - a)^2}{(\alpha  + \beta)^2 (\alpha + \beta + 1)}
+$${#eq-gbeta}
+
+```{r}
+ggplot(
+  data = data.frame(
+    x = c(
+      0, 
+      1.5
+      )
+    ), 
+  aes(
+    x
+    )
+  ) +
+  stat_function(
+     aes(
+      color = "GBeta(0.8, 3, 0, 1.2)"
+      ),
+    fun = gbeta::dgbeta, 
+    n = 101, 
+    args = list(
+      c = 0.8, 
+      d = 3,
+      kappa = 0,
+      tau = 1.2
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+    aes(
+      color = "GBeta(4, 4, 0, 1)"
+      ),
+    fun = gbeta::dgbeta, 
+    n = 101, 
+    args = list(
+      c = 4, 
+      d = 4,
+      kappa = 0,
+      tau = 1
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+     aes(
+      color = "GBeta(1, 1, 0.2, 1.2)"
+      ),
+    fun = gbeta::dgbeta, 
+    n = 101, 
+    args = list(
+      c = 1, 
+      d = 1,
+      kappa = .2,
+      tau = 1.2
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+     aes(
+      color = "GBeta(3, 0.8, 0, 0.7)"
+      ),
+    fun = gbeta::dgbeta, 
+    n = 101, 
+    args = list(
+      c = 3, 
+      d = .8,
+      kappa = 0,
+      tau = .7
+      ),
+    show.legend = T
+    ) + 
+  labs(
+    title = "Generalized Beta Density",
+    y = "Density"
+    ) +
+  scale_color_brewer(
+    type = "div",
+    palette = "Dark2"
+  )
+```
+
+### The Triangular Distribution
+
+- $Y \sim Tri(a, b, c)$; it takes values in $[a,b]$ and has a mode at $c$.
+- $a \in (-\infty, \infty)$ is the minimum, $b \in (a, \infty)$ the maximum, $c \in [a, b]$ is the mode.
+
+$$
+\mathbb{E}(Y) = \frac{a + b + c}{3} \qquad \mathrm{and} 
+\mathbb{V}(Y) = \frac{a^2 + b^2 c^2 - ab - ac - bc}{18}
+$${#eq-triang}
+
+```{r}
+ggplot(
+  data = data.frame(
+    x = c(
+      -2, 
+      5
+      )
+    ), 
+  aes(
+    x
+    )
+  ) +
+  stat_function(
+     aes(
+      color = "Tri(−1,1,0)"
+      ),
+    fun = EnvStats::dtri, 
+    n = 101, 
+    args = list(
+      min = -1,
+      max = 1,
+      mode = 0
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+    aes(
+      color = "Tri(−2,2,0)"
+      ),
+    fun = EnvStats::dtri, 
+    n = 101, 
+    args = list(
+      min = -2,
+      max = 2,
+      mode = 0
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+     aes(
+      color = "Tri(−2,5,3)"
+      ),
+    fun = EnvStats::dtri, 
+    n = 101, 
+    args = list(
+      min = -2,
+      max = 5,
+      mode = 3
+      ),
+    show.legend = T
+    ) + 
+  labs(
+    title = "Triangular Density",
+    y = "Density"
+    ) +
+  scale_color_brewer(
+    type = "div",
+    palette = "Dark2"
+  )
+```
+
+### The PERT Distribution
+
+The PERT distribution is a re-parametrization of the $GBeta$ distribution in which the range and mode are specified.
+
+- $Y \sim PERT(a, b, c)$; it takes values in $[a,b]$ and has a mode at $c$.
+- $a \in (-\infty, \infty)$ is the minimum, $b \in (a, \infty)$ the maximum, $c \in [a, b]$ is the mode.
+
+$$
+\mathbb{E}(Y) = \frac{a + b + 4c}{6} \qquad \mathrm{and} 
+\mathbb{V}(Y) = \frac{(\mu - a)(c - \mu)}{7}
+$${#eq-PERT}
+
+```{r}
+ggplot(
+  data = data.frame(
+    x = c(
+      -2, 
+      5
+      )
+    ), 
+  aes(
+    x
+    )
+  ) +
+  stat_function(
+     aes(
+      color = "PERT(−1,1,0)"
+      ),
+    fun = mc2d::dpert, 
+    n = 101, 
+    args = list(
+      min = -1,
+      max = 1,
+      mode = 0
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+    aes(
+      color = "PERT(−2,2,0)"
+      ),
+    fun = mc2d::dpert, 
+    n = 101, 
+    args = list(
+      min = -2,
+      max = 2,
+      mode = 0
+      ),
+    show.legend = T
+    ) + 
+  stat_function(
+     aes(
+      color = "Pert(−2,5,3)"
+      ),
+    fun = mc2d::dpert, 
+    n = 101, 
+    args = list(
+      min = -2,
+      max = 5,
+      mode = 3
+      ),
+    show.legend = T
+    ) + 
+  labs(
+    title = "Triangular Density",
+    y = "Density"
+    ) +
+  scale_color_brewer(
+    type = "div",
+    palette = "Dark2"
+  )
+```
+
+### Discrete Distributions
+
+> Up to this point, the covered distributions were applicable to any _real value_ in the interval [a, b], suitable for variables measured on a _continuous scale_^[Cost, height, time, mileage, etc.]. However, certain variables can only assume _discrete values_, such as the number of passengers on a bus, vacant rooms in a hotel. Various distributions are designed to capture the potential variability of random variables constrained to discrete values.
+
+```{r}
+x <-  seq(
+  0,
+  30
+  )
+
+ggplot(
+  data = data.frame(
+    x = x,
+    y = dbinom(x, size = 30, prob = .5)
+    ), 
+  aes(
+    x = as_factor(x),
+    y
+    )
+  ) +
+  geom_col() +
+  labs(
+    title = "Binomial Density for Bin(30, .5",
+    x = "Number of Successes",
+    y = "Density"
+    )
+```
+
+# Example 1: _Outsourcing or Not_?
