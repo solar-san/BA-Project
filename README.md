@@ -22,7 +22,7 @@ The course introduces the concept of Business Analytics and discusses various mo
    - Understand its applications in predictive analytics.
    - Practical implementation using `R`, with a strong focus on reproducibility and visualization.
 
-3. **Simulation and Monte Carlo Analysis** (Work in Progress)
+3. [**Simulation and Monte Carlo Analysis**](https://solar-san.github.io/BA-Project/BA-SMC.html)
    - Dive into simulation techniques for predictive analysis.
    - Understand Monte Carlo analysis and its applications.
    - Hands-on implementation using `R`, emphasizing reproducibility and visualization.
