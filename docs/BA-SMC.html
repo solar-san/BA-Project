@@ -179,7 +179,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">December 30, 2023</p>
+      <p class="date-modified">January 1, 2024</p>
     </div>
   </div>
     
@@ -251,9 +251,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="monte-carlo-methods" class="level1">
 <h1>Monte Carlo methods</h1>
 <blockquote class="blockquote">
-<p>In many cases we are <em>uncertain</em> about some of the inputs in our calculations, although we can assume that the input will follow a given distribution of values. These assumptions can be modeled mathematically using <em>stochastic variables</em>, instead of deterministic inputs and outputs.</p>
+<p>In many cases we are <em>uncertain</em> about some of the inputs in our calculations, although we can assume that the input will follow a given distribution of values. These assumptions can be modeled mathematically using <em>stochastic variables</em>, instead of deterministic inputs and outputs. <strong>How does this work in general</strong>?</p>
 </blockquote>
-<p>How does this work in general?</p>
 <p>We can assume that we have an <em>indipendently and identically distributed</em> sample <span class="math inline">(X_1, …, X_r)</span> with a <em>known distribution</em>. What we wish to compute is <span class="math inline">\mathbb{E}[g(X_1, …, X_r)]</span>, the expected value of a function of our set of stochastic variables.</p>
 <p>We can build a new variable <span class="math inline">Y = g((X_1, …, X_r)</span>, such that <span class="math inline">\mu = \mathbb{E}[Y]</span>: for the <em>Law of Large Numbers</em>, we know that the sample mean of a sample of <span class="math inline">n</span> <span class="math inline">iid</span> random variables <em>converges to</em> <span class="math inline">\mu</span> for <span class="math inline">n \to \infty</span>.</p>
 <p>In the example from <a href="#sec-profitex1">Section&nbsp;2.1</a>, we have:</p>
@@ -715,7 +714,7 @@ Danger
 <li><span class="math inline">a \in (-\infty, \infty)</span> is the minimum, <span class="math inline">b \in (a, \infty)</span> the maximum, <span class="math inline">c \in [a, b]</span> is the mode.</li>
 </ul>
 <p><span id="eq-triang"><span class="math display">
-\mathbb{E}(Y) = \frac{a + b + c}{3} \qquad \mathrm{and}
+\mathbb{E}(Y) = \frac{a + b + c}{3} \qquad \mathrm{and} \qquad
 \mathbb{V}(Y) = \frac{a^2 + b^2 c^2 - ab - ac - bc}{18}
 \tag{8}</span></span></p>
 <div class="cell">

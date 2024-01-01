@@ -140,9 +140,7 @@ Profit is therefore a function of the inputs: $\mathrm{Profit} = f(p, c, D, Q, F
 
 # Monte Carlo methods
 
-> In many cases we are _uncertain_ about some of the inputs in our calculations, although we can assume that the input will follow a given distribution of values. These assumptions can be modeled mathematically using _stochastic variables_, instead of deterministic inputs and outputs.
-
-How does this work in general?
+> In many cases we are _uncertain_ about some of the inputs in our calculations, although we can assume that the input will follow a given distribution of values. These assumptions can be modeled mathematically using _stochastic variables_, instead of deterministic inputs and outputs. __How does this work in general__?
 
 We can assume that we have an _indipendently and identically distributed_ sample $(X_1, …, X_r)$ with a _known distribution_. What we wish to compute is $\mathbb{E}[g(X_1, …, X_r)]$, the expected value of a function of our set of stochastic variables.
 
@@ -574,7 +572,7 @@ ggplot(
 - $a \in (-\infty, \infty)$ is the minimum, $b \in (a, \infty)$ the maximum, $c \in [a, b]$ is the mode.
 
 $$
-\mathbb{E}(Y) = \frac{a + b + c}{3} \qquad \mathrm{and} 
+\mathbb{E}(Y) = \frac{a + b + c}{3} \qquad \mathrm{and} \qquad
 \mathbb{V}(Y) = \frac{a^2 + b^2 c^2 - ab - ac - bc}{18}
 $${#eq-triang}
 
