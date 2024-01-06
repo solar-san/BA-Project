@@ -48,7 +48,9 @@ lib_list <- list(
   "tidyverse",
   "fpp3",
   "ggthemes",
-  "patchwork"
+  "patchwork",
+  "quantreg",
+  "broom"
 )
 
 lapply(
@@ -85,8 +87,17 @@ The multiplicative decomposition obtained was a _classical multiplicative decomp
 
 ```{r}
 aus_production %>% 
-  model(class_mult = classical_decomposition(Gas, type = "m")) %>% 
-  components() %>% autoplot(col = "limegreen")
+  model(
+    class_mult = classical_decomposition(
+      Gas, 
+      type = "m"
+      )
+    ) %>% 
+  components() %>% 
+  autoplot() +
+  labs(
+    title = "Classical Decomposition of Australian gas production"
+  )
 ```
 
 The model behind the multiplicative decomposition is the following:
@@ -104,15 +115,22 @@ aus_production %>%
   gg_lag(
     Gas,
     geom = "point"
-    )
+    ) +
+  labs(
+    title = 'Lag plot for Australian gas production'
+  )
 ```
 
 We can observe a $k=4$ seasonal pattern. This can be confirmed by an ACF plot:
 
 ```{r}
+#| fig-height: 6
 aus_production %>% 
   ACF(Gas) %>% 
-  autoplot
+  autoplot +
+  labs(
+    title = "ACF plot for Australian gas production"
+  )
 ```
 
 If no argument are passed, a _symmetric_ window with equal weights is used to obtain the $T_t$ (trend component). The following step is to de-trend the series:
@@ -176,7 +194,10 @@ prices %>%
       color = "9-MA"
     )
   ) +
-  custom_color
+  custom_color +
+  labs(
+    title = 'Moving Averages of oil prices'
+  )
 ```
 
 > Decompose the US Retail sector time series. Use an additive classical decomposition. Plot the components and comment on possible issues in the resulting decomposition.
@@ -184,7 +205,10 @@ prices %>%
 ```{r}
 us_retail <- 
   us_employment %>%
-    filter(Title == "Retail Trade", year(Month) >= 1980) 
+    filter(
+      Title == "Retail Trade", 
+      year(Month) >= 1980
+      ) 
 ```
 
 ```{r}
@@ -193,14 +217,20 @@ us_retail %>%
     classical_decomposition(Employed)
   ) %>% 
   components() %>% 
-  autoplot
+  autoplot +
+  labs(
+    title = 'Classical Decomposition of employed in US retail'
+  )
 ```
 
 The main assumption in this case that the seasonal term is assumed as constant: the remainder term is a clear indication of eteroskedasticity and this assumption needs to be reconsidered.
 
 ```{r}
 us_retail %>% 
-  autoplot(Employed)
+  autoplot(Employed) +
+  labs(
+    title = "Employment in the US retail sector"
+  )
 ```
 
 From the original series we can see that the magnitude of the seasonal variation depends on the level of the series; therefore, a multiplicative decomposition might be more appropriate.
@@ -237,7 +267,10 @@ aus_tobacco <- aus_production %>%
   na.omit()
 
 aus_tobacco %>% 
-  autoplot(Tobacco)
+  autoplot(Tobacco)  +
+  labs(
+    title = "Australian tobacco production"
+  )
 ```
 
 The dataset shows a strong seasonal and trend-cycle component: hence, simple exponential smoothing is _not_ appropriate, as double exponential smoothing, because they cannot deal with the seasonal component. _Triple Exponential Smoothing_ (Holt-Winter's method) is the preferred choice in this context.
@@ -262,6 +295,10 @@ fc %>%
   autoplot(
     aus_tobacco,
     level = NULL
+  ) +
+  custom_color +
+  labs(
+    title = "Damped and linear ETS forecasts \n for the Australian tobacco production"
   )
 ```
 
@@ -292,7 +329,11 @@ fc %>%
   filter(
     Country == 'Japan'
   ),
-  level = NULL
+  level = NULL,
+  color = "indianred4"
+  ) +
+  labs(
+    title = "Simple exponential smoothing forecast for Japan GDP"
   )
 ```
 
@@ -323,7 +364,8 @@ fc %>%
   filter(
     Country == 'Japan'
   ),
-  level = NULL
+  level = NULL,
+  color = "indianred4"
   ) +
   geom_line(
     aes(
@@ -332,5 +374,8 @@ fc %>%
     ),
     data = fit %>% 
       augment
+  ) +
+  labs(
+    title = "Double exponential smoothing forecast for Japan GDP"
   )
 ```
