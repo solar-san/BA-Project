@@ -695,6 +695,7 @@ $${#eq-detrendadd}
 3a. Estimate the _seasonal components_ by taking the average of all detrended values for each for that season^[E.g.: take the average of all de-trended January values.].
 
 3b. Correct the individual seasonal terms to ensure they sum to 0.
+
 4. The remainder component is calculated by subtracting the estimated seasonal and trend-cycle components:
 
 $$
@@ -711,9 +712,11 @@ $$
 \frac {y_t} {\hat{T}_t}
 $${#eq-detrendmul}
 
+
 3a. Estimate the seasonal components by taking the average of all the detrended values for each for that season^[E.g.: take the average of all de-trended January values.].
 
 3b. Correct the individual seasonal terms to ensure they sum to $m$.
+
 4. The remainder component is calculated by dividing out the estimated seasonal and trend-cycle components:
 
 $$
@@ -956,7 +959,7 @@ The principle is the same as SES: we can estimate a trend by giving more weight 
 - $y_T - y_{T - 1}$
 - $y_T - y_1$
 
-The average change is $ \frac{y_T - y_1}{T}$. This method is called _Double Exponential Smoothing_ or _Holt's Method_.
+The average change is $\frac{y_T - y_1}{T}$. This method is called _Double Exponential Smoothing_ or _Holt's Method_.
 
 The component form is:
 

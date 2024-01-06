@@ -69,10 +69,19 @@ theme_set(
 theme_update(
     legend.position = "top"
 )
+
+custom_color = scale_color_brewer(
+  type = 'div',
+  palette = 'Dark2'
+)
 ```
 
 
 # Time Series Decomposition
+
+> Reconstruct the calculations needed to derive the components in the multiplicative decomposition that was obtained for the Australian Gas Production.
+
+The multiplicative decomposition obtained was a _classical multiplicative decomposition_:
 
 ```{r}
 aus_production %>% 
@@ -86,16 +95,91 @@ $$
 Y_t = T_t \times S_t \times R_t
 $$
 
+First, an appropriate _exponential smoothing_ has been applied to the series.
 
+```{r}
+#| fig-width: 12
+#| fig-height: 12
+aus_production %>% 
+  gg_lag(
+    Gas,
+    geom = "point"
+    )
+```
 
-> Reconstruct the calculations needed to derive the components in the multiplicative decomposition that was obtained for the Australian Gas Production.
+We can observe a $k=4$ seasonal pattern. This can be confirmed by an ACF plot:
 
-The multiplicative decomposition obtained was a _classical multiplicative decomposition_:
+```{r}
+aus_production %>% 
+  ACF(Gas) %>% 
+  autoplot
+```
 
+If no argument are passed, a _symmetric_ window with equal weights is used to obtain the $T_t$ (trend component). The following step is to de-trend the series:
 
+$$
+\frac{y_t} {T_t}
+$$
 
-- Compute a 5-MA and 9-MA for the oil prices in the `prices` dataset and overlay them to the original data ensuring that suitable labels are used to identify the different fits
-- Decompose the US Retail sector time series
+The seasonal component is computed by taking the average of all the de-trended values for each for that season. The decomposition is multiplicative: hence, the individual seasonal term are adjusted to ensure that they sum up to $m$. The remainder component is then computed by dividing by the trend and seasonal component:
+
+$$
+R_t = \frac{y_t}{ S_t  T_t}
+$$
+
+To conclude, de-seasonalize the series:
+
+$$
+\frac{y_t}{S_t}
+$$
+> Compute a 5-MA and 9-MA for the oil prices in the `prices` dataset and overlay them to the original data ensuring that suitable labels are used to identify the different fits
+
+```{r}
+prices %>% 
+  mutate(
+    '5-MA' = slider::slide_dbl(
+      oil,
+      mean,
+      .before = 2,
+      .after = 2,
+      complete = TRUE
+    ),
+    '9-MA' = slider::slide_dbl(
+      oil,
+      mean,
+      .before = 4,
+      .after = 4,
+      complete = TRUE
+    )
+  ) %>% 
+  na.omit() %>% 
+  ggplot(
+    aes(
+      x = year
+    )
+  ) +
+  geom_line(
+    aes(
+      y = oil
+    ),
+    color = "gray90"
+  ) +
+  geom_line(
+    aes(
+      y = `5-MA`,
+      color = "5-MA"
+    )
+  ) +
+  geom_line(
+    aes(
+      y = `9-MA`,
+      color = "9-MA"
+    )
+  ) +
+  custom_color
+```
+
+> Decompose the US Retail sector time series. Use an additive classical decomposition. Plot the components and comment on possible issues in the resulting decomposition.
 
 ```{r}
 us_retail <- 
@@ -103,12 +187,150 @@ us_retail <-
     filter(Title == "Retail Trade", year(Month) >= 1980) 
 ```
 
-Use an additive classical decomposition. Plot the components and comment on possible issues in the resulting decomposition. 
+```{r}
+us_retail %>% 
+  model(
+    classical_decomposition(Employed)
+  ) %>% 
+  components() %>% 
+  autoplot
+```
 
-- Derive the numerical values for the multiplicative triple exponential smoothing ("Triple_Mult") of the Australian beer production model seen above
+The main assumption in this case that the seasonal term is assumed as constant: the remainder term is a clear indication of eteroskedasticity and this assumption needs to be reconsidered.
 
-- Focus on the Tobacco production in Australia: the values are contained in the `aus_production` dataset: discuss whether a single, double or triple exponential smoothing would be more appropriate to smooth this time series. Compare the 20-step ahead forecast obtained when using a triple exponential smoothing with a damped and non-damped trend. 
+```{r}
+us_retail %>% 
+  autoplot(Employed)
+```
 
-- Focus on the `global_economy` dataset: pick a country (say France) and produce a simple exponential smoothing forecast for the country GDP. Discuss whether a double exponential smoothing or triple exponential smoothing would be suitable to use for smoothing the time series. 
+From the original series we can see that the magnitude of the seasonal variation depends on the level of the series; therefore, a multiplicative decomposition might be more appropriate.
+
+> Derive the numerical values for the multiplicative triple exponential smoothing ("Triple_Mult") of the Australian beer production model seen above.
+
+```{r}
+aus_beer <- aus_production %>%
+  filter(year(Quarter) >= 2000) %>% 
+  select(Beer)
+
+fit <- aus_beer %>% 
+  model(
+    Triple_Mult = ETS(
+      Beer ~ trend("A")+season("M")+error("M")
+      )
+    )
+
+fit %>% 
+  augment() %>% 
+  select(
+    Quarter, 
+    .fitted
+  ) %>% 
+  head()
+```
 
 
+> Focus on the Tobacco production in Australia: the values are contained in the `aus_production` dataset: discuss whether a single, double or triple exponential smoothing would be more appropriate to smooth this time series. Compare the 20-step ahead forecast obtained when using a triple exponential smoothing with a damped and non-damped trend. 
+
+```{r}
+aus_tobacco <- aus_production %>% 
+  select(Tobacco) %>% 
+  na.omit()
+
+aus_tobacco %>% 
+  autoplot(Tobacco)
+```
+
+The dataset shows a strong seasonal and trend-cycle component: hence, simple exponential smoothing is _not_ appropriate, as double exponential smoothing, because they cannot deal with the seasonal component. _Triple Exponential Smoothing_ (Holt-Winter's method) is the preferred choice in this context.
+
+```{r}
+fit <- aus_tobacco %>% 
+  model(
+    linear = ETS(
+      Tobacco ~ error('A') + season('A') + trend('A')
+      ),
+    damped = ETS(
+      Tobacco ~ error('A') + season('A') + trend('Ad')
+      ),
+  )
+
+fc <- fit %>% 
+  forecast(
+    h = 20
+  )
+
+fc %>% 
+  autoplot(
+    aus_tobacco,
+    level = NULL
+  )
+```
+
+> Focus on the `global_economy` dataset: pick a country (say France) and produce a simple exponential smoothing forecast for the country GDP. Discuss whether a double exponential smoothing or triple exponential smoothing would be suitable to use for smoothing the time series. 
+
+```{r}
+fit <- global_economy %>% 
+  filter(
+    Country == 'Japan'
+  ) %>% 
+  model(
+    ETS(
+      GDP ~ error('A') + season('N') + trend('N')
+    )
+  )
+
+fc <- fit %>% 
+  forecast(
+    h = 10
+  )
+```
+
+
+```{r}
+fc %>% 
+  autoplot(
+    global_economy %>% 
+  filter(
+    Country == 'Japan'
+  ),
+  level = NULL
+  )
+```
+
+A double exponential smoothing would be more effective, as we have a clearly trended series:
+
+```{r}
+fit <- global_economy %>% 
+  filter(
+    Country == 'Japan'
+  ) %>% 
+  model(
+    ETS(
+      GDP ~ error('A') + season('N') + trend('A')
+    )
+  )
+
+fc <- fit %>% 
+  forecast(
+    h = 10
+  )
+```
+
+
+```{r}
+fc %>% 
+  autoplot(
+    global_economy %>% 
+  filter(
+    Country == 'Japan'
+  ),
+  level = NULL
+  ) +
+  geom_line(
+    aes(
+      y = .fitted,
+      col = "Smoothed Series"
+    ),
+    data = fit %>% 
+      augment
+  )
+```

@@ -188,7 +188,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">December 29, 2023</p>
+      <p class="date-modified">January 6, 2024</p>
     </div>
   </div>
     
@@ -977,7 +977,10 @@ Danger
 y_t - \hat{T}_t
 \tag{9}</span></span></p>
 <p>3a. Estimate the <em>seasonal components</em> by taking the average of all detrended values for each for that season<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>.</p>
-<p>3b. Correct the individual seasonal terms to ensure they sum to 0. 4. The remainder component is calculated by subtracting the estimated seasonal and trend-cycle components:</p>
+<p>3b. Correct the individual seasonal terms to ensure they sum to 0.</p>
+<ol start="4" type="1">
+<li>The remainder component is calculated by subtracting the estimated seasonal and trend-cycle components:</li>
+</ol>
 <p><span id="eq-remainadd"><span class="math display">
 \hat{R}_t = y_t - \hat{T}_t - \hat{S}_t
 \tag{10}</span></span></p>
@@ -994,7 +997,10 @@ y_t - \hat{T}_t
 \frac {y_t} {\hat{T}_t}
 \tag{11}</span></span></p>
 <p>3a. Estimate the seasonal components by taking the average of all the detrended values for each for that season<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>.</p>
-<p>3b. Correct the individual seasonal terms to ensure they sum to <span class="math inline">m</span>. 4. The remainder component is calculated by dividing out the estimated seasonal and trend-cycle components:</p>
+<p>3b. Correct the individual seasonal terms to ensure they sum to <span class="math inline">m</span>.</p>
+<ol start="4" type="1">
+<li>The remainder component is calculated by dividing out the estimated seasonal and trend-cycle components:</li>
+</ol>
 <p><span id="eq-remainmul"><span class="math display">
 \hat{R}_t = \frac{y_t}{\hat{T}_t \hat{S}_t}
 \tag{12}</span></span></p>
@@ -1262,7 +1268,7 @@ SSE = \sum_{t  = 1}^T (y_t - \hat{y}_{t \vert t -1})^2
 <li><span class="math inline">y_T - y_{T - 1}</span></li>
 <li><span class="math inline">y_T - y_1</span></li>
 </ul>
-<p>The average change is $ $. This method is called <em>Double Exponential Smoothing</em> or <em>Holt’s Method</em>.</p>
+<p>The average change is <span class="math inline">\frac{y_T - y_1}{T}</span>. This method is called <em>Double Exponential Smoothing</em> or <em>Holt’s Method</em>.</p>
 <p>The component form is:</p>
 <blockquote class="blockquote">
 <p>Forecast equation:</p>
