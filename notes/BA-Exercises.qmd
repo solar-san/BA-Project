@@ -1,0 +1,114 @@
+---
+title: "BA-Exercises"
+author: "solar-san"
+date-modified: "`r Sys.Date()`"
+format:
+  html:
+    theme: github
+    toc: true
+    toc-location: right
+    margin-header: "BA-Project_header.png"
+    fig-align: center
+    fig-width: 10
+    fig-height: 8
+    df-print: kable
+    html-math-method: katex
+    code-overflow: scroll
+    code-copy: hover
+    code-fold: show
+    highlight-style: breeze
+    tbl-cap-location: top
+    fig-cap-location: top
+    citations-hover: true
+    footnotes-hover: true
+    header-includes: |
+      <meta name="author" content="solar-san">
+      <meta name="image" property="https://raw.githubusercontent.com/solar-san/BA-Project/main/docs/figures/BA-Project_header.png">
+      <meta 
+      name="description"
+      content="">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Fira+Code&display=swap" rel="stylesheet">
+mainfont: "Atkinson Hyperlegible"
+monofont: 'Fira Code'
+---
+
+![](https://raw.githubusercontent.com/solar-san/BA-Project/main/docs/figures/BA-Project_header.png)
+
+```{r setup}
+#| echo: false
+#| results: hide
+#| warning: false
+knitr::opts_chunk$set(
+  echo = T
+)
+
+lib_list <- list(
+  "tidyverse",
+  "fpp3",
+  "ggthemes",
+  "patchwork"
+)
+
+lapply(
+  lib_list,
+  require,
+  quietly = TRUE, 
+  warn.conflicts = FALSE, 
+  character.only = TRUE
+)
+
+theme_set(
+  theme_tufte(
+    base_size = 20,
+    base_family = "Atkinson Hyperlegible"
+  )
+)
+
+theme_update(
+    legend.position = "top"
+)
+```
+
+
+# Time Series Decomposition
+
+```{r}
+aus_production %>% 
+  model(class_mult = classical_decomposition(Gas, type = "m")) %>% 
+  components() %>% autoplot(col = "limegreen")
+```
+
+The model behind the multiplicative decomposition is the following:
+
+$$
+Y_t = T_t \times S_t \times R_t
+$$
+
+
+
+> Reconstruct the calculations needed to derive the components in the multiplicative decomposition that was obtained for the Australian Gas Production.
+
+The multiplicative decomposition obtained was a _classical multiplicative decomposition_:
+
+
+
+- Compute a 5-MA and 9-MA for the oil prices in the `prices` dataset and overlay them to the original data ensuring that suitable labels are used to identify the different fits
+- Decompose the US Retail sector time series
+
+```{r}
+us_retail <- 
+  us_employment %>%
+    filter(Title == "Retail Trade", year(Month) >= 1980) 
+```
+
+Use an additive classical decomposition. Plot the components and comment on possible issues in the resulting decomposition. 
+
+- Derive the numerical values for the multiplicative triple exponential smoothing ("Triple_Mult") of the Australian beer production model seen above
+
+- Focus on the Tobacco production in Australia: the values are contained in the `aus_production` dataset: discuss whether a single, double or triple exponential smoothing would be more appropriate to smooth this time series. Compare the 20-step ahead forecast obtained when using a triple exponential smoothing with a damped and non-damped trend. 
+
+- Focus on the `global_economy` dataset: pick a country (say France) and produce a simple exponential smoothing forecast for the country GDP. Discuss whether a double exponential smoothing or triple exponential smoothing would be suitable to use for smoothing the time series. 
+
+
