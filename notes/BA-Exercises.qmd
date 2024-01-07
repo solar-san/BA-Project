@@ -1106,12 +1106,210 @@ There is a strong evidence in favor of the hypothesis that education and ethnici
 
 # Bootstrap
 
-# Exercises 
+## For the Munich data compute confidence intervals of the mean rental price for locations without central heating both using theory and a bootstrap-based approach.  
 
-* For the Munich data compute confidence intervals of the mean rental price for locations without central heating both using theory and a bootstrap-based approach.  
+```{r}
+rents_full <- readr::read_table(
+  pathmaker(
+    "data/rent99.raw"
+  ),
+  col_types = cols(
+    rent = col_double(),
+    rentsqm = col_double(),
+    area = col_double(),
+    yearc = col_double(),
+    location = col_factor(),
+    bath = col_factor(),
+    kitchen = col_factor(),
+    cheating = col_logical(),
+    district = col_factor()
+  )
+)
+```
 
-* Take the `engel` data. Estimate a quantile regression models for $\tau = c(0.1,0.5,0.9)$. Derive bootstrap-based sampling distributions for the regression model parameters. Compare the estimated standard error derived for your bootstrap distribution to the ones obtained using `summary` from the `quantreg` package. 
+> Method 1:
 
-* Take the `engel` data. Make a plot which shows the point estimate and bootstrap based intervals for the slope of different quantile regression models for values of $\tau$ = `seq(0.1, 0.9, by = 0.05)` (i.e. recreate the picture in slide 192). 
+```{r}
+ci_mean <- lm(
+    rent ~ cheating,
+    data = rents_full %>% filter(cheating == FALSE)
+  ) %>% 
+  confint()
 
+ci_mean[1, ]
+```
+
+> Method 2:
+
+```{r}
+rents_full %>% 
+  filter(cheating == FALSE) %>% 
+  summarise(
+    mean_rent = mean(rent),
+    se = sd(rent)/sqrt(n()),
+    lower = mean_rent - qnorm(.975)*se,
+    upper  = mean_rent + qnorm(.975)*se
+
+  )
+```
+
+> Bootstrap:
+
+```{r}
+boot_size <- 2000
+bootstrapped_mean <- rep(NA, boot_size)
+
+rent_nocheating <- rents_full %>% 
+    filter(
+      cheating == FALSE
+    ) %>% 
+    select(
+      rent
+      )
+
+for(i in 1:boot_size) {
+  
+  bootstrapped_mean[i] <- mean(
+    sample(
+    rent_nocheating$rent,
+    size = 200,
+    replace = T
+    )
+  )
+}
+
+quantile(bootstrapped_mean, probs = c(.025, .975), na.rm = T)
+```
+
+For the same significance level of $5%$, the bootstrap method yields a larger interval; nevertheless, it is remarkably similar to the interval computed by applying asymptotic theory.
+
+## Take the `engel` data. Estimate a quantile regression models for $\tau = c(0.1,0.5,0.9)$. Derive bootstrap-based sampling distributions for the regression model parameters. Compare the estimated standard error derived for your bootstrap distribution to the ones obtained using `summary` from the `quantreg` package. 
+
+```{r}
+data(engel)
+```
+
+```{r}
+engel_fit <- rq(
+  foodexp ~ income, 
+  data = engel
+  )
+```
+
+```{r}
+engel_fit %>% 
+  summary(
+    se = 'boot'
+  ) %>% 
+    coefficients() %>%
+      subset(
+        select = "Std. Error"
+        )
+```
+
+
+```{r}
+boot_size <- 2000
+boot_engel_coeff <- matrix(NA, boot_size, 2)
+
+for(i in 1:boot_size) {
+  boot_sample <- sample(
+    seq(
+      1, 
+      nrow(engel)
+      ), 
+    replace = TRUE, 
+    size = nrow(engel)
+    )
+  boot_engel_coeff[i, ] <- rq(
+    foodexp ~ income, 
+    data = engel[boot_sample, ]
+    ) %>% 
+    coefficients() 
+}
+
+tibble(
+  Intercept = boot_engel_coeff[, 1],
+  Slope = boot_engel_coeff[, 2]
+) %>%
+  summarise(
+    SE_intercept = sd(Intercept),
+    SE_Slope = sd(Slope)
+  )
+```
+
+## Take the `engel` data. Make a plot which shows the point estimate and bootstrap based intervals for the slope of different quantile regression models for values of $\tau$ = `seq(0.1, 0.9, by = 0.05)`.
+
+```{r}
+tau_seq <- seq(
+    0.1, 
+    0.9, 
+    by = 0.05
+    )
+names(tau_seq) <- as.character(
+  paste(
+    'q =',
+    seq(
+      0.1, 
+      0.9, 
+      by = 0.05
+      )
+    )
+  )
+```
+
+```{r}
+engel_mqr <- rq(
+  foodexp ~ income,
+  data = engel,
+  tau = tau_seq
+)
+```
+
+```{r}
+boot_intervals <- function(tau, R = 2000) {
+  
+  qr_boot <- boot.rq(
+    x = cbind(
+      1, 
+      engel$income
+      ),
+    y = engel$foodexp,
+    tau = tau, 
+    R = R
+  )
+  res <- t(apply(qr_boot$B, 2, quantile, c(0.025,0.975)))[2, ]
+  
+  return(res)
+}
+```
+
+```{r}
+engel_slope_ci <- lapply(tau_seq, boot_intervals) %>% as_tibble()
+engel_slope_ci
+```
+
+```{r}
+ggplot(
+  data = tau_seq %>% as_tibble,
+  aes(
+    x = tau_seq,
+    y = engel_mqr$coefficients[2,]
+  )
+) +
+  geom_line(
+    col = "grey60"
+  ) +
+  geom_pointrange(
+    aes(
+      ymin = engel_slope_ci[1, ] %>% t(),
+      ymax = engel_slope_ci[2,] %>% t()
+    )
+  ) +
+  labs(
+    title = "Slope confidence intervals for Engel data",
+    x = expression(tau),
+    y = expression(hat(beta)^(tau))
+  )
+```
 
