@@ -1468,7 +1468,7 @@ Under _symmetry_, $(\beta^{(1 - p)}_1 - \beta^{(.5)}_1) = (\beta^{(.5)}_1 - \bet
 
 ## Example: Changes in the Distribution Properties
 
-> Once we have the predicted values for different quantiles we can also plot some measure of _scale_ and _shape_ as a function of some explanatory variable to assess whether this is changing: we compute $QSC(0.25)$ and $QSK(0.9)$ for _fixed values_ of `yearc` and allowing `area` to vary:
+> Once we have the predicted values for different quantiles we can also plot some measure of _scale_ and _shape_ as a function of some explanatory variable to assess whether this is changing: we compute $QSC(0.25)$ and $QSK(0.1)$ for _fixed values_ of `yearc` and allowing `area` to vary:
 
 ```{r}
 qs <- rqfit2munich %>% 

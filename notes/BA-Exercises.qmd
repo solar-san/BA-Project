@@ -76,12 +76,30 @@ custom_color = scale_color_brewer(
   type = 'div',
   palette = 'Dark2'
 )
+
+tau_sel <- c(
+        .1,
+        .25,
+        .5,
+        .75,
+        .9
+      )
+  
+pathmaker <- function(filename, data_path = "/Users/themagician/Documents/DABS/Appunti/Business_Analytics/Lab3/") {
+  file_path <- paste0(
+    data_path,
+    filename
+  )
+  return(
+    file_path
+  )
+}
 ```
 
 
 # Time Series Decomposition
 
-> Reconstruct the calculations needed to derive the components in the multiplicative decomposition that was obtained for the Australian Gas Production.
+## Reconstruct the calculations needed to derive the components in the multiplicative decomposition that was obtained for the Australian Gas Production.
 
 The multiplicative decomposition obtained was a _classical multiplicative decomposition_:
 
@@ -150,7 +168,7 @@ To conclude, de-seasonalize the series:
 $$
 \frac{y_t}{S_t}
 $$
-> Compute a 5-MA and 9-MA for the oil prices in the `prices` dataset and overlay them to the original data ensuring that suitable labels are used to identify the different fits
+## Compute a 5-MA and 9-MA for the oil prices in the `prices` dataset and overlay them to the original data ensuring that suitable labels are used to identify the different fits
 
 ```{r}
 prices %>% 
@@ -200,7 +218,7 @@ prices %>%
   )
 ```
 
-> Decompose the US Retail sector time series. Use an additive classical decomposition. Plot the components and comment on possible issues in the resulting decomposition.
+## Decompose the US Retail sector time series. Use an additive classical decomposition. Plot the components and comment on possible issues in the resulting decomposition.
 
 ```{r}
 us_retail <- 
@@ -235,7 +253,7 @@ us_retail %>%
 
 From the original series we can see that the magnitude of the seasonal variation depends on the level of the series; therefore, a multiplicative decomposition might be more appropriate.
 
-> Derive the numerical values for the multiplicative triple exponential smoothing ("Triple_Mult") of the Australian beer production model seen above.
+## Derive the numerical values for the multiplicative triple exponential smoothing ("Triple_Mult") of the Australian beer production model seen above.
 
 ```{r}
 aus_beer <- aus_production %>%
@@ -259,7 +277,7 @@ fit %>%
 ```
 
 
-> Focus on the Tobacco production in Australia: the values are contained in the `aus_production` dataset: discuss whether a single, double or triple exponential smoothing would be more appropriate to smooth this time series. Compare the 20-step ahead forecast obtained when using a triple exponential smoothing with a damped and non-damped trend. 
+## Focus on the Tobacco production in Australia: the values are contained in the `aus_production` dataset: discuss whether a single, double or triple exponential smoothing would be more appropriate to smooth this time series. Compare the 20-step ahead forecast obtained when using a triple exponential smoothing with a damped and non-damped trend. 
 
 ```{r}
 aus_tobacco <- aus_production %>% 
@@ -302,7 +320,7 @@ fc %>%
   )
 ```
 
-> Focus on the `global_economy` dataset: pick a country (say France) and produce a simple exponential smoothing forecast for the country GDP. Discuss whether a double exponential smoothing or triple exponential smoothing would be suitable to use for smoothing the time series. 
+## Focus on the `global_economy` dataset: pick a country (say France) and produce a simple exponential smoothing forecast for the country GDP. Discuss whether a double exponential smoothing or triple exponential smoothing would be suitable to use for smoothing the time series. 
 
 ```{r}
 fit <- global_economy %>% 
@@ -356,7 +374,6 @@ fc <- fit %>%
   )
 ```
 
-
 ```{r}
 fc %>% 
   autoplot(
@@ -379,3 +396,649 @@ fc %>%
     title = "Double exponential smoothing forecast for Japan GDP"
   )
 ```
+
+# Quantile Regression
+
+## Obtain the dataset `bodyfat` in which the weight and the height of a random sample of 255 men are stored: 
+
+```{r}
+urlLocation <- "https://dasl.datadescription.com/download/data/3079"
+bodyfat <- read.table(urlLocation, header=TRUE)
+bodyfat <- bodyfat[,c("Weight","Height")]
+```
+
+```{r}
+bodyfat %>% str
+```
+
+## We wish to construct a regression model in which the Weight of a man is regressed against its height. Use a quantile regression framework to answer (among others) the following questions.
+
+### What is the effect of Weight on Height: does this appear to change for different quantiles? Compute the estimated coefficients and provide a visual display.
+
+Fitting the QRM model:
+
+```{r}
+bodyfat_qrfit <- rq(
+  Weight ~ Height,
+  data = bodyfat,
+  tau = c(
+    .1,
+    .25,
+    .5,
+    .75,
+    .9
+  )
+)
+```
+
+```{r}
+bodyfat_qrfit %>% 
+  tidy()
+```
+
+```{r}
+bodyfat_qrfit %>% 
+  summary(
+    se = "boot",
+    R = 1201
+  )
+```
+
+```{r}
+ggplot(
+  bodyfat,
+  aes(
+    x = Height,
+    y = Weight
+    )
+) +
+  geom_point() +
+  geom_quantile(
+    quantiles = c(
+      .1,
+      .25,
+      .5,
+      .75,
+      .9
+    )
+  )
+```
+
+```{r}
+bodyfat_coeff <- bodyfat_qrfit %>% 
+  coefficients()
+
+ggplot() +
+  geom_line(
+    aes(
+      x =  c(
+        .1,
+        .25,
+        .5,
+        .75,
+        .9
+      ),
+      y = bodyfat_coeff[2,]
+    )
+  ) +
+  labs(
+    title = "Weight ~ Height QRM coefficients",
+    x = "Quantiles",
+    y = "Slopes"
+  )
+```
+
+While indeed the effect is different for different quantiles, the slops are not different in a statistically significant way.
+
+```{r}
+anova(bodyfat_qrfit)
+```
+
+The main variation among the quantiles is related to the _intercept_, which is clearly varying. Up until the 25% quantile the average effect of height on weight is decreasing; this relationship is inverted from the 25% to the 90% quantile, in which higher heights are associated on average with higher weights.
+
+```{r}
+ggplot() +
+  geom_line(
+    aes(
+      x =  c(
+        .1,
+        .25,
+        .5,
+        .75,
+        .9
+      ),
+      y = bodyfat_coeff[1,]
+    )
+  ) +
+  labs(
+    title = "Weight ~ Height QRM coefficients",
+    x = "Quantiles",
+    y = "Intercepts"
+  )
+```
+
+### Compute the 95% confidence interval for the slope parameter of the median regression. Also indicate whether there is evidence that its value is null.
+
+```{r}
+bodyfat_medianfit <- rq(
+  Weight ~ Height,
+  data = bodyfat
+  )
+```
+
+```{r}
+bodyfat_medianfit %>% 
+  summary(
+    se = "boot"
+  )
+```
+The p-value of the slope coefficient significance test is $\approx$ 0; the observed data points against the null hypothesis, hence the slope parameter is, with a given confidence, different than zero.
+
+We will use bootstrapped coefficients to compute a 95% confidence interval for the slope:
+
+```{r}
+qr_boot <- boot.rq(
+  x = cbind(
+    1, 
+    bodyfat$Height
+    ),
+  y = bodyfat$Weight,
+  tau = 0.5, 
+  R = 2000,
+  coef = bodyfat_coeff
+  )
+```
+
+```{r}
+t(apply(qr_boot$B, 2, quantile, c(0.025,0.975)))[2, ]
+```
+
+### Produce some plots which explore whether the scale or shape of the Weight distribution change as a function of Height. 
+
+```{r}
+qs <- bodyfat_qrfit %>% 
+  augment(
+    newdata = expand_grid(
+      Height = seq(
+        64.00,
+        77.75
+        )
+      )
+    ) %>% 
+  pivot_wider(
+    names_from  =.tau, 
+    values_from = .fitted
+    ) %>% 
+  mutate(
+    QSC025 = `0.75` - `0.25`,
+    QSK010 = (`0.9` - `0.5`)/(`0.5` - `0.1`) - 1
+  )
+```
+
+```{r}
+ggplot(qs) + 
+  geom_line(
+    aes(
+      Height, 
+      QSC025
+      )
+    )
+```
+
+The spread of the weight distribution is slightly decreasing as height decreases.
+
+```{r}
+ggplot(qs) + 
+  geom_line(
+    aes(
+      Height, 
+      QSK010
+      )
+    )
+```
+
+A value greater than zero indicates right-skewness and a value less than 0 indicates left-skewness: in this case, we have a slightly right-skewed weight distribution that becomes more symmetrical as the height increases.
+
+### Is there strong evidence against the distribution of Weight to be different for different levels of Height? 
+
+Based on the available data, the result is ambiguous; while indeed the position of the distribution changes with height, as it is more common for taller people to weight more, the slope of the effect of the regressor on the regressand and the overall shape and scale of the distribution, as its skewness, is not heavily impacted (if not impacted at all); hence, only a weak evidence in favor of this difference can be derived from the observed data.
+
+## Carry out a single predictor quantile regression analysis for the Munich rents dataset investigating the effect of `area` on `rent` and on `rentsq`. Answer questions similar to those presented in Exercise 1. 
+
+```{r}
+rents_sel <- readr::read_table(
+  pathmaker(
+    "data/rent99.raw"
+  ),
+  col_types = cols(
+    rent = col_double(),
+    rentsqm = col_double(),
+    area = col_double(),
+    yearc = col_double(),
+    location = col_factor(),
+    bath = col_factor(),
+    kitchen = col_factor(),
+    cheating = col_logical(),
+    district = col_factor()
+  )
+) %>% 
+  select(area, rent, rentsqm)
+```
+
+```{r}
+rents_sel %>% summary
+```
+
+```{r}
+#|column: page
+p1 <- rents_sel %>% 
+  ggplot() +
+  geom_histogram(
+    aes(
+      area
+      ),
+    fill = "indianred"
+    ) 
+p2 <- rents_sel %>% 
+  ggplot() +
+  geom_histogram(
+    aes(
+      rent
+      ),
+    fill = "springgreen4"
+    ) 
+p3 <- rents_sel %>% 
+  ggplot() +
+  geom_histogram(
+    aes(
+      rentsqm
+      ),
+    fill = "darkslategray4"
+    ) 
+
+p1 + p2 + p3
+
+```
+
+```{r}
+rent_qr <- rq(
+  rent ~ area,
+  tau = tau_sel,
+  data = rents_sel
+)
+```
+
+```{r}
+rentsqm_qr <- rq(
+  rentsqm ~ area,
+  tau = tau_sel,
+  data = rents_sel
+)
+```
+
+```{r}
+rent_qr %>% 
+  summary(
+    se = 'boot'
+    )
+```
+
+```{r}
+rentsqm_qr %>% 
+  summary(
+    se = 'boot'
+  )
+```
+
+```{r}
+#| column: page
+p1 <- rents_sel %>% 
+  ggplot(
+    aes(
+      x = area,
+      y = rent
+    )
+  ) +
+  geom_point(
+    col = 'grey30',
+    alpha = .6
+  ) +
+  geom_quantile(
+    quantiles = tau_sel,
+    color = "darkorange"
+  ) +
+  labs(
+    title = 'Rent ~ Area'
+  )
+p2 <- rents_sel %>% 
+  ggplot(
+    aes(
+      x = area,
+      y = rentsqm
+    )
+  ) +
+  geom_point(
+    col = 'grey30',
+    alpha = .6
+  ) +
+  geom_quantile(
+    quantiles = tau_sel,
+    color = "limegreen"
+  ) +
+  labs(
+    title = 'Rentsqm ~ Area'
+  )
+p1 + p2
+```
+
+```{r}
+rent_qr_coef <- rent_qr %>% 
+  coef()
+rentsqm_qr_coef <- rentsqm_qr %>% 
+  coef()
+```
+
+```{r}
+#|column: page
+p1 <- ggplot() +
+  geom_line(
+    aes(
+      x = tau_sel,
+      y = rent_qr_coef[2, ]
+    )
+  ) +
+  labs(
+    title = 'Rent ~ Area',
+    x = 'Quantiles',
+    y = 'Slope'
+  )
+p2 <- ggplot() +
+  geom_line(
+    aes(
+      x = tau_sel,
+      y = rentsqm_qr_coef[2, ]
+    )
+  ) +
+  labs(
+    title = 'Rentsqm ~ Area',
+    x = 'Quantiles',
+    y = 'Slope'
+  )
+p1 + p2 + plot_annotation('Slopes coefficients for different quantiles')
+```
+
+```{r}
+#|column: page
+p1 <- ggplot() +
+  geom_line(
+    aes(
+      x = tau_sel,
+      y = rent_qr_coef[1, ]
+    )
+  ) +
+  labs(
+    title = 'Rent ~ Area',
+    x = 'Quantiles',
+    y = 'Intercepts'
+  )
+p2 <- ggplot() +
+  geom_line(
+    aes(
+      x = tau_sel,
+      y = rentsqm_qr_coef[1, ]
+    )
+  ) +
+  labs(
+    title = 'Rentsqm ~ Area',
+    x = 'Quantiles',
+    y = 'Intercepts'
+  )
+p1 + p2 + plot_annotation('Intercepts coefficients for different quantiles')
+```
+
+```{r}
+anova(rent_qr)
+```
+```{r}
+anova(rentsqm_qr)
+```
+Slopes are significantly different between the quantiles. We can see that the relationships modelled by the different models are uneven and that the median works as a tipping point for both the intercept of the `rent ~ area` model, reaching a maximum and then decreasing, and for the slope of the `rentsqm ~ area` model, reaching a minimum and increasing.
+
+We will use bootstrapped coefficients to compute a 95% confidence interval for the slope.
+
+```{r}
+qr_boot <- boot.rq(
+  x = cbind(
+    1, 
+    rents_sel$area
+    ),
+  y = rents_sel$rent,
+  tau = 0.5, 
+  R = 2000,
+  coef = rent_qr_coef
+  )
+```
+
+```{r}
+t(apply(qr_boot$B, 2, quantile, c(0.025,0.975)))[2, ]
+```
+
+```{r}
+qr_boot <- boot.rq(
+  x = cbind(
+    1, 
+    rents_sel$area
+    ),
+  y = rents_sel$rentsqm,
+  tau = 0.5, 
+  R = 2000,
+  coef = rentsqm_qr_coef
+  )
+```
+
+```{r}
+t(apply(qr_boot$B, 2, quantile, c(0.025,0.975)))[2, ]
+```
+
+There is no evidence on either slope being significantly null.
+
+```{r}
+qs <- rent_qr %>% 
+  augment(
+    newdata = expand_grid(
+      area = seq(
+        20,
+        160
+        )
+      )
+    ) %>% 
+  pivot_wider(
+    names_from  =.tau, 
+    values_from = .fitted
+    ) %>% 
+  mutate(
+    QSC025 = `0.75` - `0.25`,
+    QSK010 = (`0.9` - `0.5`)/(`0.5` - `0.1`) - 1
+  )
+```
+
+```{r}
+ggplot(qs) + 
+  geom_line(
+    aes(
+      area, 
+      QSC025
+      )
+    )
+```
+
+The spread of the `rent` distribution is monotonically increasing with the `area`.
+
+```{r}
+ggplot(qs) + 
+  geom_line(
+    aes(
+      area, 
+      QSK010
+      )
+    )
+```
+
+We can observe that the skewness of the `rent` distribution is heavily affected by the `area` variable, changing from left-skewed to symmetric to right-skewed.
+
+```{r}
+qs <- rentsqm_qr %>% 
+  augment(
+    newdata = expand_grid(
+      area = seq(
+        20,
+        160
+        )
+      )
+    ) %>% 
+  pivot_wider(
+    names_from  =.tau, 
+    values_from = .fitted
+    ) %>% 
+  mutate(
+    QSC025 = `0.75` - `0.25`,
+    QSK010 = (`0.9` - `0.5`)/(`0.5` - `0.1`) - 1
+  )
+```
+
+```{r}
+ggplot(qs) + 
+  geom_line(
+    aes(
+      area, 
+      QSC025
+      )
+    )
+```
+
+The spread of `rentsqm` is slightly decreasing with area.
+
+```{r}
+ggplot(qs) + 
+  geom_line(
+    aes(
+      area, 
+      QSK010
+      )
+    )
+```
+
+The right-skewness of the `rentsqm` variable is exponentially increasing with `area`: as the area increases, the right-hand tail of the distribution becomes wider; this can be attributed to the surge of outliers in the distribution.
+
+We can definitely conclude that both location, shape and scale of the regressands are affected by the regressor variable.
+
+## Use the `incomeEx` dataset. What is the effect of Age on Income? 
+
+```{r}
+incomeEx <- readr::read_csv(
+    pathmaker(
+        "data/incomeSurvey.csv"
+      )
+    )
+incomeEx$income <- incomeEx$cinc/1000
+```
+
+```{r}
+incomeEx %>% 
+ggplot(
+  aes(
+      x = age,
+      y = income
+    )
+) +
+  geom_point(
+    alpha = .2,
+    col = "grey20"
+  ) +
+  geom_quantile(
+    quantiles = tau_sel,
+    col = "darkolivegreen1"
+  )
+```
+The relationship appears to be non linear; however, it could be approximated by a linear relationship: `income` is decreasing with `age`, although a closer analysis is warranted.
+
+## Is this the same for all quantiles of the distribution? 
+
+```{r}
+simple_fit <- rq(
+  income ~ age,
+  data = incomeEx,
+    tau = c(
+    .1,
+    .25,
+    .5,
+    .75,
+    .9
+  )
+)
+```
+
+```{r}
+simple_fit %>% 
+  summary(
+    se = 'boot'
+  )
+```
+
+```{r}
+anova(simple_fit)
+```
+The relationship is indeed different across the quantiles; both intercepts and slopes are changing.
+
+```{r}
+simple_fit_coeff <- simple_fit %>% 
+  coef()
+```
+
+```{r}
+ggplot() +
+  geom_line(
+    aes(
+      x =  c(
+        .1,
+        .25,
+        .5,
+        .75,
+        .9
+      ),
+      y = simple_fit_coeff[1,]
+    )
+  ) +
+  labs(
+    title = "Income ~ Area QRM coefficients",
+    x = "Quantiles",
+    y = "Intercept"
+  )
+```
+
+```{r}
+ggplot() +
+  geom_line(
+    aes(
+      x =  c(
+        .1,
+        .25,
+        .5,
+        .75,
+        .9
+      ),
+      y = simple_fit_coeff[2,]
+    )
+  ) +
+  labs(
+    title = "Income ~ Area QRM coefficients",
+    x = "Quantiles",
+    y = "Slopes"
+  )
+```
+
+## Construct models in which the relationship is allowed to be different depending of the race and education level of the household head. Provide a graphical display which presents the estimated models. Is there enough evidence to indicate that the effect of Age on Income is different for different races/education level? Specify the statistical test that would be carried out. 
+
+
+## (to be done with pen and paper) Draw the QSK(0.1) and QSC(0.25) function of distributions in which the scale is and skewness increase linearly with a predictor X. Next draw the fitted quantile lines for the (0.1,0.25,0.5,0.75,0.9) quantile of a quantile regression model which would lead to such increases in QSK(0.1) and QSC(0.25). Combine different scenarios with strong or weak increases and decreases of the QSC(0.25) and QSK(0.1) functions. 
+
