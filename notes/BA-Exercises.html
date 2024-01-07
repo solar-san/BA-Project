@@ -99,7 +99,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="BA-Exercises_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <meta name="author" content="solar-san">
 <meta name="image" property="https://raw.githubusercontent.com/solar-san/BA-Project/main/docs/figures/BA-Project_header.png">
-<meta name="description" content="Exercises">
+<meta name="description" content="Exercises for a Business Analytics course about Time Series Forecasting, Quantile Regression and the Bootstrap.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&amp;family=Fira+Code&amp;display=swap" rel="stylesheet">
@@ -742,8 +742,8 @@ tau: [1] 0.1
 
 Coefficients:
             Value      Std. Error t value    Pr(&gt;|t|)  
-(Intercept) -207.61364   37.24805   -5.57381    0.00000
-Height         5.09091    0.53337    9.54475    0.00000
+(Intercept) -207.61364   36.50856   -5.68671    0.00000
+Height         5.09091    0.52327    9.72911    0.00000
 
 Call: rq(formula = Weight ~ Height, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = bodyfat)
@@ -752,8 +752,8 @@ tau: [1] 0.25
 
 Coefficients:
             Value      Std. Error t value    Pr(&gt;|t|)  
-(Intercept) -248.33333   46.74312   -5.31273    0.00000
-Height         5.83333    0.66110    8.82374    0.00000
+(Intercept) -248.33333   45.32414   -5.47905    0.00000
+Height         5.83333    0.64104    9.09982    0.00000
 
 Call: rq(formula = Weight ~ Height, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = bodyfat)
@@ -762,8 +762,8 @@ tau: [1] 0.5
 
 Coefficients:
             Value      Std. Error t value    Pr(&gt;|t|)  
-(Intercept) -236.36667   50.73028   -4.65928    0.00001
-Height         5.86667    0.72698    8.06994    0.00000
+(Intercept) -236.36667   52.83533   -4.47365    0.00001
+Height         5.86667    0.75617    7.75837    0.00000
 
 Call: rq(formula = Weight ~ Height, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = bodyfat)
@@ -772,8 +772,8 @@ tau: [1] 0.75
 
 Coefficients:
             Value      Std. Error t value    Pr(&gt;|t|)  
-(Intercept) -210.69231   67.20458   -3.13509    0.00193
-Height         5.73077    0.95477    6.00222    0.00000
+(Intercept) -210.69231   68.70993   -3.06640    0.00241
+Height         5.73077    0.97597    5.87189    0.00000
 
 Call: rq(formula = Weight ~ Height, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = bodyfat)
@@ -782,8 +782,8 @@ tau: [1] 0.9
 
 Coefficients:
             Value      Std. Error t value    Pr(&gt;|t|)  
-(Intercept) -181.25000   90.44105   -2.00407    0.04615
-Height         5.57576    1.28076    4.35349    0.00002</code></pre>
+(Intercept) -181.25000   87.79399   -2.06449    0.04001
+Height         5.57576    1.24243    4.48777    0.00001</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -914,8 +914,8 @@ tau: [1] 0.5
 
 Coefficients:
             Value      Std. Error t value    Pr(&gt;|t|)  
-(Intercept) -236.36667   49.84738   -4.74181    0.00000
-Height         5.86667    0.71471    8.20845    0.00000</code></pre>
+(Intercept) -236.36667   46.24557   -5.11112    0.00000
+Height         5.86667    0.66134    8.87084    0.00000</code></pre>
 </div>
 </div>
 <p>The p-value of the slope coefficient significance test is <span class="math inline">\approx</span> 0; the observed data points against the null hypothesis, hence the slope parameter is, with a given confidence, different than zero.</p>
@@ -942,7 +942,7 @@ Height         5.86667    0.71471    8.20845    0.00000</code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>    2.5%    97.5% 
-4.071429 7.000000 </code></pre>
+4.166447 6.954682 </code></pre>
 </div>
 </div>
 </section>
@@ -1123,8 +1123,8 @@ tau: [1] 0.1
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept) 100.40560  13.39517    7.49566   0.00000
-area          2.55789   0.21887   11.68704   0.00000
+(Intercept) 100.40560  13.93413    7.20573   0.00000
+area          2.55789   0.22355   11.44216   0.00000
 
 Call: rq(formula = rent ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1132,8 +1132,8 @@ tau: [1] 0.25
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept) 143.23414   8.78803   16.29877   0.00000
-area          3.10940   0.15546   20.00133   0.00000
+(Intercept) 143.23414   9.00392   15.90797   0.00000
+area          3.10940   0.15083   20.61594   0.00000
 
 Call: rq(formula = rent ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1141,8 +1141,8 @@ tau: [1] 0.5
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept) 161.35189   8.85820   18.21497   0.00000
-area          4.27932   0.16903   25.31688   0.00000
+(Intercept) 161.35189   9.05926   17.81071   0.00000
+area          4.27932   0.17808   24.03009   0.00000
 
 Call: rq(formula = rent ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1150,8 +1150,8 @@ tau: [1] 0.75
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept) 137.46909   9.66778   14.21930   0.00000
-area          6.36802   0.15809   40.27977   0.00000
+(Intercept) 137.46909   9.97307   13.78403   0.00000
+area          6.36802   0.17360   36.68228   0.00000
 
 Call: rq(formula = rent ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1159,8 +1159,8 @@ tau: [1] 0.9
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept) 126.91388  12.51080   10.14435   0.00000
-area          7.89612   0.24470   32.26835   0.00000</code></pre>
+(Intercept) 126.91388  12.31144   10.30861   0.00000
+area          7.89612   0.23808   33.16649   0.00000</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1179,8 +1179,8 @@ tau: [1] 0.1
 
 Coefficients:
             Value    Std. Error t value  Pr(&gt;|t|)
-(Intercept)  5.73704  0.26243   21.86137  0.00000
-area        -0.02257  0.00358   -6.31020  0.00000
+(Intercept)  5.73704  0.24253   23.65535  0.00000
+area        -0.02257  0.00328   -6.88179  0.00000
 
 Call: rq(formula = rentsqm ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1188,8 +1188,8 @@ tau: [1] 0.25
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)   7.77276   0.16088   48.31406   0.00000
-area         -0.03328   0.00215  -15.45352   0.00000
+(Intercept)   7.77276   0.17628   44.09303   0.00000
+area         -0.03328   0.00233  -14.29691   0.00000
 
 Call: rq(formula = rentsqm ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1197,8 +1197,8 @@ tau: [1] 0.5
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)   9.79605   0.17320   56.56041   0.00000
-area         -0.04148   0.00222  -18.71427   0.00000
+(Intercept)   9.79605   0.15025   65.19616   0.00000
+area         -0.04148   0.00198  -20.99443   0.00000
 
 Call: rq(formula = rentsqm ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1206,17 +1206,17 @@ tau: [1] 0.75
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)  11.17064   0.18521   60.31183   0.00000
-area         -0.03677   0.00273  -13.45691   0.00000
+(Intercept)  11.17064   0.18828   59.33041   0.00000
+area         -0.03677   0.00284  -12.94884   0.00000
 
 Call: rq(formula = rentsqm ~ area, tau = tau_sel, data = rents_sel)
 
 tau: [1] 0.9
 
 Coefficients:
-            Value    Std. Error t value  Pr(&gt;|t|)
-(Intercept) 12.39842  0.21294   58.22590  0.00000
-area        -0.03419  0.00342   -9.99403  0.00000</code></pre>
+            Value     Std. Error t value   Pr(&gt;|t|) 
+(Intercept)  12.39842   0.21603   57.39342   0.00000
+area         -0.03419   0.00340  -10.05678   0.00000</code></pre>
 </div>
 </div>
 <div class="cell page-columns page-full">
@@ -1403,7 +1403,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>    2.5%    97.5% 
-3.910982 4.584151 </code></pre>
+3.905440 4.559161 </code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1428,7 +1428,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>       2.5%       97.5% 
--0.04501836 -0.03682849 </code></pre>
+-0.04531794 -0.03697514 </code></pre>
 </div>
 </div>
 <p>There is no evidence of either slope being significantly null.</p>
@@ -1631,8 +1631,8 @@ tau: [1] 0.1
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)  17.50541   0.56353   31.06364   0.00000
-age          -0.10558   0.00845  -12.49691   0.00000
+(Intercept)  17.50541   0.54987   31.83574   0.00000
+age          -0.10558   0.00822  -12.84879   0.00000
 
 Call: rq(formula = income ~ age, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = incomeEx)
@@ -1641,8 +1641,8 @@ tau: [1] 0.25
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)  34.11655   0.99444   34.30721   0.00000
-age          -0.22985   0.01518  -15.14014   0.00000
+(Intercept)  34.11655   0.85218   40.03431   0.00000
+age          -0.22985   0.01313  -17.50894   0.00000
 
 Call: rq(formula = income ~ age, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = incomeEx)
@@ -1651,8 +1651,8 @@ tau: [1] 0.5
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)  56.46243   1.14325   49.38773   0.00000
-age          -0.36170   0.02321  -15.58618   0.00000
+(Intercept)  56.46243   1.24952   45.18740   0.00000
+age          -0.36170   0.02444  -14.80226   0.00000
 
 Call: rq(formula = income ~ age, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = incomeEx)
@@ -1661,8 +1661,8 @@ tau: [1] 0.75
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)  82.61214   1.70254   48.52280   0.00000
-age          -0.42045   0.03581  -11.74023   0.00000
+(Intercept)  82.61214   1.80518   45.76390   0.00000
+age          -0.42045   0.03488  -12.05356   0.00000
 
 Call: rq(formula = income ~ age, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = incomeEx)
@@ -1671,8 +1671,8 @@ tau: [1] 0.9
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept) 103.31600   4.24594   24.33287   0.00000
-age          -0.21780   0.08642   -2.52015   0.01175</code></pre>
+(Intercept) 103.31600   4.36198   23.68558   0.00000
+age          -0.21780   0.09219   -2.36258   0.01817</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1833,14 +1833,14 @@ tau: [1] 0.1
 
 Coefficients:
                  Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)       27.58363   0.97464   28.30147   0.00000
-age               -0.03180   0.01053   -3.02078   0.00253
-ethasian           0.20751   1.62843    0.12743   0.89860
-ethblack          -4.31667   0.61888   -6.97492   0.00000
-ethhispanic       -1.87367   0.57152   -3.27842   0.00105
-cedhighschool    -12.66915   0.82522  -15.35238   0.00000
-cedno_highschool -17.19231   0.77566  -22.16466   0.00000
-cedsome_college  -10.32890   0.92951  -11.11225   0.00000
+(Intercept)       27.58363   0.84674   32.57637   0.00000
+age               -0.03180   0.01117   -2.84806   0.00441
+ethasian           0.20751   1.70675    0.12158   0.90323
+ethblack          -4.31667   0.67161   -6.42730   0.00000
+ethhispanic       -1.87367   0.55451   -3.37899   0.00073
+cedhighschool    -12.66915   0.69020  -18.35588   0.00000
+cedno_highschool -17.19231   0.63287  -27.16578   0.00000
+cedsome_college  -10.32890   0.92915  -11.11650   0.00000
 
 Call: rq(formula = income ~ age + eth + ced, tau = tau_sel, data = incomeEx)
 
@@ -1848,14 +1848,14 @@ tau: [1] 0.25
 
 Coefficients:
                  Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)       45.78011   0.80434   56.91662   0.00000
-age               -0.09004   0.01286   -7.00291   0.00000
-ethasian           3.55550   2.15451    1.65026   0.09892
-ethblack          -6.39611   0.55558  -11.51249   0.00000
-ethhispanic       -3.79576   0.74272   -5.11064   0.00000
-cedhighschool    -18.12842   0.76481  -23.70320   0.00000
-cedno_highschool -26.25053   0.84003  -31.24967   0.00000
-cedsome_college  -13.93588   0.91114  -15.29496   0.00000
+(Intercept)       45.78011   0.89271   51.28245   0.00000
+age               -0.09004   0.01354   -6.64885   0.00000
+ethasian           3.55550   2.02071    1.75953   0.07852
+ethblack          -6.39611   0.54757  -11.68088   0.00000
+ethhispanic       -3.79576   0.69688   -5.44681   0.00000
+cedhighschool    -18.12842   0.82279  -22.03277   0.00000
+cedno_highschool -26.25053   0.83139  -31.57434   0.00000
+cedsome_college  -13.93588   0.91604  -15.21322   0.00000
 
 Call: rq(formula = income ~ age + eth + ced, tau = tau_sel, data = incomeEx)
 
@@ -1863,14 +1863,14 @@ tau: [1] 0.5
 
 Coefficients:
                  Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)       71.98773   1.49413   48.18034   0.00000
-age               -0.14178   0.01745   -8.12569   0.00000
-ethasian           2.67363   3.05333    0.87564   0.38124
-ethblack         -11.10326   0.73125  -15.18396   0.00000
-ethhispanic       -5.80449   1.09142   -5.31830   0.00000
-cedhighschool    -27.90703   1.38227  -20.18934   0.00000
-cedno_highschool -39.93204   1.39697  -28.58482   0.00000
-cedsome_college  -21.65788   1.62671  -13.31389   0.00000
+(Intercept)       71.98773   1.33053   54.10462   0.00000
+age               -0.14178   0.01798   -7.88356   0.00000
+ethasian           2.67363   2.93605    0.91062   0.36252
+ethblack         -11.10326   0.68094  -16.30588   0.00000
+ethhispanic       -5.80449   1.03742   -5.59510   0.00000
+cedhighschool    -27.90703   1.29996  -21.46758   0.00000
+cedno_highschool -39.93204   1.50997  -26.44556   0.00000
+cedsome_college  -21.65788   1.47125  -14.72073   0.00000
 
 Call: rq(formula = income ~ age + eth + ced, tau = tau_sel, data = incomeEx)
 
@@ -1878,14 +1878,14 @@ tau: [1] 0.75
 
 Coefficients:
                  Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)      101.68751   2.07195   49.07823   0.00000
-age               -0.09859   0.03223   -3.05891   0.00223
-ethasian           2.57718   2.81917    0.91416   0.36065
-ethblack         -13.41780   1.36897   -9.80136   0.00000
-ethhispanic       -4.19079   1.70624   -2.45615   0.01406
-cedhighschool    -41.97152   1.88480  -22.26841   0.00000
-cedno_highschool -57.73396   2.01364  -28.67141   0.00000
-cedsome_college  -32.39420   1.97703  -16.38530   0.00000
+(Intercept)      101.68751   2.09135   48.62287   0.00000
+age               -0.09859   0.03453   -2.85545   0.00431
+ethasian           2.57718   3.16024    0.81550   0.41480
+ethblack         -13.41780   1.43799   -9.33094   0.00000
+ethhispanic       -4.19079   1.66645   -2.51480   0.01193
+cedhighschool    -41.97152   1.62521  -25.82526   0.00000
+cedno_highschool -57.73396   1.98219  -29.12637   0.00000
+cedsome_college  -32.39420   1.93337  -16.75532   0.00000
 
 Call: rq(formula = income ~ age + eth + ced, tau = tau_sel, data = incomeEx)
 
@@ -1893,14 +1893,14 @@ tau: [1] 0.9
 
 Coefficients:
                  Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)      125.01867   2.71144   46.10783   0.00000
-age                0.08952   0.04978    1.79826   0.07217
-ethasian           3.06928   5.41539    0.56677   0.57088
-ethblack         -16.18460   1.84045   -8.79382   0.00000
-ethhispanic       -2.01964   2.43936   -0.82794   0.40772
-cedhighschool    -54.19444   1.63295  -33.18804   0.00000
-cedno_highschool -71.78935   2.17257  -33.04358   0.00000
-cedsome_college  -41.25483   2.31105  -17.85111   0.00000</code></pre>
+(Intercept)      125.01867   2.73603   45.69354   0.00000
+age                0.08952   0.05203    1.72050   0.08537
+ethasian           3.06928   5.68521    0.53987   0.58930
+ethblack         -16.18460   1.81247   -8.92957   0.00000
+ethhispanic       -2.01964   2.29299   -0.88079   0.37845
+cedhighschool    -54.19444   1.53032  -35.41391   0.00000
+cedno_highschool -71.78935   1.76778  -40.60989   0.00000
+cedsome_college  -41.25483   2.42808  -16.99071   0.00000</code></pre>
 </div>
 </div>
 <p>A table of the coefficients confirms that both intercept and slope change, with the most noticeable effects on the higher quantiles.</p>
@@ -2058,7 +2058,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>    2.5%    97.5% 
-306.5905 349.7705 </code></pre>
+306.3770 349.7572 </code></pre>
 </div>
 </div>
 <p>For the same significance level of <span class="math inline">5%</span>, the bootstrap method yields a larger interval; nevertheless, it is remarkably similar to the interval computed by applying asymptotic theory.</p>
@@ -2093,9 +2093,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb103-8"><a href="#cb103-8" aria-hidden="true" tabindex="-1"></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>            Std. Error
-(Intercept) 26.2429028
-income       0.0332872</code></pre>
+<pre><code>             Std. Error
+(Intercept) 26.17200709
+income       0.03346431</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -2140,8 +2140,8 @@ income       0.0332872</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">28.01705</td>
-<td style="text-align: right;">0.0358219</td>
+<td style="text-align: right;">27.63956</td>
+<td style="text-align: right;">0.0357641</td>
 </tr>
 </tbody>
 </table>
@@ -2252,42 +2252,42 @@ income       0.0332872</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.3360180</td>
-<td style="text-align: right;">0.3326290</td>
-<td style="text-align: right;">0.3477040</td>
-<td style="text-align: right;">0.3808307</td>
-<td style="text-align: right;">0.4105921</td>
-<td style="text-align: right;">0.4479016</td>
-<td style="text-align: right;">0.4598879</td>
-<td style="text-align: right;">0.4634948</td>
-<td style="text-align: right;">0.4691703</td>
-<td style="text-align: right;">0.4990268</td>
-<td style="text-align: right;">0.5326032</td>
-<td style="text-align: right;">0.5408653</td>
-<td style="text-align: right;">0.5551454</td>
-<td style="text-align: right;">0.5706885</td>
-<td style="text-align: right;">0.593088</td>
-<td style="text-align: right;">0.6175840</td>
-<td style="text-align: right;">0.6315805</td>
+<td style="text-align: right;">0.3360314</td>
+<td style="text-align: right;">0.3340811</td>
+<td style="text-align: right;">0.3598959</td>
+<td style="text-align: right;">0.3740240</td>
+<td style="text-align: right;">0.4201108</td>
+<td style="text-align: right;">0.4467006</td>
+<td style="text-align: right;">0.4607933</td>
+<td style="text-align: right;">0.4614745</td>
+<td style="text-align: right;">0.4666144</td>
+<td style="text-align: right;">0.4892449</td>
+<td style="text-align: right;">0.5347223</td>
+<td style="text-align: right;">0.5398405</td>
+<td style="text-align: right;">0.5565506</td>
+<td style="text-align: right;">0.5667671</td>
+<td style="text-align: right;">0.5925202</td>
+<td style="text-align: right;">0.6186873</td>
+<td style="text-align: right;">0.6317487</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.4840377</td>
-<td style="text-align: right;">0.5014831</td>
-<td style="text-align: right;">0.5081901</td>
-<td style="text-align: right;">0.5153115</td>
-<td style="text-align: right;">0.5428585</td>
-<td style="text-align: right;">0.5662009</td>
-<td style="text-align: right;">0.5882284</td>
-<td style="text-align: right;">0.6031955</td>
-<td style="text-align: right;">0.6111211</td>
-<td style="text-align: right;">0.6238026</td>
-<td style="text-align: right;">0.6391112</td>
-<td style="text-align: right;">0.6699172</td>
-<td style="text-align: right;">0.6782821</td>
-<td style="text-align: right;">0.6989063</td>
-<td style="text-align: right;">0.707444</td>
-<td style="text-align: right;">0.7126024</td>
-<td style="text-align: right;">0.7333385</td>
+<td style="text-align: right;">0.4853860</td>
+<td style="text-align: right;">0.4997087</td>
+<td style="text-align: right;">0.5102497</td>
+<td style="text-align: right;">0.5142368</td>
+<td style="text-align: right;">0.5421154</td>
+<td style="text-align: right;">0.5684519</td>
+<td style="text-align: right;">0.5823057</td>
+<td style="text-align: right;">0.5983106</td>
+<td style="text-align: right;">0.6136912</td>
+<td style="text-align: right;">0.6228499</td>
+<td style="text-align: right;">0.6394826</td>
+<td style="text-align: right;">0.6699259</td>
+<td style="text-align: right;">0.6795037</td>
+<td style="text-align: right;">0.6968019</td>
+<td style="text-align: right;">0.7074440</td>
+<td style="text-align: right;">0.7124853</td>
+<td style="text-align: right;">0.7289176</td>
 </tr>
 </tbody>
 </table>
