@@ -737,8 +737,8 @@ tau: [1] 0.1
 
 Coefficients:
             Value      Std. Error t value    Pr(&gt;|t|)  
-(Intercept) -207.61364   36.98220   -5.61388    0.00000
-Height         5.09091    0.53184    9.57230    0.00000
+(Intercept) -207.61364   36.13703   -5.74518    0.00000
+Height         5.09091    0.51784    9.83102    0.00000
 
 Call: rq(formula = Weight ~ Height, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = bodyfat)
@@ -747,8 +747,8 @@ tau: [1] 0.25
 
 Coefficients:
             Value      Std. Error t value    Pr(&gt;|t|)  
-(Intercept) -248.33333   45.03993   -5.51363    0.00000
-Height         5.83333    0.63671    9.16174    0.00000
+(Intercept) -248.33333   45.19189   -5.49509    0.00000
+Height         5.83333    0.64103    9.09994    0.00000
 
 Call: rq(formula = Weight ~ Height, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = bodyfat)
@@ -757,8 +757,8 @@ tau: [1] 0.5
 
 Coefficients:
             Value      Std. Error t value    Pr(&gt;|t|)  
-(Intercept) -236.36667   52.76849   -4.47931    0.00001
-Height         5.86667    0.75490    7.77148    0.00000
+(Intercept) -236.36667   51.18584   -4.61781    0.00001
+Height         5.86667    0.73380    7.99488    0.00000
 
 Call: rq(formula = Weight ~ Height, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = bodyfat)
@@ -767,8 +767,8 @@ tau: [1] 0.75
 
 Coefficients:
             Value      Std. Error t value    Pr(&gt;|t|)  
-(Intercept) -210.69231   68.12814   -3.09259    0.00221
-Height         5.73077    0.96639    5.93010    0.00000
+(Intercept) -210.69231   67.92136   -3.10200    0.00214
+Height         5.73077    0.96403    5.94461    0.00000
 
 Call: rq(formula = Weight ~ Height, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = bodyfat)
@@ -777,8 +777,8 @@ tau: [1] 0.9
 
 Coefficients:
             Value      Std. Error t value    Pr(&gt;|t|)  
-(Intercept) -181.25000   91.43527   -1.98228    0.04855
-Height         5.57576    1.29696    4.29910    0.00002</code></pre>
+(Intercept) -181.25000   91.05667   -1.99052    0.04763
+Height         5.57576    1.29075    4.31980    0.00002</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -909,8 +909,8 @@ tau: [1] 0.5
 
 Coefficients:
             Value      Std. Error t value    Pr(&gt;|t|)  
-(Intercept) -236.36667   48.01117   -4.92316    0.00000
-Height         5.86667    0.68692    8.54059    0.00000</code></pre>
+(Intercept) -236.36667   55.15205   -4.28573    0.00003
+Height         5.86667    0.79453    7.38381    0.00000</code></pre>
 </div>
 </div>
 <p>The p-value of the slope coefficient significance test is <span class="math inline">\approx</span> 0; the observed data points against the null hypothesis, hence the slope parameter is, with a given confidence, different than zero.</p>
@@ -936,8 +936,8 @@ Height         5.86667    0.68692    8.54059    0.00000</code></pre>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(<span class="fu">apply</span>(qr_boot<span class="sc">$</span>B, <span class="dv">2</span>, quantile, <span class="fu">c</span>(<span class="fl">0.025</span>,<span class="fl">0.975</span>)))[<span class="dv">2</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>    2.5%    97.5% 
-4.124653 7.000000 </code></pre>
+<pre><code>   2.5%   97.5% 
+4.03125 7.00000 </code></pre>
 </div>
 </div>
 </section>
@@ -1118,8 +1118,8 @@ tau: [1] 0.1
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept) 100.40560  15.67406    6.40585   0.00000
-area          2.55789   0.24884   10.27929   0.00000
+(Intercept) 100.40560  13.09060    7.67006   0.00000
+area          2.55789   0.22815   11.21138   0.00000
 
 Call: rq(formula = rent ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1127,8 +1127,8 @@ tau: [1] 0.25
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept) 143.23414  10.09003   14.19562   0.00000
-area          3.10940   0.17705   17.56216   0.00000
+(Intercept) 143.23414   9.74076   14.70462   0.00000
+area          3.10940   0.16908   18.38967   0.00000
 
 Call: rq(formula = rent ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1136,8 +1136,8 @@ tau: [1] 0.5
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept) 161.35189   9.23848   17.46521   0.00000
-area          4.27932   0.17570   24.35565   0.00000
+(Intercept) 161.35189   9.55070   16.89425   0.00000
+area          4.27932   0.17604   24.30842   0.00000
 
 Call: rq(formula = rent ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1145,8 +1145,8 @@ tau: [1] 0.75
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept) 137.46909   9.95210   13.81307   0.00000
-area          6.36802   0.16826   37.84735   0.00000
+(Intercept) 137.46909   9.74026   14.11349   0.00000
+area          6.36802   0.16387   38.86051   0.00000
 
 Call: rq(formula = rent ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1154,8 +1154,8 @@ tau: [1] 0.9
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept) 126.91388  12.56537   10.10029   0.00000
-area          7.89612   0.23566   33.50664   0.00000</code></pre>
+(Intercept) 126.91388  12.53951   10.12112   0.00000
+area          7.89612   0.23739   33.26183   0.00000</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1174,8 +1174,8 @@ tau: [1] 0.1
 
 Coefficients:
             Value    Std. Error t value  Pr(&gt;|t|)
-(Intercept)  5.73704  0.28575   20.07695  0.00000
-area        -0.02257  0.00386   -5.84462  0.00000
+(Intercept)  5.73704  0.26915   21.31557  0.00000
+area        -0.02257  0.00360   -6.27330  0.00000
 
 Call: rq(formula = rentsqm ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1183,8 +1183,8 @@ tau: [1] 0.25
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)   7.77276   0.18061   43.03709   0.00000
-area         -0.03328   0.00231  -14.41042   0.00000
+(Intercept)   7.77276   0.17271   45.00387   0.00000
+area         -0.03328   0.00226  -14.75253   0.00000
 
 Call: rq(formula = rentsqm ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1192,8 +1192,8 @@ tau: [1] 0.5
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)   9.79605   0.15123   64.77457   0.00000
-area         -0.04148   0.00203  -20.47029   0.00000
+(Intercept)   9.79605   0.13917   70.38682   0.00000
+area         -0.04148   0.00188  -22.06266   0.00000
 
 Call: rq(formula = rentsqm ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1201,8 +1201,8 @@ tau: [1] 0.75
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)  11.17064   0.17688   63.15388   0.00000
-area         -0.03677   0.00271  -13.58851   0.00000
+(Intercept)  11.17064   0.17524   63.74476   0.00000
+area         -0.03677   0.00267  -13.75625   0.00000
 
 Call: rq(formula = rentsqm ~ area, tau = tau_sel, data = rents_sel)
 
@@ -1210,8 +1210,8 @@ tau: [1] 0.9
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)  12.39842   0.21173   58.55827   0.00000
-area         -0.03419   0.00327  -10.46274   0.00000</code></pre>
+(Intercept)  12.39842   0.20478   60.54563   0.00000
+area         -0.03419   0.00330  -10.37108   0.00000</code></pre>
 </div>
 </div>
 <div class="cell page-columns page-full">
@@ -1398,7 +1398,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>    2.5%    97.5% 
-3.900188 4.538066 </code></pre>
+3.890101 4.578092 </code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1423,7 +1423,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>       2.5%       97.5% 
--0.04539793 -0.03699143 </code></pre>
+-0.04534613 -0.03686400 </code></pre>
 </div>
 </div>
 <p>There is no evidence on either slope being significantly null.</p>
@@ -1579,7 +1579,7 @@ dbl (6): age, ed, hkids, cinc, lcinc, hid
 <span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_quantile</span>(</span>
 <span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">quantiles =</span> tau_sel,</span>
-<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">"darkolivegreen1"</span></span>
+<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">"darkorange"</span></span>
 <span id="cb74-15"><a href="#cb74-15" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
@@ -1626,8 +1626,8 @@ tau: [1] 0.1
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)  17.50541   0.61782   28.33418   0.00000
-age          -0.10558   0.00970  -10.88899   0.00000
+(Intercept)  17.50541   0.57206   30.60081   0.00000
+age          -0.10558   0.00850  -12.41450   0.00000
 
 Call: rq(formula = income ~ age, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = incomeEx)
@@ -1636,8 +1636,8 @@ tau: [1] 0.25
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)  34.11655   0.97424   35.01849   0.00000
-age          -0.22985   0.01492  -15.40680   0.00000
+(Intercept)  34.11655   0.99118   34.42014   0.00000
+age          -0.22985   0.01544  -14.88536   0.00000
 
 Call: rq(formula = income ~ age, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = incomeEx)
@@ -1646,8 +1646,8 @@ tau: [1] 0.5
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)  56.46243   1.34513   41.97537   0.00000
-age          -0.36170   0.02486  -14.54976   0.00000
+(Intercept)  56.46243   1.20914   46.69622   0.00000
+age          -0.36170   0.02296  -15.75324   0.00000
 
 Call: rq(formula = income ~ age, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = incomeEx)
@@ -1656,8 +1656,8 @@ tau: [1] 0.75
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept)  82.61214   1.80160   45.85499   0.00000
-age          -0.42045   0.03559  -11.81420   0.00000
+(Intercept)  82.61214   1.99231   41.46544   0.00000
+age          -0.42045   0.04063  -10.34878   0.00000
 
 Call: rq(formula = income ~ age, tau = c(0.1, 0.25, 0.5, 0.75, 0.9), 
     data = incomeEx)
@@ -1666,8 +1666,8 @@ tau: [1] 0.9
 
 Coefficients:
             Value     Std. Error t value   Pr(&gt;|t|) 
-(Intercept) 103.31600   4.41848   23.38269   0.00000
-age          -0.21780   0.09098   -2.39390   0.01669</code></pre>
+(Intercept) 103.31600   3.93221   26.27429   0.00000
+age          -0.21780   0.08200   -2.65621   0.00791</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1748,8 +1748,155 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="construct-models-in-which-the-relationship-is-allowed-to-be-different-depending-of-the-race-and-education-level-of-the-household-head.-provide-a-graphical-display-which-presents-the-estimated-models.-is-there-enough-evidence-to-indicate-that-the-effect-of-age-on-income-is-different-for-different-raceseducation-level-specify-the-statistical-test-that-would-be-carried-out." class="level2">
+<section id="construct-models-in-which-the-relationship-is-allowed-to-be-different-depending-of-the-race-and-education-level-of-the-household-head.-provide-a-graphical-display-which-presents-the-estimated-models.-is-there-enough-evidence-to-indicate-that-the-effect-of-age-on-income-is-different-for-different-raceseducation-level-specify-the-statistical-test-that-would-be-carried-out." class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="construct-models-in-which-the-relationship-is-allowed-to-be-different-depending-of-the-race-and-education-level-of-the-household-head.-provide-a-graphical-display-which-presents-the-estimated-models.-is-there-enough-evidence-to-indicate-that-the-effect-of-age-on-income-is-different-for-different-raceseducation-level-specify-the-statistical-test-that-would-be-carried-out.">Construct models in which the relationship is allowed to be different depending of the race and education level of the household head. Provide a graphical display which presents the estimated models. Is there enough evidence to indicate that the effect of Age on Income is different for different races/education level? Specify the statistical test that would be carried out.</h2>
+<div class="cell page-columns page-full">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>incomeEx <span class="sc">%&gt;%</span> </span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> age,</span>
+<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> income</span>
+<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb84-7"><a href="#cb84-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb84-8"><a href="#cb84-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb84-9"><a href="#cb84-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">"grey70"</span>,</span>
+<span id="cb84-10"><a href="#cb84-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> .<span class="dv">7</span></span>
+<span id="cb84-11"><a href="#cb84-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb84-12"><a href="#cb84-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_quantile</span>(</span>
+<span id="cb84-13"><a href="#cb84-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> y <span class="sc">~</span> x,</span>
+<span id="cb84-14"><a href="#cb84-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">quantiles =</span> tau_sel,</span>
+<span id="cb84-15"><a href="#cb84-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">'darkred'</span></span>
+<span id="cb84-16"><a href="#cb84-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb84-17"><a href="#cb84-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(</span>
+<span id="cb84-18"><a href="#cb84-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">rows =</span> <span class="fu">vars</span>(ced),</span>
+<span id="cb84-19"><a href="#cb84-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">vars</span>(eth)</span>
+<span id="cb84-20"><a href="#cb84-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb84-21"><a href="#cb84-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb84-22"><a href="#cb84-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">'Income ~ Age for different Education levels and Ethnicities'</span></span>
+<span id="cb84-23"><a href="#cb84-23" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in rq.fit.br(wx, wy, tau = tau, ...): Solution may be nonunique
+
+Warning in rq.fit.br(wx, wy, tau = tau, ...): Solution may be nonunique</code></pre>
+</div>
+<div class="cell-output-display column-page">
+<p><img src="BA-Exercises_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>incomeEx<span class="sc">$</span>eth <span class="ot">&lt;-</span>  incomeEx<span class="sc">$</span>eth <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>()</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(incomeEx<span class="sc">$</span>eth) <span class="ot">&lt;-</span>  <span class="fu">c</span>( <span class="st">"white"</span>, <span class="st">"black"</span>, <span class="st">"hispanic"</span>, <span class="st">"asian"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>income_extended <span class="ot">&lt;-</span> <span class="fu">rq</span>(</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  income <span class="sc">~</span> age <span class="sc">+</span> eth <span class="sc">+</span> ced,</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> incomeEx,</span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">tau =</span> tau_sel</span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in rq.fit.br(x, y, tau = tau, ...): Solution may be nonunique
+
+Warning in rq.fit.br(x, y, tau = tau, ...): Solution may be nonunique
+
+Warning in rq.fit.br(x, y, tau = tau, ...): Solution may be nonunique</code></pre>
+</div>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>income_extended <span class="sc">%&gt;%</span> </span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">se =</span> <span class="st">'boot'</span></span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call: rq(formula = income ~ age + eth + ced, tau = tau_sel, data = incomeEx)
+
+tau: [1] 0.1
+
+Coefficients:
+                 Value     Std. Error t value   Pr(&gt;|t|) 
+(Intercept)       27.79114   1.87240   14.84250   0.00000
+age               -0.03180   0.01121   -2.83729   0.00456
+ethblack          -4.52418   1.78461   -2.53511   0.01126
+ethhispanic       -2.08118   1.70030   -1.22401   0.22098
+ethasian          -0.20751   1.66607   -0.12455   0.90088
+cedhighschool    -12.66915   0.70447  -17.98382   0.00000
+cedno_highschool -17.19231   0.66087  -26.01486   0.00000
+cedsome_college  -10.32890   0.90392  -11.42675   0.00000
+
+Call: rq(formula = income ~ age + eth + ced, tau = tau_sel, data = incomeEx)
+
+tau: [1] 0.25
+
+Coefficients:
+                 Value     Std. Error t value   Pr(&gt;|t|) 
+(Intercept)       49.33561   2.13401   23.11876   0.00000
+age               -0.09004   0.01133   -7.94768   0.00000
+ethblack          -9.95288   2.10309   -4.73250   0.00000
+ethhispanic       -7.35252   2.12721   -3.45642   0.00055
+ethasian          -3.55550   2.05007   -1.73433   0.08289
+cedhighschool    -18.12716   0.79946  -22.67412   0.00000
+cedno_highschool -26.25053   0.79610  -32.97394   0.00000
+cedsome_college  -13.93588   0.89073  -15.64552   0.00000
+
+Call: rq(formula = income ~ age + eth + ced, tau = tau_sel, data = incomeEx)
+
+tau: [1] 0.5
+
+Coefficients:
+                 Value     Std. Error t value   Pr(&gt;|t|) 
+(Intercept)       74.51939   2.89515   25.73937   0.00000
+age               -0.14178   0.01787   -7.93333   0.00000
+ethblack         -13.72819   2.83887   -4.83580   0.00000
+ethhispanic       -8.42942   2.81659   -2.99277   0.00277
+ethasian          -2.62533   2.68426   -0.97805   0.32808
+cedhighschool    -27.81335   1.34761  -20.63904   0.00000
+cedno_highschool -39.83876   1.40775  -28.29951   0.00000
+cedsome_college  -21.51590   1.52644  -14.09551   0.00000
+
+Call: rq(formula = income ~ age + eth + ced, tau = tau_sel, data = incomeEx)
+
+tau: [1] 0.75
+
+Coefficients:
+                 Value     Std. Error t value   Pr(&gt;|t|) 
+(Intercept)      104.29362   3.61460   28.85340   0.00000
+age               -0.09859   0.03264   -3.02023   0.00253
+ethblack         -15.99498   3.53373   -4.52637   0.00001
+ethhispanic       -6.76797   3.42198   -1.97779   0.04798
+ethasian          -2.60611   3.23950   -0.80448   0.42114
+cedhighschool    -41.97152   1.60257  -26.19006   0.00000
+cedno_highschool -57.76289   1.85585  -31.12483   0.00000
+cedsome_college  -32.42313   1.77828  -18.23281   0.00000
+
+Call: rq(formula = income ~ age + eth + ced, tau = tau_sel, data = incomeEx)
+
+tau: [1] 0.9
+
+Coefficients:
+                 Value     Std. Error t value   Pr(&gt;|t|) 
+(Intercept)      128.08794   5.12399   24.99769   0.00000
+age                0.08952   0.05154    1.73703   0.08241
+ethblack         -19.25388   5.29051   -3.63933   0.00027
+ethhispanic       -5.08891   5.50858   -0.92382   0.35560
+ethasian          -3.06928   5.07263   -0.60507   0.54515
+cedhighschool    -54.19444   1.68502  -32.16246   0.00000
+cedno_highschool -71.78935   2.02587  -35.43635   0.00000
+cedsome_college  -41.25483   2.43773  -16.92346   0.00000</code></pre>
+</div>
+</div>
+<p>There is a strong evidence in favor of the hypothesis that education and ethnicity influence the effect of <code>age</code> on <code>income</code>. Ethnicity at most levels of is statistically significant, each pointing at a lower average level; however, the significance is uneven, as in some quantiles, given the reference (baseline) scenario of <code>eth == 'white'</code>, either <code>'asian'</code> or ’<code>hispanic'</code> or both do not seem to have statistical significance, indicating that only the <code>black</code> ethnicity is consistently influencing the effect of <code>age</code> on <code>income</code>, exception made for the lowest decile. Education is consistently significant across all the quantiles, implicating that not graduating form college corresponds to a lower average income, therefore affecting the relationship of <code>income</code>and <code>age</code> as it changes the level of their relationship. We can also notice a strong difference in the slopes.</p>
 </section>
 <section id="to-be-done-with-pen-and-paper-draw-the-qsk0.1-and-qsc0.25-function-of-distributions-in-which-the-scale-is-and-skewness-increase-linearly-with-a-predictor-x.-next-draw-the-fitted-quantile-lines-for-the-0.10.250.50.750.9-quantile-of-a-quantile-regression-model-which-would-lead-to-such-increases-in-qsk0.1-and-qsc0.25.-combine-different-scenarios-with-strong-or-weak-increases-and-decreases-of-the-qsc0.25-and-qsk0.1-functions." class="level2">
 <h2 class="anchored" data-anchor-id="to-be-done-with-pen-and-paper-draw-the-qsk0.1-and-qsc0.25-function-of-distributions-in-which-the-scale-is-and-skewness-increase-linearly-with-a-predictor-x.-next-draw-the-fitted-quantile-lines-for-the-0.10.250.50.750.9-quantile-of-a-quantile-regression-model-which-would-lead-to-such-increases-in-qsk0.1-and-qsc0.25.-combine-different-scenarios-with-strong-or-weak-increases-and-decreases-of-the-qsc0.25-and-qsk0.1-functions.">(to be done with pen and paper) Draw the QSK(0.1) and QSC(0.25) function of distributions in which the scale is and skewness increase linearly with a predictor X. Next draw the fitted quantile lines for the (0.1,0.25,0.5,0.75,0.9) quantile of a quantile regression model which would lead to such increases in QSK(0.1) and QSC(0.25). Combine different scenarios with strong or weak increases and decreases of the QSC(0.25) and QSK(0.1) functions.</h2>
