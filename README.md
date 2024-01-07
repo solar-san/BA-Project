@@ -29,7 +29,7 @@ The course introduces the concept of Business Analytics and discusses various mo
 
 ## Repository Contents
 
-This repository contains lecture notes, code implementations, and practical examples discussed during the "Business Analytics" course. The materials are organized by syllabus sections, facilitating a systematic approach to learning and application. Exercises with solutions are available [the following link](https://solar-san.github.io/BA-Project/Exercises.html).
+This repository contains lecture notes, code implementations, and practical examples discussed during the "Business Analytics" course. The materials are organized by syllabus sections, facilitating a systematic approach to learning and application. Practical applications are available at [the following link](https://solar-san.github.io/BA-Project/Applied.html).
 
 Feel free to explore, learn, and apply these Business Analytics tools to real-world scenarios. For further details and discussions, refer to the individual folders.
 
