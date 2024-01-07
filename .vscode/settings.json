@@ -19,6 +19,11 @@
             "language": "quarto",
             "scheme": "file",
             "pattern": "notes/BA-SMC.qmd"
+        },
+        {
+            "language": "quarto",
+            "scheme": "file",
+            "pattern": "notes/BA-Exercises.qmd"
         }
     ]
 }

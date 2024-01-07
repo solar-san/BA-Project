@@ -34,7 +34,9 @@ mainfont: "Atkinson Hyperlegible"
 monofont: 'Fira Code'
 ---
 
+
 ![](https://raw.githubusercontent.com/solar-san/BA-Project/main/docs/figures/BA-Project_header.png)
+
 
 ```{r setup}
 #| echo: false
@@ -97,11 +99,13 @@ pathmaker <- function(filename, data_path = "/Users/themagician/Documents/DABS/A
 ```
 
 
+
 # Time Series Decomposition
 
 ## Reconstruct the calculations needed to derive the components in the multiplicative decomposition that was obtained for the Australian Gas Production.
 
 The multiplicative decomposition obtained was a _classical multiplicative decomposition_:
+
 
 ```{r}
 aus_production %>% 
@@ -118,6 +122,7 @@ aus_production %>%
   )
 ```
 
+
 The model behind the multiplicative decomposition is the following:
 
 $$
@@ -125,6 +130,7 @@ Y_t = T_t \times S_t \times R_t
 $$
 
 First, an appropriate _exponential smoothing_ has been applied to the series.
+
 
 ```{r}
 #| fig-width: 12
@@ -139,7 +145,9 @@ aus_production %>%
   )
 ```
 
+
 We can observe a $k=4$ seasonal pattern. This can be confirmed by an ACF plot:
+
 
 ```{r}
 #| fig-height: 6
@@ -150,6 +158,7 @@ aus_production %>%
     title = "ACF plot for Australian gas production"
   )
 ```
+
 
 If no arguments are passed, a _symmetric_ window with equal weights is used to obtain the $T_t$ (trend component). The following step is to de-trend the series:
 
@@ -169,6 +178,7 @@ $$
 \frac{y_t}{S_t}
 $$
 ## Compute a 5-MA and 9-MA for the oil prices in the `prices` dataset and overlay them to the original data ensuring that suitable labels are used to identify the different fits
+
 
 ```{r}
 prices %>% 
@@ -218,7 +228,9 @@ prices %>%
   )
 ```
 
+
 ## Decompose the US Retail sector time series. Use an additive classical decomposition. Plot the components and comment on possible issues in the resulting decomposition.
+
 
 ```{r}
 us_retail <- 
@@ -241,7 +253,9 @@ us_retail %>%
   )
 ```
 
+
 The main assumption in this case is that the seasonal term is assumed as constant: the remainder term is a clear indication of eteroskedasticity and this assumption needs to be reconsidered.
+
 
 ```{r}
 us_retail %>% 
@@ -251,9 +265,11 @@ us_retail %>%
   )
 ```
 
+
 From the original series, we can see that the magnitude of the seasonal variation depends on the level of the series; therefore, a multiplicative decomposition might be more appropriate.
 
 ## Derive the numerical values for the multiplicative triple exponential smoothing ("Triple_Mult") of the Australian beer production model seen above.
+
 
 ```{r}
 aus_beer <- aus_production %>%
@@ -277,7 +293,9 @@ fit %>%
 ```
 
 
+
 ## Focus on Tobacco production in Australia: the values are contained in the `aus_production` dataset: discuss whether a single, double or triple exponential smoothing would be more appropriate to smooth this time series. Compare the 20-step ahead forecast obtained when using a triple exponential smoothing with a damped and non-damped trend. 
+
 
 ```{r}
 aus_tobacco <- aus_production %>% 
@@ -291,7 +309,9 @@ aus_tobacco %>%
   )
 ```
 
+
 The dataset shows a strong seasonal and trend-cycle component: hence, simple exponential smoothing is _not_ as appropriate, as double exponential smoothing, because they cannot deal with the seasonal component. _Triple Exponential Smoothing_ (Holt-Winter's method) is the preferred choice in this context.
+
 
 ```{r}
 fit <- aus_tobacco %>% 
@@ -320,7 +340,9 @@ fc %>%
   )
 ```
 
+
 ## Focus on the `global_economy` dataset: pick a country (say France) and produce a simple exponential smoothing forecast for the country's GDP. Discuss whether a double exponential smoothing or triple exponential smoothing would be suitable to use for smoothing the time series. 
+
 
 ```{r}
 fit <- global_economy %>% 
@@ -339,7 +361,6 @@ fc <- fit %>%
   )
 ```
 
-
 ```{r}
 fc %>% 
   autoplot(
@@ -355,7 +376,9 @@ fc %>%
   )
 ```
 
+
 A double exponential smoothing would be more effective, as we have a trended series:
+
 
 ```{r}
 fit <- global_economy %>% 
@@ -397,9 +420,11 @@ fc %>%
   )
 ```
 
+
 # Quantile Regression
 
 ## Obtain the dataset `bodyfat` in which the weight and the height of a random sample of 255 men are stored: 
+
 
 ```{r}
 urlLocation <- "https://dasl.datadescription.com/download/data/3079"
@@ -411,11 +436,13 @@ bodyfat <- bodyfat[,c("Weight","Height")]
 bodyfat %>% str
 ```
 
+
 ## We wish to construct a regression model in which the Weight of a man is regressed against its height. Use a quantile regression framework to answer (among others) the following questions.
 
 ### What is the effect of Weight on Height: does this appear to change for different quantiles? Compute the estimated coefficients and provide a visual display.
 
 Fitting the QRM model:
+
 
 ```{r}
 bodyfat_qrfit <- rq(
@@ -488,13 +515,17 @@ ggplot() +
   )
 ```
 
+
 While indeed the effect is different for different quantiles, the slops are not different in a statistically significant way.
+
 
 ```{r}
 anova(bodyfat_qrfit)
 ```
 
+
 The main variation among the quantiles is related to the _intercept_, which is clearly varying. Up until the 25% quantile, the average effect of height on weight is decreasing; this relationship is inverted from the 25% to the 90% quantile, in which higher heights are associated on average with higher weights.
+
 
 ```{r}
 ggplot() +
@@ -517,7 +548,9 @@ ggplot() +
   )
 ```
 
+
 ### Compute the 95% confidence interval for the slope parameter of the median regression. Also, indicate whether there is evidence that its value is null.
+
 
 ```{r}
 bodyfat_medianfit <- rq(
@@ -532,9 +565,11 @@ bodyfat_medianfit %>%
     se = "boot"
   )
 ```
+
 The p-value of the slope coefficient significance test is $\approx$ 0; the observed data points against the null hypothesis, hence the slope parameter is, with a given confidence, different than zero.
 
 We will use bootstrapped coefficients to compute a 95% confidence interval for the slope:
+
 
 ```{r}
 qr_boot <- boot.rq(
@@ -553,7 +588,9 @@ qr_boot <- boot.rq(
 t(apply(qr_boot$B, 2, quantile, c(0.025,0.975)))[2, ]
 ```
 
+
 ### Produce some plots that explore whether the scale or shape of the Weight distribution changes as a function of Height. 
+
 
 ```{r}
 qs <- bodyfat_qrfit %>% 
@@ -585,7 +622,9 @@ ggplot(qs) +
     )
 ```
 
+
 The spread of the weight distribution is slightly decreasing as height decreases.
+
 
 ```{r}
 ggplot(qs) + 
@@ -597,6 +636,7 @@ ggplot(qs) +
     )
 ```
 
+
 A value greater than zero indicates right-skewness and a value less than 0 indicates left-skewness: in this case, we have a slightly right-skewed weight distribution that becomes more symmetrical as the height increases.
 
 ### Is there strong evidence against the distribution of Weight being different for different levels of Height? 
@@ -604,6 +644,7 @@ A value greater than zero indicates right-skewness and a value less than 0 indic
 Based on the available data, the result is ambiguous; while indeed the position of the distribution changes with height, as it is more common for taller people to weigh more, the slope of the effect of the regressor on the regressand and the overall shape and scale of the distribution, as its skewness, is not heavily impacted (if not impacted at all); hence, only weak evidence in favor of this difference can be derived from the observed data.
 
 ## Carry out a single predictor quantile regression analysis for the Munich rents dataset investigating the effect of `area` on `rent` and on `rentsq`. Answer questions similar to those presented in Exercise 1. 
+
 
 ```{r}
 rents_sel <- readr::read_table(
@@ -799,12 +840,15 @@ p1 + p2 + plot_annotation('Intercepts coefficients for different quantiles')
 ```{r}
 anova(rent_qr)
 ```
+
 ```{r}
 anova(rentsqm_qr)
 ```
+
 Slopes are significantly different between the quantiles. We can see that the relationships modeled by the different models are uneven and that the median works as a tipping point for both the intercept of the `rent ~ area` model, reaching a maximum and then decreasing, and for the slope of the `rentsqm ~ area` model, reaching a minimum and increasing.
 
 We will use bootstrapped coefficients to compute a 95% confidence interval for the slope.
+
 
 ```{r}
 qr_boot <- boot.rq(
@@ -840,7 +884,9 @@ qr_boot <- boot.rq(
 t(apply(qr_boot$B, 2, quantile, c(0.025,0.975)))[2, ]
 ```
 
+
 There is no evidence of either slope being significantly null.
+
 
 ```{r}
 qs <- rent_qr %>% 
@@ -872,7 +918,9 @@ ggplot(qs) +
     )
 ```
 
+
 The spread of the `rent` distribution is monotonically increasing with the `area`.
+
 
 ```{r}
 ggplot(qs) + 
@@ -884,7 +932,9 @@ ggplot(qs) +
     )
 ```
 
+
 We can observe that the skewness of the `rent` distribution is heavily affected by the `area` variable, changing from left-skewed to symmetric to right-skewed.
+
 
 ```{r}
 qs <- rentsqm_qr %>% 
@@ -916,7 +966,9 @@ ggplot(qs) +
     )
 ```
 
+
 The spread of `rentsqm` is slightly decreasing with area.
+
 
 ```{r}
 ggplot(qs) + 
@@ -928,11 +980,13 @@ ggplot(qs) +
     )
 ```
 
+
 The right-skewness of the `rentsqm` variable is exponentially increasing with `area`: as the area increases, the right-hand tail of the distribution becomes wider; this can be attributed to the surge of outliers in the distribution.
 
 We can definitely conclude that both location, shape and scale of the regressands are affected by the regressor variable.
 
 ## Use the `incomeEx` dataset. What is the effect of Age on Income? 
+
 
 ```{r}
 incomeEx <- readr::read_csv(
@@ -960,9 +1014,11 @@ ggplot(
     col = "darkorange"
   )
 ```
+
 The relationship appears to be nonlinear; however, it could be approximated by a linear relationship: `income` is decreasing with `age`, although a closer analysis is warranted.
 
 ## Is this the same for all quantiles of the distribution? 
+
 
 ```{r}
 simple_fit <- rq(
@@ -988,7 +1044,9 @@ simple_fit %>%
 ```{r}
 anova(simple_fit)
 ```
+
 The relationship is indeed different across the quantiles; both intercepts and slopes are changing.
+
 
 ```{r}
 simple_fit_coeff <- simple_fit %>% 
@@ -1037,9 +1095,11 @@ ggplot() +
   )
 ```
 
+
 ## Construct models in which the relationship is allowed to be different depending on the race and education level of the household head. Provide a graphical display that presents the estimated models. Is there enough evidence to indicate that the effect of Age on Income is different for different races/education levels? Specify the statistical test that would be carried out.
 
 `white` will be set as the baseline `eth` for a better interpretation of the coefficients: hence, the average level corresponding to the intercept is `college`^[For the `ced` variable.] and `white`.
+
 
 ```{r}
 incomeEx$eth <-  incomeEx$eth %>% as.factor()
@@ -1074,7 +1134,9 @@ incomeEx %>%
   
 ```
 
+
 This set of charts already allows us to spot variations of the response shape and distribution across the quantiles; in particular, there is a noticeable difference between the quantile regressions for `white` and `black` for people having attended `college`. Moreover, we can notice that there are far fewer data points for `asian`; this might affect the standard errors and hypothesis tests. 
+
 
 ```{r}
 income_extended <- rq(
@@ -1091,22 +1153,27 @@ income_extended %>%
   )
 ```
 
+
 A table of the coefficients confirms that both intercept and slope change, with the most noticeable effects on the higher quantiles.
+
 
 ```{r}
 income_extended %>% coef
 ```
+
 ```{r}
 anova(
   income_extended
 )
 ```
 
+
 There is strong evidence in favor of the hypothesis that education and ethnicity influence the effect of `age` on `income`. Ethnicity at most levels is statistically significant, each pointing at a lower average level; however, the significance is uneven, as in some quantiles, given the reference (baseline) scenario of `eth == 'white'`, either `'asian'` or '`hispanic'` or both do not seem to have statistical significance, indicating that only the `black` ethnicity is consistently influencing the effect of `age` on `income`, exception made for the lowest decile. Education is consistently significant across all the quantiles, which implies that not graduating from college corresponds to a lower average income, therefore affecting the relationship between `income` and `age` as it changes the level of their relationship. We can also notice a strong difference in the slopes.
 
 # Bootstrap
 
 ## For the Munich data compute confidence intervals of the mean rental price for locations without central heating both using theory and a bootstrap-based approach.  
+
 
 ```{r}
 rents_full <- readr::read_table(
@@ -1127,7 +1194,9 @@ rents_full <- readr::read_table(
 )
 ```
 
+
 > Method 1:
+
 
 ```{r}
 ci_mean <- lm(
@@ -1139,7 +1208,9 @@ ci_mean <- lm(
 ci_mean[1, ]
 ```
 
+
 > Method 2:
+
 
 ```{r}
 rents_full %>% 
@@ -1153,7 +1224,9 @@ rents_full %>%
   )
 ```
 
+
 > Bootstrap:
+
 
 ```{r}
 boot_size <- 2000
@@ -1181,9 +1254,11 @@ for(i in 1:boot_size) {
 quantile(bootstrapped_mean, probs = c(.025, .975), na.rm = T)
 ```
 
+
 For the same significance level of $5%$, the bootstrap method yields a larger interval; nevertheless, it is remarkably similar to the interval computed by applying asymptotic theory.
 
 ## Take the `engel` data. Estimate a quantile regression model for $\tau = c(0.1,0.5,0.9)$. Derive bootstrap-based sampling distributions for the regression model parameters. Compare the estimated standard error derived for your bootstrap distribution to the ones obtained using `summary` from the `quantreg` package. 
+
 
 ```{r}
 data(engel)
@@ -1206,7 +1281,6 @@ engel_fit %>%
         select = "Std. Error"
         )
 ```
-
 
 ```{r}
 boot_size <- 2000
@@ -1238,7 +1312,9 @@ tibble(
   )
 ```
 
+
 ## Take the `engel` data. Make a plot that shows the point estimate and bootstrap-based intervals for the slope of different quantile regression models for values of $\tau$ = `seq(0.1, 0.9, by = 0.05)`.
+
 
 ```{r}
 tau_seq <- seq(
