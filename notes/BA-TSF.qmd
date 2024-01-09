@@ -830,8 +830,12 @@ Exponential smoothing allows to achieve forecasts that are _in between_ these ex
 
 Naming conventions are attributed to the most important variation of exponential smoothing:
 
-1. Single, Double, Triple Exponential Smoothing.
-2. Holt, Holt-Winter's Method.
+1. Single Exponential Smoothing.
+2. Double Exponential Smoothing, or Holt's linear trend method.
+3. Triple Exponential Smoothing, or Holt-Winter's Method.
+
+The _single_, _double_, or _triple_ term refers to the _number of smoothing equations_ that are comprised in the method. We can have a smoothing equation for the level (Simple Exponential Smoothing), a second one for the trend (Double Exponential Smoothing), a third (and final) one for the seasonal component (Triple Exponential Smoothing).
+
 
 ## Simple Exponential Smoothing
 
