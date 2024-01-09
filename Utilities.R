@@ -30,8 +30,7 @@ lapply(
 
 theme_set(
   theme_tufte(
-    base_size = 20,
-    base_family = "Atkinson Hyperlegible"
+    base_size = 20
   )
 )
 

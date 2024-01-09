@@ -188,7 +188,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">January 6, 2024</p>
+      <p class="date-modified">January 9, 2024</p>
     </div>
   </div>
     
@@ -1121,9 +1121,11 @@ y_{T + h \vert T} = y_T
 <p>Exponential smoothing allows to achieve forecasts that are <em>in between</em> these extremes, giving heavier weights to later observations.</p>
 <p>Naming conventions are attributed to the most important variation of exponential smoothing:</p>
 <ol type="1">
-<li>Single, Double, Triple Exponential Smoothing.</li>
-<li>Holt, Holt-Winter’s Method.</li>
+<li>Single Exponential Smoothing.</li>
+<li>Double Exponential Smoothing, or Holt’s linear trend method.</li>
+<li>Triple Exponential Smoothing, or Holt-Winter’s Method.</li>
 </ol>
+<p>The <em>single</em>, <em>double</em>, or <em>triple</em> term refers to the <em>number of smoothing equations</em> that are comprised in the method. We can have a smoothing equation for the level (Simple Exponential Smoothing), a second one for the trend (Double Exponential Smoothing), a third (and final) one for the seasonal component (Triple Exponential Smoothing).</p>
 <section id="simple-exponential-smoothing" class="level2">
 <h2 class="anchored" data-anchor-id="simple-exponential-smoothing">Simple Exponential Smoothing</h2>
 <blockquote class="blockquote">
