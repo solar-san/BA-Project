@@ -118,7 +118,7 @@ However, data are not always available.
 
 > _Quantitative_ methods _must be appropriate for the problem and for the data used to solve it_. Specific methods are used for _time series_ data.
 
-In time series, _time is a defining property of the data_. While it is a continuous variable, sampling usually occurs at regularly spaced intervals, giving regular time steps that represent the _period_ of the data.
+In time series, _time is a defining property of the data_. While it is a continuous variable, sampling usually occurs at regularly spaced intervals, giving regular time steps that represent the _frequency_ of the data.
 
 ```{r TS example}
 gafa_stock %>% 
@@ -138,7 +138,7 @@ gafa_stock %>%
 
 # Forecasting: the Statistical Perspective
 
-The phenomenon that we want to forecast can be conceptualized as a _stochastic process_, which is a _succession of stochastic variables_ $\{ y_t \}$. If we consider its value at time $T$, given $\mathcal{I}$ the set of all available observations for $t = 1, 2, …, T -1$, we can express the _forecast distribution_ as a _joint distribution_, conditional on the available information: $y_t \vert \mathcal{I}$. This notation means: "_the random variable $y_t$, given all that we know in $\mathcal{I}$".
+The phenomenon that we want to forecast can be conceptualized as a _stochastic process_, which is a _succession of stochastic variables_ $\{ y_t \}$. If we consider its value at time $T$, given $\mathcal{I}$ the set of all available observations for $t = 1, 2, …, T -1$, we can express the _forecast distribution_ as a _joint distribution_, conditional on the available information: $y_t \vert \mathcal{I}$. This notation means: "the random variable $y_t$, given all that we know in $\mathcal{I}$".
 
 - The _point forecast_ will be the _mean_ or the _median_ of $y_t \vert \mathcal{I}$.
 - The _forecast variance_ is $V(y_t \vert \mathcal{I})$. 
@@ -420,7 +420,7 @@ $${#eq-decompose}
 We can identify a _seasonal_ and a _trend_ component; there is also a _remainder_ that accounts for the unexplained variability.
 
 - $y_t$ = data at period $t$.
-- $T_t$ = trend-cyvle component at period $t$.
+- $T_t$ = trend-cycle component at period $t$.
 - $S_t$ = seasonal component at period $t$.
 - $R_t$ = remainder at period $t$.
 
@@ -724,7 +724,7 @@ $$
 $${#eq-remainmul}
 
 ```{r mult class decomposition example}
-#|fig-height: 15
+#| fig-height: 20
 p1 <- aus_production %>% 
   filter(
     year(Quarter) >= 1970
@@ -744,7 +744,7 @@ p2 <- aus_production %>%
      autoplot() +
   labs(
     x = "Year",
-    title = "Classical additive decomposition \n AUS Gas production"
+    title = "Classical multiplicative decomposition \n AUS Gas production"
     ) 
 
 p1 / p2
