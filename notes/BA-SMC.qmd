@@ -100,7 +100,9 @@ The main reason for adopting a simulation-based approach is __uncertainty__: it 
 
 > _Monte Carlo_^[The term _Monte Carlo_ refers to a range of methods in which _statistical sampling_ is employed to approximate solutions to quantitative problems; the name Monte Carlo is related to the Monte Carlo _casino_ in Monaco where randomness is king.] _simulation_ is a computer-based method to quantify, visualize, and assess uncertainty to evaluate its impact on decision-making. This class of methods is also known as _Risk Analysis_ or _Static Simulation_ models.
 
-While a closed-form solution is sometimes available for a large set of problems, provided that some quantities are known. This is often not the case. For example, _profits_ are a function of _revenues_ and _costs_: if the two latter quantities are known, then we can easily compute the _profits_; but revenues and costs are typically _not_ known precisely, although it is possible to make some _probabilistic assessment_ on the range of possible values.
+While a closed-form solution is available for a large set of problems, provided that some quantities are known, this is sometimes not the case. 
+
+For example, _profits_ are a function of _revenues_ and _costs_: if the two latter quantities are known, then we can easily compute the _profits_; but revenues and costs are typically _not_ known precisely, although it is possible to make some _probabilistic assessment_ on the range of possible values.
 
 The Monte Carlo simulation method is employed to evaluate the _properties of solutions_ in scenarios where system inputs exhibit _stochastic_ variations, proving crucial for _decision-making_ and _risk analysis_. Additionally, it serves as a valuable tool for quantifying uncertainty in _estimation_ procedures, particularly in situations where mathematical derivations, integrals, and optimization procedures may be intricate. This approach is also instrumental in exploring and validating the properties of statistical machine learning estimation procedures.
 
