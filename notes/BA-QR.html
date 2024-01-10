@@ -195,7 +195,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">December 29, 2023</p>
+      <p class="date-modified">January 10, 2024</p>
     </div>
   </div>
     
@@ -654,7 +654,7 @@ Note
 </section>
 <section id="example-engel-food-expenditure-data" class="level2">
 <h2 class="anchored" data-anchor-id="example-engel-food-expenditure-data">Example: Engel Food Expenditure Data</h2>
-<p>We will use Engel’s food expenditure data used in Koenker and Bassett(1982). This is a regression dataset consisting of 235 observations on income and expenditure on food for Belgian working-class households.</p>
+<p>We will use Engel’s food expenditure data used in Koenker and Bassett (1982). This is a regression dataset consisting of 235 observations on income and expenditure on food for Belgian working-class households.</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -1563,7 +1563,7 @@ Tip
 <blockquote class="blockquote">
 <p><strong>Bootstrapping</strong><a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a> is <em>any test or metric that uses random sampling with replacement</em>, mimicking the sampling process, and falls under the broader class of <em>resampling methods</em>. Bootstrapping assigns <em>measures of accuracy</em><a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a> to sample estimates. This technique allows the estimation of the sampling distribution of almost any statistic using random sampling methods.</p>
 </blockquote>
-<p>It is based on the sample data and having <em>enough</em> computing power. The key idea is that we assume the population is just many copies of the sample; then, we make lots of copies of the sample and then we sample repeatedly from the population. In practice, instead of making many copies of the sample and sampling from that, we use a sampling technique that is equivalent, based on <em>sampling with replacement</em>.</p>
+<p>It is based on having sample data and <em>enough</em> computing power. The key idea is that we assume the population is just many copies of the sample; then, we make lots of copies of the sample and then we sample repeatedly from the population. In practice, instead of making many copies of the sample and sampling from that, we use a sampling technique that is equivalent, based on <em>sampling with replacement</em>.</p>
 <p>In particular, we will use <strong>nonparametric resampling bootstrap</strong>.</p>
 <ul>
 <li>We sample <em>with replacement</em> from the original sample.</li>
@@ -2092,7 +2092,7 @@ area         9.06923  0.74394   12.19082  0.00000</code></pre>
 </section>
 <section id="example-inference-bootstrap" class="level2">
 <h2 class="anchored" data-anchor-id="example-inference-bootstrap">Example: Inference &amp; Bootstrap</h2>
-<p>We will compare different models; they will <em>polynomial</em> variations of the same regression.</p>
+<p>We will compare different models; they will be <em>polynomial</em> variations of the same regression.</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -2181,8 +2181,6 @@ I(yearc^2)       0.07516      0.00935      8.03951      0.00000</code></pre>
 </div>
 </div>
 <p>The option <code>se = "boot"</code> computes the standard errors using the <em>bootstrap</em>. To compare the fitness of available models, we can use the ANOVA test:</p>
-<p>The <code>se="boot"</code> option will compute the standard error estimates using the bootstrap.</p>
-<p>To compare the different models, we can use the ANOVA test:</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -2385,7 +2383,7 @@ Important
 <section id="example-changes-in-the-distribution-properties" class="level2">
 <h2 class="anchored" data-anchor-id="example-changes-in-the-distribution-properties">Example: Changes in the Distribution Properties</h2>
 <blockquote class="blockquote">
-<p>Once we have the predicted values for different quantiles we can also plot some measure of <em>scale</em> and <em>shape</em> as a function of some explanatory variable to assess whether this is changing: we compute <span class="math inline">QSC(0.25)</span> and <span class="math inline">QSK(0.9)</span> for <em>fixed values</em> of <code>yearc</code> and allowing <code>area</code> to vary:</p>
+<p>Once we have the predicted values for different quantiles we can also plot some measure of <em>scale</em> and <em>shape</em> as a function of some explanatory variable to assess whether this is changing: we compute <span class="math inline">QSC(0.25)</span> and <span class="math inline">QSK(0.1)</span> for <em>fixed values</em> of <code>yearc</code> and allowing <code>area</code> to vary:</p>
 </blockquote>
 <div class="cell">
 <details open="">
@@ -2508,7 +2506,7 @@ Important
 <li id="fn3"><p>This assumption allows for inference on the model parameters.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Warning: the mean is <em>not</em> a robust indicator of position.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>Generalized Linear Models.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>In other words, it determines a specific point in the distribution. For example, the <em>median</em> is the quantile of order 0.5: you have a <span class="math inline">50%</span> probability of observing a value lower than the median.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>In other words, it determines a specific point in the distribution. For example, the <em>median</em> is the quantile of order 0.5: you have a <span class="math inline">50</span>% probability of observing a value lower than the median.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn7"><p>The mean of this distribution is 47.0563867.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn8"><p>The basic example is a <em>linear transformation</em>, but this property also applies to <em>logarithms</em>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn9"><p>For example, <span class="math inline">Q(p, a + bY) = a + bQ(p, Y)</span>.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -2522,7 +2520,7 @@ Important
 <li id="fn17"><p>For example, an indication that we are observing a conditionally identically distributed response variable.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn18"><p>See <a href="#sec-inference">Section&nbsp;3.5</a>.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn19"><p>First introduced by Bradley Efron in the late 70s.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn20"><p>bias, variance, confidence intervals, prediction error, etc.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>Such as bias, variance, confidence intervals, prediction error, etc.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn21"><p>In the following notation the <span class="math inline">\tau</span> is omitted for readability.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn22"><p>This test amounts to asking the question: “Are the added variables <em>significant</em> in explaining the behavior of our dependent variable?”<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn23"><p><a href="#sec-quantilebasedssunivariate">Section&nbsp;2.4</a>.<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>

@@ -174,7 +174,7 @@ $$
 Q(p) = \mathrm{inf} \{ x: P(X \leq x) \geq p \}
 $${#eq-quantile}
 
-This is strictly related to the _cumulative distribution function_. The quantile of order $\alpha$ can also be interpreted as that point in the distribution for which you have a probability $\alpha$ of observing a value less than that quantile^[In other words, it determines a specific point in the distribution. For example, the _median_ is the quantile of order 0.5: you have a $50%$ probability of observing a value lower than the median.].
+This is strictly related to the _cumulative distribution function_. The quantile of order $\alpha$ can also be interpreted as that point in the distribution for which you have a probability $\alpha$ of observing a value less than that quantile^[In other words, it determines a specific point in the distribution. For example, the _median_ is the quantile of order 0.5: you have a $50$% probability of observing a value lower than the median.].
 
 We can compute a set of quantiles to help prove the point. Note that the mean of the distribution is `r mean(incomeEx$income)`.
 
@@ -432,7 +432,7 @@ Minimization is achieved with _linear programming_ methods. The solution _might 
 
 ## Example: Engel Food Expenditure Data
 
-We will use Engel's food expenditure data used in Koenker and Bassett(1982). This is a regression dataset consisting of 235 observations on income and expenditure on food for Belgian working-class households.
+We will use Engel's food expenditure data used in Koenker and Bassett (1982). This is a regression dataset consisting of 235 observations on income and expenditure on food for Belgian working-class households.
 
 ```{r}
 data(engel)
@@ -946,9 +946,9 @@ In general, the required mathematics is difficult and it is not always possible 
 
 ## The Bootstrap
 
-> __Bootstrapping__^[First introduced by Bradley Efron in the late 70s.] is _any test or metric that uses random sampling with replacement_, mimicking the sampling process, and falls under the broader class of _resampling methods_. Bootstrapping assigns _measures of accuracy_^[bias, variance, confidence intervals, prediction error, etc.] to sample estimates. This technique allows the estimation of the sampling distribution of almost any statistic using random sampling methods.
+> __Bootstrapping__^[First introduced by Bradley Efron in the late 70s.] is _any test or metric that uses random sampling with replacement_, mimicking the sampling process, and falls under the broader class of _resampling methods_. Bootstrapping assigns _measures of accuracy_^[Such as bias, variance, confidence intervals, prediction error, etc.] to sample estimates. This technique allows the estimation of the sampling distribution of almost any statistic using random sampling methods.
 
-It is based on the sample data and having _enough_ computing power. The key idea is that we assume the population is just many copies of the sample; then, we make lots of copies of the sample and then we sample repeatedly from the population. In practice, instead of making many copies of the sample and sampling from that, we use a sampling technique that is equivalent, based on _sampling with replacement_.
+It is based on having sample data and _enough_ computing power. The key idea is that we assume the population is just many copies of the sample; then, we make lots of copies of the sample and then we sample repeatedly from the population. In practice, instead of making many copies of the sample and sampling from that, we use a sampling technique that is equivalent, based on _sampling with replacement_.
 
 In particular, we will use __nonparametric resampling bootstrap__.
 
@@ -1300,7 +1300,7 @@ p1 / p2 + plot_annotation(title = "Bootstrapped Coefficients")
 
 ## Example: Inference & Bootstrap 
 
-We will compare different models; they will _polynomial_ variations of the same regression.
+We will compare different models; they will be _polynomial_ variations of the same regression.
 
 ```{r}
 rqfit2munich <- rq(
@@ -1321,10 +1321,6 @@ summary(
 ```
 
 The option `se = "boot"` computes the standard errors using the _bootstrap_. To compare the fitness of available models, we can use the ANOVA test:
-
-The `se="boot"` option will compute the standard error estimates using the bootstrap.
-
-To compare the different models, we can use the ANOVA test:
 
 ```{r}
 anova(
