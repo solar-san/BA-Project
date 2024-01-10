@@ -168,6 +168,7 @@ To conclude, de-seasonalize the series:
 $$
 \frac{y_t}{S_t}
 $$
+
 ## Compute a 5-MA and 9-MA for the oil prices in the `prices` dataset and overlay them to the original data ensuring that suitable labels are used to identify the different fits
 
 ```{r}
@@ -446,22 +447,21 @@ bodyfat_qrfit %>%
 
 ```{r}
 ggplot(
-  bodyfat,
+  bodyfat_qrfit %>% 
+    augment(),
   aes(
     x = Height,
     y = Weight
     )
 ) +
   geom_point() +
-  geom_quantile(
-    quantiles = c(
-      .1,
-      .25,
-      .5,
-      .75,
-      .9
+  geom_line(
+    aes(
+      y = .fitted,
+      color = .tau
     )
-  )
+  ) +
+  custom_color
 ```
 
 ```{r}
@@ -630,7 +630,7 @@ rents_sel %>% summary
 ```
 
 ```{r}
-#|column: page
+#| column: page
 p1 <- rents_sel %>% 
   ggplot() +
   geom_histogram(
@@ -645,7 +645,7 @@ p2 <- rents_sel %>%
     aes(
       rent
       ),
-    fill = "springgreen4"
+    fill = "orchid4"
     ) 
 p3 <- rents_sel %>% 
   ggplot() +
@@ -692,7 +692,10 @@ rentsqm_qr %>%
 
 ```{r}
 #| column: page
-p1 <- rents_sel %>% 
+#| fig-width: 15
+#| fig-height: 15
+p1 <- rent_qr %>% 
+  augment() %>% 
   ggplot(
     aes(
       x = area,
@@ -700,17 +703,22 @@ p1 <- rents_sel %>%
     )
   ) +
   geom_point(
-    col = 'grey30',
+    col = 'grey70',
     alpha = .6
   ) +
-  geom_quantile(
-    quantiles = tau_sel,
-    color = "darkorange"
+  geom_line(
+    aes(
+      y = .fitted,
+      col = .tau
+    )
   ) +
   labs(
     title = 'Rent ~ Area'
-  )
-p2 <- rents_sel %>% 
+  ) +
+  custom_color
+
+p2 <- rentsqm_qr %>% 
+  augment() %>%  
   ggplot(
     aes(
       x = area,
@@ -718,16 +726,19 @@ p2 <- rents_sel %>%
     )
   ) +
   geom_point(
-    col = 'grey30',
+    col = 'grey70',
     alpha = .6
   ) +
-  geom_quantile(
-    quantiles = tau_sel,
-    color = "limegreen"
+  geom_line(
+    aes(
+      y = .fitted,
+      col = .tau
+    )
   ) +
   labs(
     title = 'Rentsqm ~ Area'
-  )
+  ) +
+  custom_color
 p1 + p2
 ```
 
@@ -739,7 +750,7 @@ rentsqm_qr_coef <- rentsqm_qr %>%
 ```
 
 ```{r}
-#|column: page
+#| column: page
 p1 <- ggplot() +
   geom_line(
     aes(
@@ -768,7 +779,7 @@ p1 + p2 + plot_annotation('Slopes coefficients for different quantiles')
 ```
 
 ```{r}
-#|column: page
+#| column: page
 p1 <- ggplot() +
   geom_line(
     aes(
@@ -942,9 +953,26 @@ incomeEx <- readr::read_csv(
     )
 incomeEx$income <- incomeEx$cinc/1000
 ```
+```{r}
+#| echo: FALSE
+
+simple_fit <- rq(
+  income ~ age,
+  data = incomeEx,
+    tau = c(
+    .1,
+    .25,
+    .5,
+    .75,
+    .9
+  )
+)
+```
+
 
 ```{r}
-incomeEx %>% 
+simple_fit %>% 
+  augment() %>% 
 ggplot(
   aes(
       x = age,
@@ -953,12 +981,15 @@ ggplot(
 ) +
   geom_point(
     alpha = .2,
-    col = "grey20"
+    col = "grey80"
   ) +
-  geom_quantile(
-    quantiles = tau_sel,
-    col = "darkorange"
-  )
+  geom_line(
+    aes(
+      y = .fitted,
+      col = .tau
+    )
+  ) +
+  custom_color
 ```
 The relationship appears to be nonlinear; however, it could be approximated by a linear relationship: `income` is decreasing with `age`, although a closer analysis is warranted.
 
@@ -1047,8 +1078,19 @@ incomeEx$eth <- relevel(incomeEx$eth, ref = "white")
 ```
 
 ```{r}
+income_extended <- rq(
+  income ~ age + eth + ced,
+  data = incomeEx,
+  tau = tau_sel
+)
+```
+
+```{r}
 #| column: page
-incomeEx %>% 
+#| fig-height: 15
+#| fig-width: 15
+income_extended %>% 
+  augment() %>% 
   ggplot(
     aes(
       x = age,
@@ -1059,10 +1101,11 @@ incomeEx %>%
     col = "grey70",
     alpha = .7
   ) +
-  geom_quantile(
-    formula = y ~ x,
-    quantiles = tau_sel,
-    col = 'darkred'
+  geom_line(
+    aes(
+      y = .fitted,
+      col = .tau
+    )
   ) +
   facet_grid(
     rows = vars(ced),
@@ -1070,19 +1113,12 @@ incomeEx %>%
   ) +
   labs(
     title = 'Income ~ Age for different Education levels and Ethnicities'
-  )
+  ) +
+  custom_color
   
 ```
 
 This set of charts already allows us to spot variations of the response shape and distribution across the quantiles; in particular, there is a noticeable difference between the quantile regressions for `white` and `black` for people having attended `college`. Moreover, we can notice that there are far fewer data points for `asian`; this might affect the standard errors and hypothesis tests. 
-
-```{r}
-income_extended <- rq(
-  income ~ age + eth + ced,
-  data = incomeEx,
-  tau = tau_sel
-)
-```
 
 ```{r}
 income_extended %>% 
@@ -1181,7 +1217,7 @@ for(i in 1:boot_size) {
 quantile(bootstrapped_mean, probs = c(.025, .975), na.rm = T)
 ```
 
-For the same significance level of $5%$, the bootstrap method yields a larger interval; nevertheless, it is remarkably similar to the interval computed by applying asymptotic theory.
+For the same significance level of $5$ %, the bootstrap method yields a larger interval; nevertheless, it is remarkably similar to the interval computed by applying asymptotic theory.
 
 ## Take the `engel` data. Estimate a quantile regression model for $\tau = c(0.1,0.5,0.9)$. Derive bootstrap-based sampling distributions for the regression model parameters. Compare the estimated standard error derived for your bootstrap distribution to the ones obtained using `summary` from the `quantreg` package. 
 
